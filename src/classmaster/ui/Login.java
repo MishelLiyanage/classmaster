@@ -1,11 +1,22 @@
 package classmaster.ui;
 
+import classmaster.models.Account;
+import classmaster.repository.AuthRepository;
+import classmaster.repository.ComponentRegistry;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 public class Login extends javax.swing.JFrame {
 
     /**
      * Creates new form SignUp
      */
+    private AuthRepository authRepository;
+
     public Login() {
+        this.authRepository = (AuthRepository) ComponentRegistry.getInstance()
+                .get("AuthRepository");
         initComponents();
     }
 
@@ -49,6 +60,11 @@ public class Login extends javax.swing.JFrame {
         jLabel3.setText("E-mail");
 
         jtxtEmail.setHorizontalAlignment(javax.swing.JTextField.LEFT);
+        jtxtEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtxtEmailActionPerformed(evt);
+            }
+        });
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel4.setText("Password");
@@ -151,12 +167,30 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnLoginActionPerformed
-        
+//        String username = jtxtEmail.getText();
+//        String password = jpsfPassword.getText();
+        String username = "ashanchandrasiri1@gmail.com";
+        String password = "ashan123";
+        try {
+
+            System.out.println("username : " + username + " password : " + password);
+
+            Account account = this.authRepository.signin(username, password);
+            System.out.println(account);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }//GEN-LAST:event_jbtnLoginActionPerformed
 
     private void jbtnSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnSignUpActionPerformed
-        
+
     }//GEN-LAST:event_jbtnSignUpActionPerformed
+
+    private void jtxtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtEmailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jtxtEmailActionPerformed
 
     /**
      * @param args the command line arguments

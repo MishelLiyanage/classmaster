@@ -11,6 +11,8 @@ public class StaffHomePage extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -20,6 +22,12 @@ public class StaffHomePage extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
         jMnuItmMarkAttendence = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMnuItmStudentPayment = new javax.swing.JMenuItem();
+
+        jMenuItem2.setText("jMenuItem2");
+
+        jMenuItem3.setText("jMenuItem3");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Home Page");
@@ -65,6 +73,13 @@ public class StaffHomePage extends javax.swing.JFrame {
         jMenu2.add(jMnuItmMarkAttendence);
 
         jMenuBar1.add(jMenu2);
+
+        jMenu3.setText("Payment");
+
+        jMnuItmStudentPayment.setText("Student Payment");
+        jMenu3.add(jMnuItmStudentPayment);
+
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -156,10 +171,14 @@ public class StaffHomePage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMnuItmAddStudent;
     private javax.swing.JMenuItem jMnuItmMarkAttendence;
+    private javax.swing.JMenuItem jMnuItmStudentPayment;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
 }

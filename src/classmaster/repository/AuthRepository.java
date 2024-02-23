@@ -31,8 +31,9 @@ public class AuthRepository implements Component {
             account.setId(rs.getInt("id"));
             account.setEmail(rs.getString("email"));
             account.setPassword(rs.getString("password"));
-            account.setFirstName(rs.getString("firstName"));
-            account.setDisplayName(rs.getString("displayName"));
+            account.setFirstName(rs.getString("first_name"));
+            account.setLastName(rs.getString("last_name"));
+            account.setDisplayName(rs.getString("display_name"));
             account.setRole(rs.getString("role"));
         }
 

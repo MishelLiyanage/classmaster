@@ -18,6 +18,8 @@ public class Login extends javax.swing.JFrame {
         this.authRepository = (AuthRepository) ComponentRegistry.getInstance()
                 .get("AuthRepository");
         initComponents();
+        loginProgressBar.setIndeterminate(true);
+        loginProgressBar.setVisible(false);
     }
 
     /**
@@ -40,6 +42,7 @@ public class Login extends javax.swing.JFrame {
         jbtnLogin = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
         jbtnSignUp = new javax.swing.JButton();
+        loginProgressBar = new javax.swing.JProgressBar();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
@@ -116,14 +119,16 @@ public class Login extends javax.swing.JFrame {
                                         .addGap(35, 35, 35)
                                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE))))
                             .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(28, 28, 28)
-                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jbtnSignUp))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(70, 70, 70)
-                                .addComponent(jbtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(317, Short.MAX_VALUE))
+                                .addComponent(jbtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(28, 28, 28)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(loginProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jbtnSignUp)))))
+                .addContainerGap(294, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,7 +149,9 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(jpsfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(42, 42, 42)
                 .addComponent(jbtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addGap(2, 2, 2)
+                .addComponent(loginProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtnSignUp))
@@ -155,7 +162,10 @@ public class Login extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,6 +179,10 @@ public class Login extends javax.swing.JFrame {
     private void jbtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnLoginActionPerformed
 //        String username = jtxtEmail.getText();
 //        String password = jpsfPassword.getText();
+
+        loginProgressBar.setVisible(true);
+        jbtnLogin.setVisible(false);
+
         String username = "ashanchandrasiri1@gmail.com";
         String password = "ashan123";
         try {
@@ -178,8 +192,11 @@ public class Login extends javax.swing.JFrame {
             Account account = this.authRepository.signin(username, password);
             System.out.println(account);
 
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            loginProgressBar.setVisible(false);
+            jbtnLogin.setVisible(true);
         }
 
     }//GEN-LAST:event_jbtnLoginActionPerformed
@@ -240,5 +257,6 @@ public class Login extends javax.swing.JFrame {
     private javax.swing.JButton jbtnSignUp;
     private javax.swing.JPasswordField jpsfPassword;
     private javax.swing.JTextField jtxtEmail;
+    private javax.swing.JProgressBar loginProgressBar;
     // End of variables declaration//GEN-END:variables
 }

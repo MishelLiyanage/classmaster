@@ -5,6 +5,7 @@
 package classmaster.repository;
 
 import classmaster.models.Account;
+import classmaster.models.Staff;
 import classmaster.shared.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -37,7 +38,29 @@ public class AuthRepository implements Component {
             account.setRole(rs.getString("role"));
         }
 
+        if (account != null) {
+            account = setProfileInfo(account);
+                  
+        }
+
         return account;
+    }
+
+    private Account setProfileInfo(Account account) throws SQLException {
+
+        if (account.getRole().equalsIgnoreCase("STAFF")) {
+            Object[] params = {account.getId()};
+            ResultSet rs = dbCOnnection.execute("select * from staff where id = ?", params);
+            Staff st = new Staff(account);
+            while (rs.next()) {
+                st.setContact_no(rs.getString("contact_no"));
+                st.setNic(rs.getString("nic"));
+            }
+            return st;
+        }
+
+        return account;
+
     }
 
     @Override

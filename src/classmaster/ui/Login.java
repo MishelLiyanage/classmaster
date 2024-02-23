@@ -1,6 +1,7 @@
 package classmaster.ui;
 
 import classmaster.models.Account;
+import classmaster.models.Staff;
 import classmaster.repository.AuthRepository;
 import classmaster.repository.ComponentRegistry;
 import java.sql.SQLException;
@@ -177,20 +178,33 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnLoginActionPerformed
-//        String username = jtxtEmail.getText();
-//        String password = jpsfPassword.getText();
+        String username = jtxtEmail.getText();
+        String password = jpsfPassword.getText();
 
         loginProgressBar.setVisible(true);
         jbtnLogin.setVisible(false);
 
-        String username = "ashanchandrasiri1@gmail.com";
-        String password = "ashan123";
+//        String username = "ashanchandrasiri1@gmail.com";
+//        String password = "ashan123";
         try {
 
             System.out.println("username : " + username + " password : " + password);
 
             Account account = this.authRepository.signin(username, password);
-            System.out.println(account);
+            
+            if(account == null){
+                System.out.println("---- User not found ----");
+                return;
+                     
+            }
+            
+            if(account.getRole().equalsIgnoreCase("STAFF")){
+                System.out.println("staff");
+            }
+            
+//            if(account instanceof Staff){
+//                System.out.println("staff");
+//            }
 
         } catch (Exception ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);

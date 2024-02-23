@@ -24,6 +24,18 @@ public class Account {
     
     private String role;
 
+    public Account(){}
+
+    public Account(int id, String email, String password, String firstName, String lastName, String displayName, String role) {
+        this.id = id;
+        this.email = email;
+        this.password = password;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.displayName = displayName;
+        this.role = role;
+    }
+    
     public int getId() {
         return id;
     }

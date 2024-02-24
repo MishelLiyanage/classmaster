@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.util.Date;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -53,6 +54,8 @@ public class DBConnection {
                 st.setDouble(i + 1, (Double) obj);
             } else if (obj instanceof String) {
                 st.setString(i + 1, (String)obj);
+            }else if(obj instanceof Date){
+                st.setDate(i + 1, new java.sql.Date(((Date)obj).getTime()));
             }
         }
 

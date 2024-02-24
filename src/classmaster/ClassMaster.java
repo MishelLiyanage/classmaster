@@ -2,6 +2,7 @@ package classmaster;
 
 import classmaster.repository.ComponentRegistry;
 import classmaster.ui.Login;
+import classmaster.ui.Staff.AddStudent;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +16,9 @@ public class ClassMaster {
 
             java.awt.EventQueue.invokeLater(new Runnable() {
                 public void run() {
-                    new Login().setVisible(true);
+                    new Login().setVisible(true);  
+//                    new AddStudent().setVisible(true);
+
                 }
             });
 

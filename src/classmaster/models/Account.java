@@ -25,9 +25,8 @@ public class Account {
     private String role;
 
     public Account(){}
-
-    public Account(int id, String email, String password, String firstName, String lastName, String displayName, String role) {
-        this.id = id;
+    
+    public Account(String email, String password, String firstName, String lastName, String displayName, String role) {
         this.email = email;
         this.password = password;
         this.firstName = firstName;
@@ -35,6 +34,13 @@ public class Account {
         this.displayName = displayName;
         this.role = role;
     }
+
+    public Account(int id, String email, String password, String firstName, String lastName, String displayName, String role) {
+        Account a = new Account(email, password, firstName, lastName, displayName, role);
+        a.setId(id);
+    }
+    
+   
     
     public int getId() {
         return id;

@@ -2,7 +2,7 @@
 
 
     CREATE TABLE Account (
-        id INT NOT NULL PRIMARY KEY,
+        id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
         email VARCHAR(150) UNIQUE,
         password VARCHAR(150),
         first_name VARCHAR(100),
@@ -33,19 +33,21 @@
         FOREIGN KEY(id) REFERENCES Account(id));
         
         
-    INSERT INTO Account (id, email, password, first_name, last_name, display_name, role) VALUES
-    (1, 'ashanchandrasiri1@gmail.com', 'ashan123','Ashan', 'Chandrasiri', 'AshChan', 'ADMIN'),
-    (2, 'bhagyafdo97@gmail.com', 'dinalie123','Dinalie', 'Fernando', 'DinDon', 'ADMIN'),
-    (3, 'mishelfdo@gmail.com', 'mishel234','Mishel', 'Fernando', 'MishF', 'STAFF'),
-    (4, 'samodha@gmail.com', 'samodha123','Samodha', 'Wijesooriya', 'samWije', 'STAFF'),
-    (5, 'sharukh@gmail.com', 'sharukh123','Sharuk', 'Emmanuel', 'SharkE', 'TEACHER'),
-    (6, 'sarah@example.com', 'sarah123','Sarah', 'Jones', 'SarahJ', 'USER'),
-    (7, 'matthew@example.com', 'matthew123','Matthew', 'Davis', 'MatthewD', 'USER'),
-    (8, 'olivia@example.com', 'olivia123','Olivia', 'Miller', 'OliviaM', 'USER'),
-    (9, 'james@example.com', 'james123','James', 'Wilson', 'JamesW', 'USER'),
-    (10, 'emma@example.com', 'emma123','Emma', 'Moore', 'EmmaM', 'USER');
+INSERT INTO Account (email, password, first_name, last_name, display_name, role) VALUES
+    ('ashanchandrasiri1@gmail.com', 'ashan123','Ashan', 'Chandrasiri', 'AshChan', 'ADMIN'),
+    ('bhagyafdo97@gmail.com', 'dinalie123','Dinalie', 'Fernando', 'DinDon', 'ADMIN'),
+    ('mishelfdo@gmail.com', 'mishel234','Mishel', 'Fernando', 'MishF', 'STAFF'),
+    ('samodha@gmail.com', 'samodha123','Samodha', 'Wijesooriya', 'samWije', 'STAFF'),
+    ('sharukh@gmail.com', 'sharukh123','Sharuk', 'Emmanuel', 'SharkE', 'TEACHER');
 
 
 INSERT INTO Staff (id, nic, contact_no) 
 VALUES 
 (3, '2002457896582', '0705489451');
+
+INSERT INTO Teacher (id, nic, contact_no) 
+VALUES 
+(3, '2002457896582', '0705489451');
+
+INSERT INTO `Teacher` (`id`, `degree`, `description`, `contact_no`, `nic`) 
+VALUES (5, 'Bsc in Science', 'OL Science Teacher', '0778548963', '895685120V');

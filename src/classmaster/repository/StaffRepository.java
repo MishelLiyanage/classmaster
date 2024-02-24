@@ -23,6 +23,6 @@ public class StaffRepository implements Component{
     
     @Override
     public String getName() {
-        return "AuthRepository";
+        return "StaffRepository";
     }
 }

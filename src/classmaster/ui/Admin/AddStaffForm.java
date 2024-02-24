@@ -1,18 +1,31 @@
 package classmaster.ui.Admin;
 
+import classmaster.models.Account;
+import classmaster.models.Staff;
+import classmaster.repository.AuthRepository;
 import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
 import classmaster.repository.StaffRepository;
+import classmaster.utils.Constants;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class AddStaffForm extends javax.swing.JFrame {
 
     private StaffRepository staffRepository;
+    private AuthRepository authRepository;
     
     public AddStaffForm() {
         Component component = ComponentRegistry.getInstance()
                 .getComponent("AuthRepository");
-        if(component instanceof StaffRepository){
-            this.staffRepository = (StaffRepository) component;
+        Component staffComponent = ComponentRegistry.getInstance()
+                .getComponent("StaffRepository");
+        if(staffComponent instanceof StaffRepository){
+            this.staffRepository = (StaffRepository) staffComponent;
+        }
+        if(component instanceof AuthRepository){
+            this.authRepository = (AuthRepository) component;
         }
         initComponents();
     }
@@ -198,7 +211,45 @@ public class AddStaffForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jtxtFirstNameActionPerformed
 
     private void jSubmit4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSubmit4ActionPerformed
-
+        try{
+            String email = jtxtEmail.getText();
+            String password = Constants.DEFAULT_PASSWORD;
+            String firstName = jtxtFirstName.getText();
+            String lastName = jtxtLastName.getText();
+            String displayName = firstName + " " + lastName;
+            String role = Constants.ROLE_STAFF;
+        
+        Account newAccount = new Account(
+                    email,
+                    password,
+                    firstName,
+                    lastName,
+                    displayName,
+                    role
+            );
+        
+        int accountId = this.authRepository.signup(new Account(
+                    jtxtEmail.getText(),
+                    Constants.DEFAULT_PASSWORD,
+                    jtxtFirstName.getText(),
+                    jtxtLastName.getText(),
+                    jtxtFirstName.getText() + " " + jtxtLastName.getText(),
+                    Constants.ROLE_STUDENT
+            ));
+        
+        Staff st = new Staff();
+        st.setId(accountId);
+        st.setNic(jtxtNICNo.getText());
+        st.setContact_no(jtxtContactNumber.getText());
+        
+        int state = this.staffRepository.save(st);
+        
+        System.out.println("Successfully saved staff. state : " + state);
+        
+        } catch (SQLException ex) {
+            Logger.getLogger(AddStaffForm.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
     }//GEN-LAST:event_jSubmit4ActionPerformed
 
     private void jSubmit5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSubmit5ActionPerformed

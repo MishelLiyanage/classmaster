@@ -4,7 +4,7 @@
  */
 package classmaster.repository;
 
-import classmaster.models.Account;
+import classmaster.models.Staff;
 import classmaster.shared.DBConnection;
 import java.sql.SQLException;
 
@@ -19,6 +19,19 @@ public class StaffRepository implements Component{
         this.dbCOnnection = dbCOnnection;
     }
     
+    public int save(Staff staff) throws SQLException {
+
+        String staffInsertQuery = "INSERT INTO staff (id, nic, contact_no) VALUES (?,?,?);";
+
+        Object[] staffParams = {
+            staff.getId(),
+            staff.getNic(),
+            staff.getContact_no()
+        };
+
+        return dbCOnnection.executeUpdate(staffInsertQuery, staffParams);
+
+    }
     
     
     @Override

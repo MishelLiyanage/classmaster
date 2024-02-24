@@ -14,4 +14,5 @@ public class Constants {
     
     public static String ROLE_STUDENT = "STUDENT";
     
+    public static String ROLE_STAFF = "STAFF";
 }

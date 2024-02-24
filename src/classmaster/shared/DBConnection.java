@@ -47,12 +47,12 @@ public class DBConnection {
 
         for (int i = 0; i < params.length; i++) {
             Object obj = params[i];
-            if (obj instanceof Integer val) {
-                st.setInt(i + 1, val);
-            } else if (obj instanceof Double val) {
-                st.setDouble(i + 1, val);
-            } else if (obj instanceof String val) {
-                st.setString(i + 1, val);
+            if (obj instanceof Integer) {
+                st.setInt(i + 1, (int) obj);
+            } else if (obj instanceof Double) {
+                st.setDouble(i + 1, (Double) obj);
+            } else if (obj instanceof String) {
+                st.setString(i + 1, (String)obj);
             }
         }
 

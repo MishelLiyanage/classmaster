@@ -3,6 +3,8 @@ package classmaster.ui;
 import classmaster.models.Account;
 import classmaster.models.Staff;
 import classmaster.repository.AuthRepository;
+import classmaster.repository.ClassRepository;
+import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -16,8 +18,15 @@ public class Login extends javax.swing.JFrame {
     private AuthRepository authRepository;
 
     public Login() {
-        this.authRepository = (AuthRepository) ComponentRegistry.getInstance()
-                .get("AuthRepository");
+        
+        Component component = ComponentRegistry.getInstance()
+                .getComponent("AuthRepository");
+        if(component instanceof AuthRepository){
+            this.authRepository = (AuthRepository) component;
+        }
+        
+//        this.authRepository = (AuthRepository) ComponentRegistry.getInstance()
+//                .getComponent("AuthRepository");
         initComponents();
         loginProgressBar.setIndeterminate(true);
         loginProgressBar.setVisible(false);

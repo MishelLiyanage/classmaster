@@ -1,12 +1,15 @@
 package classmaster.ui;
 
 import classmaster.models.Account;
+import classmaster.models.Staff;
 import classmaster.repository.AuthRepository;
 import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
 import classmaster.ui.Staff.StaffHomePage;
+import classmaster.ui.teacher.TeacherHomePage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import models.Teacher;
 
 public class Login extends javax.swing.JFrame {
 
@@ -16,13 +19,13 @@ public class Login extends javax.swing.JFrame {
     private AuthRepository authRepository;
 
     public Login() {
-        
+
         Component component = ComponentRegistry.getInstance()
                 .getComponent("AuthRepository");
-        if(component instanceof AuthRepository){
+        if (component instanceof AuthRepository) {
             this.authRepository = (AuthRepository) component;
         }
-        
+
 //        this.authRepository = (AuthRepository) ComponentRegistry.getInstance()
 //                .getComponent("AuthRepository");
         initComponents();
@@ -198,21 +201,20 @@ public class Login extends javax.swing.JFrame {
             System.out.println("username : " + username + " password : " + password);
 
             Account account = this.authRepository.signin(username, password);
-            
-            if(account == null){
+
+            if (account == null) {
                 System.out.println("---- User not found ----");
                 return;
-                     
+
             }
-            
-            if(account.getRole().equalsIgnoreCase("STAFF")){
+
+            if (account instanceof Staff) {
                 System.out.println("staff");
                 redirect(new StaffHomePage());
+            } else if (account instanceof Teacher) {
+                System.out.println("Teacher");
+                redirect(new TeacherHomePage());
             }
-            
-//            if(account instanceof Staff){
-//                System.out.println("staff");
-//            }
 
         } catch (Exception ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
@@ -231,11 +233,11 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtxtEmailActionPerformed
 
-    
-    private void redirect(javax.swing.JFrame page){
+    private void redirect(javax.swing.JFrame page) {
         page.setVisible(true);
         this.dispose();
     }
+
     /**
      * @param args the command line arguments
      */

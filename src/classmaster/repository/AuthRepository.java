@@ -9,6 +9,7 @@ import classmaster.models.Staff;
 import classmaster.shared.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import models.Teacher;
 
 /**
  *
@@ -57,7 +58,19 @@ public class AuthRepository implements Component {
                 st.setNic(rs.getString("nic"));
             }
             return st;
+        }else if(account.getRole().equalsIgnoreCase("TEACHER")){
+            Object[] params = {account.getId()};
+            ResultSet rs = dbCOnnection.execute("select * from teacher where id = ?", params);
+            Teacher th = new Teacher(account);
+            while (rs.next()){
+                th.setDegree(rs.getString("degree"));
+                th.setDescription(rs.getString("description"));
+                th.setContactNo(rs.getString("contact_no"));
+                th.setNicNo(rs.getString("nic"));
+            }
+            return th;
         }
+        
 
         return account;
 

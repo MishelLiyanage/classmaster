@@ -1,8 +1,19 @@
 package classmaster.ui.Admin;
 
+import classmaster.repository.Component;
+import classmaster.repository.ComponentRegistry;
+import classmaster.repository.StaffRepository;
+
 public class AddStaffForm extends javax.swing.JFrame {
 
+    private StaffRepository staffRepository;
+    
     public AddStaffForm() {
+        Component component = ComponentRegistry.getInstance()
+                .getComponent("AuthRepository");
+        if(component instanceof StaffRepository){
+            this.staffRepository = (StaffRepository) component;
+        }
         initComponents();
     }
 
@@ -187,16 +198,7 @@ public class AddStaffForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jtxtFirstNameActionPerformed
 
     private void jSubmit4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSubmit4ActionPerformed
-//        Staff f = new Staff();
-//        f.setName(jStaffName.getText());
-//        f.setNicNO(jNICNumber.getText());
-//        f.setGender(jGender.getText());
-//        f.setAddress(jAddress.getText());
-//        f.setTelNo(jTelNo.getText());
-//        f.setSalary(jSalary.getText());
-//        f.setEmergencyContact(jEmergencyContact.getText());
-//
-//        this.staffService.saveStaff(f);
+
     }//GEN-LAST:event_jSubmit4ActionPerformed
 
     private void jSubmit5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSubmit5ActionPerformed

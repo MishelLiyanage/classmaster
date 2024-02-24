@@ -1,4 +1,4 @@
-package models;
+package classmaster.models;
 
 import classmaster.models.Account;
 

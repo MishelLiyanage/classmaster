@@ -34,6 +34,9 @@ public class ComponentRegistry {
 
         registry.put(authRepository.getName(), authRepository);
 
+        StaffRepository staffRepository = new StaffRepository(dbConnection);
+        
+        registry.put(staffRepository.getName(), staffRepository);
     }
 
     public Component getComponent(String name) {

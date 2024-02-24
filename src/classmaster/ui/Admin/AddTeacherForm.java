@@ -6,7 +6,7 @@ package classmaster.ui.Admin;
 
 import classmaster.models.Account;
 import classmaster.repository.AuthRepository;
-import models.Teacher;
+import classmaster.models.Teacher;
 
 /**
  *

@@ -9,7 +9,7 @@ import classmaster.models.Staff;
 import classmaster.shared.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import models.Teacher;
+import classmaster.models.Teacher;
 
 /**
  *

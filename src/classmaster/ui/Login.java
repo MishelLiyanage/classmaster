@@ -5,12 +5,13 @@ import classmaster.models.Staff;
 import classmaster.repository.AuthRepository;
 import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
+import classmaster.ui.Admin.HomePage;
 import classmaster.ui.Staff.StaffHomePage;
 import classmaster.ui.teacher.TeacherHomePage;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import models.Teacher;
+import classmaster.models.Teacher;
 
 public class Login extends javax.swing.JFrame {
 
@@ -135,12 +136,14 @@ public class Login extends javax.swing.JFrame {
                                 .addComponent(jbtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGap(28, 28, 28)
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(loginProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(jbtnSignUp)))))
                 .addContainerGap(294, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(loginProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(375, 375, 375))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -161,9 +164,9 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(jpsfPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(42, 42, 42)
                 .addComponent(jbtnLogin, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(2, 2, 2)
-                .addComponent(loginProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(loginProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(2, 2, 2)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbtnSignUp))
@@ -221,6 +224,9 @@ public class Login extends javax.swing.JFrame {
             }else if(account instanceof Teacher){
                 setVisible(false);
                 new TeacherHomePage().setVisible(true);
+            }else if(account.getRole().equalsIgnoreCase("ADMIN")){
+                setVisible(false);
+                new HomePage().setVisible(true);
             }
 
         } catch (Exception ex) {

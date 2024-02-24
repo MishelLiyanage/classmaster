@@ -5,9 +5,12 @@ import classmaster.models.Staff;
 import classmaster.repository.AuthRepository;
 import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
+import classmaster.ui.Staff.StaffHomePage;
+import classmaster.ui.teacher.TeacherHomePage;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import models.Teacher;
 
 public class Login extends javax.swing.JFrame {
 
@@ -206,13 +209,19 @@ public class Login extends javax.swing.JFrame {
                      
             }
             
-            if(account.getRole().equalsIgnoreCase("STAFF")){
-                System.out.println("staff");
-            }
-            
-//            if(account instanceof Staff){
+//            if(account.getRole().equalsIgnoreCase("STAFF")){
 //                System.out.println("staff");
+//            }else if(account.getRole().equalsIgnoreCase("TEACHER")){
+//                System.out.println("teacher");
 //            }
+            
+            if(account instanceof Staff){
+                setVisible(false);
+                new StaffHomePage().setVisible(true);
+            }else if(account instanceof Teacher){
+                setVisible(false);
+                new TeacherHomePage().setVisible(true);
+            }
 
         } catch (Exception ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);

@@ -7,7 +7,6 @@ import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
 import classmaster.ui.Staff.StaffHomePage;
 import classmaster.ui.teacher.TeacherHomePage;
-import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import models.Teacher;
@@ -20,13 +19,13 @@ public class Login extends javax.swing.JFrame {
     private AuthRepository authRepository;
 
     public Login() {
-        
+
         Component component = ComponentRegistry.getInstance()
                 .getComponent("AuthRepository");
-        if(component instanceof AuthRepository){
+        if (component instanceof AuthRepository) {
             this.authRepository = (AuthRepository) component;
         }
-        
+
 //        this.authRepository = (AuthRepository) ComponentRegistry.getInstance()
 //                .getComponent("AuthRepository");
         initComponents();
@@ -202,25 +201,19 @@ public class Login extends javax.swing.JFrame {
             System.out.println("username : " + username + " password : " + password);
 
             Account account = this.authRepository.signin(username, password);
-            
-            if(account == null){
+
+            if (account == null) {
                 System.out.println("---- User not found ----");
                 return;
-                     
+
             }
-            
-//            if(account.getRole().equalsIgnoreCase("STAFF")){
-//                System.out.println("staff");
-//            }else if(account.getRole().equalsIgnoreCase("TEACHER")){
-//                System.out.println("teacher");
-//            }
-            
-            if(account instanceof Staff){
-                setVisible(false);
-                new StaffHomePage().setVisible(true);
-            }else if(account instanceof Teacher){
-                setVisible(false);
-                new TeacherHomePage().setVisible(true);
+
+            if (account instanceof Staff) {
+                System.out.println("staff");
+                redirect(new StaffHomePage());
+            } else if (account instanceof Teacher) {
+                System.out.println("Teacher");
+                redirect(new TeacherHomePage());
             }
 
         } catch (Exception ex) {
@@ -239,6 +232,11 @@ public class Login extends javax.swing.JFrame {
     private void jtxtEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtEmailActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jtxtEmailActionPerformed
+
+    private void redirect(javax.swing.JFrame page) {
+        page.setVisible(true);
+        this.dispose();
+    }
 
     /**
      * @param args the command line arguments

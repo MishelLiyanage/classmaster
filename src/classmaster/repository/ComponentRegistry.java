@@ -37,8 +37,13 @@ public class ComponentRegistry {
         registry.put(studentRepository.getName(), studentRepository);
 
         StaffRepository staffRepository = new StaffRepository(dbConnection);
-        
         registry.put(staffRepository.getName(), staffRepository);
+        
+        TeacherRepository teacherRepository = new TeacherRepository(dbConnection);
+        registry.put(teacherRepository.getName(), teacherRepository);
+        
+        CourseRepository courseRepository = new CourseRepository(dbConnection);
+        registry.put(courseRepository.getName(), courseRepository);
     }
 
     public Component getComponent(String name) {

@@ -51,3 +51,15 @@ VALUES
 
 INSERT INTO `Teacher` (`id`, `degree`, `description`, `contact_no`, `nic`) 
 VALUES (5, 'Bsc in Science', 'OL Science Teacher', '0778548963', '895685120V');
+
+
+CREATE TABLE Course (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    amount DOUBLE,
+    teacherId INT,
+    day VARCHAR(255),
+    fromTime TIME,
+    toTime TIME,
+    FOREIGN KEY (teacherId) REFERENCES Teacher(id)
+);

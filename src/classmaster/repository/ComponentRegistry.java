@@ -31,8 +31,10 @@ public class ComponentRegistry {
 
         dbConnection.connect();
         AuthRepository authRepository = new AuthRepository(dbConnection);
+        StudentRepository studentRepository = new StudentRepository(dbConnection);
 
         registry.put(authRepository.getName(), authRepository);
+        registry.put(studentRepository.getName(), studentRepository);
 
     }
 

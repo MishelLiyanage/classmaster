@@ -1,7 +1,9 @@
-
 package classmaster.ui.Staff;
 
-public class StaffHomePage extends javax.swing.JFrame {
+import classmaster.utils.Page;
+
+public class StaffHomePage extends javax.swing.JFrame implements Page {
+
 
     public StaffHomePage() {
         initComponents();
@@ -117,8 +119,9 @@ public class StaffHomePage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMnuItmAddStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuItmAddStudentActionPerformed
+
+        new AddStudent(this).setVisible(true);
         setVisible(false);
-        new AddStudent().setVisible(true);
     }//GEN-LAST:event_jMnuItmAddStudentActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
@@ -181,4 +184,9 @@ public class StaffHomePage extends javax.swing.JFrame {
     private javax.swing.JMenuItem jMnuItmStudentPayment;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void onChildPageClose() {
+        this.setVisible(true);
+    }
 }

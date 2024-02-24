@@ -1,11 +1,10 @@
 package classmaster.ui;
 
 import classmaster.models.Account;
-import classmaster.models.Staff;
 import classmaster.repository.AuthRepository;
 import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
-import java.sql.SQLException;
+import classmaster.ui.Staff.StaffHomePage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -208,6 +207,7 @@ public class Login extends javax.swing.JFrame {
             
             if(account.getRole().equalsIgnoreCase("STAFF")){
                 System.out.println("staff");
+                redirect(new StaffHomePage());
             }
             
 //            if(account instanceof Staff){
@@ -231,6 +231,11 @@ public class Login extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jtxtEmailActionPerformed
 
+    
+    private void redirect(javax.swing.JFrame page){
+        page.setVisible(true);
+        this.dispose();
+    }
     /**
      * @param args the command line arguments
      */

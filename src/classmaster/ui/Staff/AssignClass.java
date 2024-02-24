@@ -4,6 +4,23 @@
  */
 package classmaster.ui.Staff;
 
+import classmaster.models.Course;
+import classmaster.models.CourseAssignment;
+import classmaster.models.CourseAssignmentDto;
+import classmaster.models.Student;
+import classmaster.repository.Component;
+import classmaster.repository.ComponentRegistry;
+import classmaster.repository.CourseRepository;
+import classmaster.repository.StudentRepository;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Mishel Fernando
@@ -13,8 +30,49 @@ public class AssignClass extends javax.swing.JFrame {
     /**
      * Creates new form AssignStudentsToClass
      */
+    private CourseRepository courseRepository;
+    private StudentRepository studentRepository;
+    private List<Course> courses;
+    private List<CourseAssignmentDto> studentCourses;
+
     public AssignClass() {
         initComponents();
+
+        Component courseComponent = ComponentRegistry.getInstance()
+                .getComponent("CourseRepository");
+        if (courseComponent instanceof CourseRepository) {
+            this.courseRepository = (CourseRepository) courseComponent;
+        }
+
+        Component studentComponent = ComponentRegistry.getInstance().getComponent("StudentRepository");
+        if (studentComponent instanceof StudentRepository) {
+            studentRepository = (StudentRepository) studentComponent;
+        }
+
+        tblCourses.setVisible(false);
+        cbClasses.setVisible(false);
+        lblClasses.setVisible(false);
+        btnCreate.setVisible(false);
+
+    }
+
+    private void loadAllCourses() throws SQLException {
+
+        List<Integer> alreadyAssignedCourses = new ArrayList<>();
+
+        for (CourseAssignmentDto asd : studentCourses) {
+            alreadyAssignedCourses.add(asd.getCourseId());
+        }
+        
+        this.courses = this.courseRepository.getAllCourseNotIn(alreadyAssignedCourses);
+
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cbClasses.getModel();
+        model.removeAllElements();
+        for (Course crs : courses) {
+            model.addElement(crs.getName());
+        }
+        cbClasses.setModel(model);
+
     }
 
     /**
@@ -28,12 +86,13 @@ public class AssignClass extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jLabel3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        txtFieldStudentId = new javax.swing.JTextField();
+        lblClasses = new javax.swing.JLabel();
+        cbClasses = new javax.swing.JComboBox<>();
+        btnCreate = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblCourses = new javax.swing.JTable();
+        btnSearch = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Assign Students To Classes");
@@ -45,25 +104,34 @@ public class AssignClass extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel2.setText("Student ID");
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel3.setText("Class");
+        lblClasses.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        lblClasses.setText("Class");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbClasses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jButton1.setText("Assign");
+        btnCreate.setText("Assign");
+        btnCreate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCreateActionPerformed(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblCourses.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
-                "Class", "Registered Date", ""
+                "Class Id", "Class Name", "Joined Date"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblCourses);
+
+        btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -78,17 +146,19 @@ public class AssignClass extends javax.swing.JFrame {
                         .addGap(60, 60, 60)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(btnSearch))
                                 .addGap(65, 65, 65)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtFieldStudentId, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(lblClasses, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
-                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(cbClasses, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -98,20 +168,107 @@ public class AssignClass extends javax.swing.JFrame {
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField1)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtFieldStudentId)
+                    .addComponent(lblClasses, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
+                    .addComponent(cbClasses, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 443, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
+                        .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(btnSearch)))
+                .addGap(15, 15, 15)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
+        try {
+            // TODO add your handling code here:
+
+            String selectedClassName = String.valueOf(cbClasses.getSelectedItem());
+            Course selectedCourse = null;
+            for (Course c : courses) {
+                if (c.getName().equalsIgnoreCase(selectedClassName)) {
+                    selectedCourse = c;
+                    break;
+                }
+            }
+            if (selectedCourse == null) {
+                System.out.println("-- Course cannot find ---");
+                return;
+            }
+
+            int studentId = Integer.parseInt(txtFieldStudentId.getText());
+
+            Student st = studentRepository.getStudentById(studentId);
+            if (st == null) {
+                System.out.println("cannot find student for id " + studentId);
+                return;
+            }
+
+            CourseAssignment assignment = new CourseAssignment();
+            assignment.setClassId(selectedCourse.getId());
+            assignment.setSudentId(st.getId());
+            assignment.setComplete(false);
+            assignment.setJoinedDate(LocalDate.now());
+
+            int status = courseRepository.assignCourse(assignment);
+            if (status == 1) {
+                System.out.println("successfully assigned to a course");
+                loadStudentCourse(studentId);
+                loadAllCourses();
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AssignClass.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+
+    }//GEN-LAST:event_btnCreateActionPerformed
+
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+
+        try {
+
+            int studentId = Integer.parseInt(txtFieldStudentId.getText());
+
+            loadStudentCourse(studentId);
+
+            if (studentCourses.size() > 0) {
+                tblCourses.setVisible(true);
+            }
+
+            loadAllCourses();
+
+            if (courses.size() > 0) {
+                lblClasses.setVisible(true);
+                cbClasses.setVisible(true);
+                btnCreate.setVisible(true);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(AssignClass.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    public void loadStudentCourse(int studentId) throws SQLException {
+        studentCourses = this.courseRepository.getAllStudentCourses(studentId);
+        DefaultTableModel model = (DefaultTableModel) tblCourses.getModel();
+        model.setRowCount(0);
+       
+
+        for (CourseAssignmentDto dto : studentCourses) {
+            System.out.println(dto);
+            model.addRow(new Object[]{dto.getCourseId(), dto.getCourseName(), dto.getJoinedDate().toString()});
+        }
+    }
 
     /**
      * @param args the command line arguments
@@ -150,13 +307,14 @@ public class AssignClass extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JButton btnCreate;
+    private javax.swing.JButton btnSearch;
+    private javax.swing.JComboBox<String> cbClasses;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel lblClasses;
+    private javax.swing.JTable tblCourses;
+    private javax.swing.JTextField txtFieldStudentId;
     // End of variables declaration//GEN-END:variables
 }

@@ -63,3 +63,13 @@ CREATE TABLE Course (
     toTime TIME,
     FOREIGN KEY (teacherId) REFERENCES Teacher(id)
 );
+
+CREATE TABLE CourseAssignment (
+    studentId INT,
+    courseId INT,
+    joinedDate DATE,
+    complete BOOLEAN,
+    PRIMARY KEY (studentId, courseId),
+    FOREIGN KEY (studentId) REFERENCES Student(id),
+    FOREIGN KEY (courseId) REFERENCES Course(id)
+);

@@ -15,7 +15,7 @@ public class Student extends Account{
     
     private String guardianName;
     
-    private String guardianNum;
+    private String guardianNo;
     
     private LocalDate dob;
     
@@ -52,11 +52,11 @@ public class Student extends Account{
     }
 
     public String getGuardianNum() {
-        return guardianNum;
+        return guardianNo;
     }
 
     public void setGuardianNum(String guardianNum) {
-        this.guardianNum = guardianNum;
+        this.guardianNo = guardianNum;
     }
 
     public LocalDate getDob() {

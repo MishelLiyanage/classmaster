@@ -41,7 +41,7 @@ public class AuthRepository implements Component {
 
         if (account != null) {
             account = setProfileInfo(account);
-                  
+
         }
 
         return account;
@@ -58,11 +58,11 @@ public class AuthRepository implements Component {
                 st.setNic(rs.getString("nic"));
             }
             return st;
-        }else if(account.getRole().equalsIgnoreCase("TEACHER")){
+        } else if (account.getRole().equalsIgnoreCase("TEACHER")) {
             Object[] params = {account.getId()};
             ResultSet rs = dbCOnnection.execute("select * from teacher where id = ?", params);
             Teacher th = new Teacher(account);
-            while (rs.next()){
+            while (rs.next()) {
                 th.setDegree(rs.getString("degree"));
                 th.setDescription(rs.getString("description"));
                 th.setContactNo(rs.getString("contact_no"));
@@ -70,16 +70,15 @@ public class AuthRepository implements Component {
             }
             return th;
         }
-        
 
         return account;
 
     }
-    
-    public int signup(Account account) throws SQLException{
-       
+
+    public int signup(Account account) throws SQLException {
+
         String accountInsertQuery = "INSERT INTO account (email, password, first_name, last_name, display_name, role) VALUES (?,?,?,?,?,?);";
-        
+
         Object[] signupParams = {
             account.getEmail(),
             account.getPassword(),
@@ -88,28 +87,28 @@ public class AuthRepository implements Component {
             account.getDisplayName(),
             account.getRole()
         };
-       
+
         int state = dbCOnnection.executeUpdate(accountInsertQuery, signupParams);
-        
+
         Account acc = null;
-        
-        if(state == 1){
-             acc = getAccount(account.getEmail());
+
+        if (state != 1) {
+            throw new RuntimeException("Failed to add account");
         }
-       
+        acc = getAccount(account.getEmail());
+
         return acc.getId();
-        
-        
+
     }
-    
-    private Account getAccount(String email) throws SQLException{
+
+    private Account getAccount(String email) throws SQLException {
         String getAccIdQuery = "SELECT * FROM ACCOUNT WHERE email = ?";
-        
-        ResultSet rs = dbCOnnection.execute(getAccIdQuery, new Object[] {email});
-        
+
+        ResultSet rs = dbCOnnection.execute(getAccIdQuery, new Object[]{email});
+
         Account account = null;
-        
-        while(rs.next()){
+
+        while (rs.next()) {
             account = new Account();
             account.setId(rs.getInt("id"));
             account.setEmail(rs.getString("email"));
@@ -119,9 +118,9 @@ public class AuthRepository implements Component {
             account.setDisplayName(rs.getString("display_name"));
             account.setRole(rs.getString("role"));
         }
-        
+
         return account;
-        
+
     }
 
     @Override

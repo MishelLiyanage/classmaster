@@ -36,7 +36,7 @@ public class ComponentRegistry {
 
     }
 
-    public Component get(String name) {
+    public Component getComponent(String name) {
         return registry.get(name);
     }
 

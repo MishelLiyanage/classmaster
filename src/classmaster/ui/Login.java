@@ -3,7 +3,6 @@ package classmaster.ui;
 import classmaster.models.Account;
 import classmaster.models.Staff;
 import classmaster.repository.AuthRepository;
-import classmaster.repository.ClassRepository;
 import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
 import java.sql.SQLException;

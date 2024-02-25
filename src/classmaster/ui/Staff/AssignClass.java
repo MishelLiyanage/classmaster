@@ -12,9 +12,11 @@ import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
 import classmaster.repository.CourseRepository;
 import classmaster.repository.StudentRepository;
+import classmaster.shared.CenterCellRenderer;
 import classmaster.ui.component.customtablebutton.TableActionCellEditor;
 import classmaster.ui.component.customtablebutton.TableActionCellRender;
 import classmaster.ui.component.customtablebutton.TableActionEvent;
+import java.awt.Font;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -54,8 +57,7 @@ public class AssignClass extends javax.swing.JFrame {
     public AssignClass() {
         initComponents();
 
-        tblCourses.getColumnModel().getColumn(3).setCellRenderer(new TableActionCellRender("./delete.png", event));
-        tblCourses.getColumnModel().getColumn(3).setCellEditor(new TableActionCellEditor("./delete.png", event));
+        modifyTableConfigurations();
 
         Component courseComponent = ComponentRegistry.getInstance()
                 .getComponent("CourseRepository");
@@ -162,6 +164,7 @@ public class AssignClass extends javax.swing.JFrame {
             }
         });
         tblCourses.setRowHeight(40);
+        tblCourses.setSelectionBackground(new java.awt.Color(153, 204, 255));
         tblCourses.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblCourses);
         if (tblCourses.getColumnModel().getColumnCount() > 0) {
@@ -367,4 +370,19 @@ public class AssignClass extends javax.swing.JFrame {
     private javax.swing.JTable tblCourses;
     private javax.swing.JTextField txtFieldStudentId;
     // End of variables declaration//GEN-END:variables
+
+    private void modifyTableConfigurations() {
+
+        JTableHeader th = tblCourses.getTableHeader();
+        th.setFont(new Font("Serif", Font.BOLD, 15));
+
+        CenterCellRenderer centerRenderer = new CenterCellRenderer();
+
+        tblCourses.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tblCourses.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        tblCourses.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+
+        tblCourses.getColumnModel().getColumn(3).setCellRenderer(new TableActionCellRender("./delete.png", event));
+        tblCourses.getColumnModel().getColumn(3).setCellEditor(new TableActionCellEditor("./delete.png", event));
+    }
 }

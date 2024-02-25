@@ -22,7 +22,6 @@ public class TableActionCellRender extends DefaultTableCellRenderer {
     public TableActionCellRender(String icon, TableActionEvent event) {
         this.icon = icon;
         this.event = event;
-        this.setHorizontalAlignment( JLabel.CENTER );
     }
 
     @Override

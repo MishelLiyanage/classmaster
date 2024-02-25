@@ -32,6 +32,7 @@ public class ViewClasses extends javax.swing.JFrame {
         if (teacherComponent instanceof TeacherRepository) {
             this.teacherRepository = (TeacherRepository) teacherComponent;
         }
+        initComponents();
         
         int teacherID = 18;
         
@@ -51,7 +52,7 @@ public class ViewClasses extends javax.swing.JFrame {
         if (courseNoOfStudents.size() > 0) {
                 tblClasses.setVisible(true);
             }
-        initComponents();
+        
     }
 
     public void loadCourseNoOfStudents(int StudentID) {
@@ -79,13 +80,13 @@ public class ViewClasses extends javax.swing.JFrame {
 
         tblClasses.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Class", "No. of Students", "Day", "Time"
+                "Class", "Class Name", "No of Students"
             }
         ));
         jScrollPane1.setViewportView(tblClasses);
@@ -122,10 +123,10 @@ public class ViewClasses extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(17, 17, 17))
         );
 
         pack();
@@ -167,11 +168,7 @@ public class ViewClasses extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                try {
-                    new ViewClasses().setVisible(true);
-                } catch (SQLException ex) {
-                    Logger.getLogger(ViewClasses.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                new ViewClasses().setVisible(true);
             }
         });
     }

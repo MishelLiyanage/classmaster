@@ -72,16 +72,15 @@ public class TeacherRepository implements Component {
         Object[] params = {teacherID};
         ResultSet rs = dBConnection.execute("SELECT c.id, c.name AS courseName, COUNT(ca.studentID) AS studentCount"
                 + " FROM course c"
-                + "JOIN courseAssignment ca ON c.id = ca.courseID"
-                + "WHERE c.teacherID = ?"
-                + "GROUP BY c.id, c.name", params);
+                + " JOIN courseAssignment ca ON c.id = ca.courseID"
+                + " WHERE c.teacherID = ?"
+                + " GROUP BY c.id, c.name", params);
         
         while (rs.next()) {
             CourseNoOfStudentsDto cs = new CourseNoOfStudentsDto();
             cs.setCourseID(rs.getInt("id"));
-            cs.setCourseName(rs.getString("name"));
-            cs.setNoOfStudents(rs.getInt("noOfStudents"));
-            cs.setDay(rs.getString("Day"));
+            cs.setCourseName(rs.getString("courseName"));
+            cs.setNoOfStudents(rs.getInt("studentCount"));
         
             courseNoOfStudents.add(cs);
         }

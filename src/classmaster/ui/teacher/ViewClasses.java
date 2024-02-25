@@ -4,19 +4,60 @@
  */
 package classmaster.ui.teacher;
 
+import classmaster.models.CourseNoOfStudentsDto;
+import classmaster.repository.Component;
+import classmaster.repository.ComponentRegistry;
+import classmaster.repository.TeacherRepository;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Mishel Fernando
  */
 public class ViewClasses extends javax.swing.JFrame {
 
+    private TeacherRepository teacherRepository;
+    private List<CourseNoOfStudentsDto> courseNoOfStudents;
     /**
      * Creates new form ViewClasses
      */
     public ViewClasses() {
+        Component teacherComponent = ComponentRegistry.getInstance()
+                .getComponent("TeacherRepository");
+        
+        if (teacherComponent instanceof TeacherRepository) {
+            this.teacherRepository = (TeacherRepository) teacherComponent;
+        }
         initComponents();
+        
+        int teacherID = 18;
+        
+        try {
+            courseNoOfStudents = this.teacherRepository.getAllCourseNoOfStudents(teacherID);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewClasses.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        DefaultTableModel model = (DefaultTableModel) tblClasses.getModel();
+        model.setRowCount(0);
+        
+        for (CourseNoOfStudentsDto dto : courseNoOfStudents) {
+            System.out.println(dto);
+            model.addRow(new Object[]{dto.getCourseID(), dto.getCourseName(), dto.getNoOfStudents(), dto.getDay()});
+        }
+        
+        if (courseNoOfStudents.size() > 0) {
+                tblClasses.setVisible(true);
+            }
+        
     }
 
+    public void loadCourseNoOfStudents(int StudentID) {
+        
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -28,7 +69,7 @@ public class ViewClasses extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblClasses = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -37,18 +78,18 @@ public class ViewClasses extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("View Classes");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblClasses.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Class", "No. of Students", "Day", "Time"
+                "Class", "Class Name", "No of Students"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblClasses);
 
         jButton1.setBackground(new java.awt.Color(0, 0, 102));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -82,10 +123,10 @@ public class ViewClasses extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(17, 17, 17))
         );
 
         pack();
@@ -136,6 +177,6 @@ public class ViewClasses extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblClasses;
     // End of variables declaration//GEN-END:variables
 }

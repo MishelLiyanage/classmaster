@@ -34,6 +34,10 @@ public class ViewClasses extends javax.swing.JFrame {
         }
         initComponents();
         
+        loadCourseNoOfStudents();
+    }
+
+    public void loadCourseNoOfStudents() {
         int teacherID = 18;
         
         try {
@@ -52,11 +56,6 @@ public class ViewClasses extends javax.swing.JFrame {
         if (courseNoOfStudents.size() > 0) {
                 tblClasses.setVisible(true);
             }
-        
-    }
-
-    public void loadCourseNoOfStudents(int StudentID) {
-        
     }
     /**
      * This method is called from within the constructor to initialize the form.

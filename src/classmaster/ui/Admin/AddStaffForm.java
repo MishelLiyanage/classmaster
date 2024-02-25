@@ -19,13 +19,16 @@ public class AddStaffForm extends javax.swing.JFrame {
     public AddStaffForm() {
         Component component = ComponentRegistry.getInstance()
                 .getComponent("AuthRepository");
-        Component staffComponent = ComponentRegistry.getInstance()
-                .getComponent("StaffRepository");
-        if(staffComponent instanceof StaffRepository){
-            this.staffRepository = (StaffRepository) staffComponent;
-        }
+        
         if(component instanceof AuthRepository){
             this.authRepository = (AuthRepository) component;
+        }
+        
+        Component staffComponent = ComponentRegistry.getInstance()
+                .getComponent("StaffRepository");
+        
+        if(staffComponent instanceof StaffRepository){
+            this.staffRepository = (StaffRepository) staffComponent;
         }
         initComponents();
     }

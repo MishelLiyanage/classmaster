@@ -49,6 +49,22 @@ public class TeacherRepository implements Component {
         return teachers;
     }
 
+    public int save(Teacher teacher) throws SQLException {
+
+        String teacherInsertQuery = "INSERT INTO teacher (id, degree, description, contact_no, nic) VALUES (?,?,?,?,?);";
+
+        Object[] teacherParams = {
+            teacher.getId(),
+            teacher.getDegree(),
+            teacher.getDescription(),
+            teacher.getContactNo(),
+            teacher.getNicNo()
+        };
+
+        return dBConnection.executeUpdate(teacherInsertQuery, teacherParams);
+
+    }
+    
     @Override
     public String getName() {
         return "TeacherRepository";

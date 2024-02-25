@@ -49,16 +49,16 @@ public class CourseRepository implements Component {
         Object[] params = {};
         return getAllCourse("select * from Course", params);
     }
-    
+
     public List<Course> getAllCourseNotIn(List<Integer> courseIds) throws SQLException {
-        
+
         Integer[] courseIdArray = new Integer[courseIds.size()];
         String query = "select * from Course where id not in (";
-        
-        for(int i = 0; i< courseIds.size(); i++){
+
+        for (int i = 0; i < courseIds.size(); i++) {
             courseIdArray[i] = courseIds.get(i);
             query += "?";
-            if(i < courseIds.size() - 1){
+            if (i < courseIds.size() - 1) {
                 query += ",";
             }
         }
@@ -66,8 +66,8 @@ public class CourseRepository implements Component {
         System.out.println("query --> " + query);
         return getAllCourse(query, courseIdArray);
     }
-        
-     public List<Course> getAllCourse(String query, Object[] params ) throws SQLException {
+
+    public List<Course> getAllCourse(String query, Object[] params) throws SQLException {
         List<Course> courseList = new ArrayList();
         ResultSet rs = dBConnection.execute(query, params);
 
@@ -84,7 +84,6 @@ public class CourseRepository implements Component {
         }
         return courseList;
     }
-    
 
     @Override
     public String getName() {
@@ -126,6 +125,17 @@ public class CourseRepository implements Component {
         }
 
         return courseAssignments;
+    }
+
+    public int removeStudentCourse(int studentId, int deletedCourse) throws SQLException {
+        String query = "delete from CourseAssignment ca where ca.studentId = ? and ca.courseId = ?";
+
+        Object[] params = {
+            studentId,
+            deletedCourse
+        };
+
+        return dBConnection.executeUpdate(query, params);
     }
 
 }

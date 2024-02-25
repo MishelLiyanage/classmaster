@@ -10,6 +10,7 @@ import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
 import classmaster.repository.TeacherRepository;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
@@ -50,6 +51,11 @@ public class ViewClassCharts extends javax.swing.JFrame {
         }
 
         initComponents();
+        getContentPane().setBackground(new Color(30, 30, 30));
+        jTabbedPane1.setBackground(new Color(30, 30, 30));
+        tblClasses.fixTable(scrolpane);
+        
+        
         loadCourseNoOfStudents();
         displayAsChart();
     }
@@ -68,14 +74,14 @@ public class ViewClassCharts extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         scrolpane = new javax.swing.JScrollPane();
-        tblClasses = new javax.swing.JTable();
+        tblClasses = new classmaster.ui.component.darktable.TableDark();
         jPanel4 = new javax.swing.JPanel();
         panelChart = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(153, 204, 255));
+        jPanel1.setBackground(new java.awt.Color(102, 102, 102));
 
         jButton1.setText("Back");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -101,43 +107,41 @@ public class ViewClassCharts extends javax.swing.JFrame {
                 .addGap(20, 20, 20))
         );
 
+        jPanel2.setBackground(new java.awt.Color(51, 51, 51));
+
+        scrolpane.setBackground(new java.awt.Color(51, 51, 51));
+        scrolpane.setForeground(new java.awt.Color(255, 255, 255));
+
+        tblClasses.setBackground(new java.awt.Color(51, 51, 51));
         tblClasses.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Class Id", "Name", "Student Count"
             }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        ));
         scrolpane.setViewportView(tblClasses);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(scrolpane, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(scrolpane, javax.swing.GroupLayout.PREFERRED_SIZE, 617, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 14, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrolpane, javax.swing.GroupLayout.DEFAULT_SIZE, 286, Short.MAX_VALUE)
-                .addContainerGap())
+                .addComponent(scrolpane, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(37, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Table", jPanel2);
 
+        panelChart.setBackground(new java.awt.Color(51, 51, 51));
         panelChart.setLayout(new java.awt.BorderLayout());
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
@@ -159,6 +163,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
         jTabbedPane1.addTab("Chart", jPanel4);
 
         jLabel1.setFont(new java.awt.Font("Calibri", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setText("Student Counts");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -246,8 +251,8 @@ public class ViewClassCharts extends javax.swing.JFrame {
     }
 
     public void loadCourseNoOfStudents() {
-        int teacherID = this.authRepository.getCurrentAccount().getId();
-//        int teacherID = 5;
+//        int teacherID = this.authRepository.getCurrentAccount().getId();
+        int teacherID = 5;
 
         try {
             courseNoOfStudents = this.teacherRepository.getAllCourseNoOfStudents(teacherID);
@@ -276,6 +281,6 @@ public class ViewClassCharts extends javax.swing.JFrame {
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JPanel panelChart;
     private javax.swing.JScrollPane scrolpane;
-    private javax.swing.JTable tblClasses;
+    private classmaster.ui.component.darktable.TableDark tblClasses;
     // End of variables declaration//GEN-END:variables
 }

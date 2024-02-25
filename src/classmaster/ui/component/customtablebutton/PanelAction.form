@@ -34,10 +34,10 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="classmaster.ui.component.customtable.ActionButton" name="btnEdit">
+    <Component class="classmaster.ui.component.customtablebutton.ActionButton" name="btnEdit">
       <Properties>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
-          <Image iconType="3" name="/classmaster/ui/component/customtable/edit.png"/>
+          <Image iconType="3" name="/classmaster/ui/component/customtablebutton/edit.png"/>
         </Property>
       </Properties>
     </Component>

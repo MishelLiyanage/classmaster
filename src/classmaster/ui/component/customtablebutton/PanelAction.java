@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JPanel.java to edit this template
  */
-package classmaster.ui.component.customtable;
+package classmaster.ui.component.customtablebutton;
 
 import java.awt.Image;
 import java.awt.event.ActionEvent;
@@ -56,7 +56,7 @@ public class PanelAction extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnEdit = new classmaster.ui.component.customtable.ActionButton();
+        btnEdit = new classmaster.ui.component.customtablebutton.ActionButton();
 
         btnEdit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/classmaster/ui/component/customtable/edit.png"))); // NOI18N
 
@@ -80,6 +80,6 @@ public class PanelAction extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private classmaster.ui.component.customtable.ActionButton btnEdit;
+    private classmaster.ui.component.customtablebutton.ActionButton btnEdit;
     // End of variables declaration//GEN-END:variables
 }

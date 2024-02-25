@@ -5,6 +5,7 @@
 package classmaster.ui.teacher;
 
 import classmaster.models.CourseNoOfStudentsDto;
+import classmaster.repository.AuthRepository;
 import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
 import classmaster.repository.TeacherRepository;
@@ -21,6 +22,7 @@ import javax.swing.table.DefaultTableModel;
 public class ViewClasses extends javax.swing.JFrame {
 
     private TeacherRepository teacherRepository;
+    private AuthRepository authRepository;
     private List<CourseNoOfStudentsDto> courseNoOfStudents;
     /**
      * Creates new form ViewClasses
@@ -32,13 +34,20 @@ public class ViewClasses extends javax.swing.JFrame {
         if (teacherComponent instanceof TeacherRepository) {
             this.teacherRepository = (TeacherRepository) teacherComponent;
         }
+        
+        Component Component = ComponentRegistry.getInstance()
+                .getComponent("AuthRepository");
+        
+        if (Component instanceof AuthRepository) {
+            this.authRepository = (AuthRepository) Component;
+        }
         initComponents();
         
         loadCourseNoOfStudents();
     }
 
     public void loadCourseNoOfStudents() {
-        int teacherID = 18;
+        int teacherID = this.authRepository.getCurrentAccount().getId();
         
         try {
             courseNoOfStudents = this.teacherRepository.getAllCourseNoOfStudents(teacherID);

@@ -19,6 +19,8 @@ public class AuthRepository implements Component {
 
     private final DBConnection dbCOnnection;
 
+    private Account currentLoggedAccount;
+
     public AuthRepository(DBConnection dbCOnnection) {
         this.dbCOnnection = dbCOnnection;
     }
@@ -106,21 +108,25 @@ public class AuthRepository implements Component {
 
         ResultSet rs = dbCOnnection.execute(getAccIdQuery, new Object[]{email});
 
-        Account account = null;
+        currentLoggedAccount = null;
 
         while (rs.next()) {
-            account = new Account();
-            account.setId(rs.getInt("id"));
-            account.setEmail(rs.getString("email"));
-            account.setPassword(rs.getString("password"));
-            account.setFirstName(rs.getString("first_name"));
-            account.setLastName(rs.getString("last_name"));
-            account.setDisplayName(rs.getString("display_name"));
-            account.setRole(rs.getString("role"));
+            currentLoggedAccount = new Account();
+            currentLoggedAccount.setId(rs.getInt("id"));
+            currentLoggedAccount.setEmail(rs.getString("email"));
+            currentLoggedAccount.setPassword(rs.getString("password"));
+            currentLoggedAccount.setFirstName(rs.getString("first_name"));
+            currentLoggedAccount.setLastName(rs.getString("last_name"));
+            currentLoggedAccount.setDisplayName(rs.getString("display_name"));
+            currentLoggedAccount.setRole(rs.getString("role"));
         }
 
-        return account;
+        return currentLoggedAccount;
 
+    }
+
+    public Account getCurrentAccount() {
+        return currentLoggedAccount;
     }
 
     @Override

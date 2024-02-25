@@ -12,6 +12,11 @@ import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
 import classmaster.repository.CourseRepository;
 import classmaster.repository.StudentRepository;
+import classmaster.shared.CenterCellRenderer;
+import classmaster.ui.component.customtablebutton.TableActionCellEditor;
+import classmaster.ui.component.customtablebutton.TableActionCellRender;
+import classmaster.ui.component.customtablebutton.TableActionEvent;
+import java.awt.Font;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -20,6 +25,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.JTableHeader;
 
 /**
  *
@@ -35,8 +41,23 @@ public class AssignClass extends javax.swing.JFrame {
     private List<Course> courses;
     private List<CourseAssignmentDto> studentCourses;
 
+    private TableActionEvent event = new TableActionEvent() {
+        @Override
+        public void onClick(int row) {
+            if (tblCourses.isEditing()) {
+                tblCourses.getCellEditor().stopCellEditing();
+            }
+            System.out.println("--- clicked row : ----- " + row);
+            int deletedCourse = (int) tblCourses.getModel().getValueAt(row, 0);
+            removeCourseAssignment(deletedCourse);
+
+        }
+    };
+
     public AssignClass() {
         initComponents();
+
+        modifyTableConfigurations();
 
         Component courseComponent = ComponentRegistry.getInstance()
                 .getComponent("CourseRepository");
@@ -49,7 +70,7 @@ public class AssignClass extends javax.swing.JFrame {
             studentRepository = (StudentRepository) studentComponent;
         }
 
-        tblCourses.setVisible(false);
+        tblCourses.setVisible(true);
         cbClasses.setVisible(false);
         lblClasses.setVisible(false);
         btnCreate.setVisible(false);
@@ -58,21 +79,31 @@ public class AssignClass extends javax.swing.JFrame {
 
     private void loadAllCourses() throws SQLException {
 
-        List<Integer> alreadyAssignedCourses = new ArrayList<>();
-
-        for (CourseAssignmentDto asd : studentCourses) {
-            alreadyAssignedCourses.add(asd.getCourseId());
+        List<Course> unAssingedCourses = new ArrayList<>();
+        for (Course cr : this.courses) {
+            boolean assigned = false;
+            for (CourseAssignmentDto cad : this.studentCourses) {
+                if (cr.getId() == cad.getCourseId()) {
+                    assigned = true;
+                    break;
+                }
+            }
+            if (!assigned) {
+                unAssingedCourses.add(cr);
+            }
         }
-        
-        this.courses = this.courseRepository.getAllCourseNotIn(alreadyAssignedCourses);
 
+        displayClassesComboBox(unAssingedCourses);
+
+    }
+
+    private void displayClassesComboBox(List<Course> courses) {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cbClasses.getModel();
         model.removeAllElements();
         for (Course crs : courses) {
             model.addElement(crs.getName());
         }
         cbClasses.setModel(model);
-
     }
 
     /**
@@ -121,10 +152,24 @@ public class AssignClass extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Class Id", "Class Name", "Joined Date"
+                "Class Id", "Class Name", "Joined Date", ""
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, true
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        tblCourses.setRowHeight(40);
+        tblCourses.setSelectionBackground(new java.awt.Color(153, 204, 255));
+        tblCourses.getTableHeader().setReorderingAllowed(false);
         jScrollPane1.setViewportView(tblCourses);
+        if (tblCourses.getColumnModel().getColumnCount() > 0) {
+            tblCourses.getColumnModel().getColumn(3).setPreferredWidth(10);
+        }
 
         btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
@@ -138,28 +183,25 @@ public class AssignClass extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(60, 60, 60)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(60, 60, 60)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 522, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(btnSearch))
-                                .addGap(65, 65, 65)
-                                .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(lblClasses, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(39, 39, 39)
+                                .addComponent(cbClasses, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(txtFieldStudentId, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(lblClasses, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(cbClasses, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap(35, Short.MAX_VALUE))
+                                .addComponent(txtFieldStudentId, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(50, 50, 50)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(btnSearch, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(btnCreate, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 698, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -169,19 +211,17 @@ public class AssignClass extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtFieldStudentId)
-                    .addComponent(lblClasses, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
-                    .addComponent(cbClasses, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addComponent(btnCreate, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(btnSearch)))
-                .addGap(15, 15, 15)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnSearch))
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(lblClasses, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(cbClasses)
+                        .addComponent(btnCreate)))
+                .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 395, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(23, 23, 23))
         );
 
         pack();
@@ -245,6 +285,7 @@ public class AssignClass extends javax.swing.JFrame {
                 tblCourses.setVisible(true);
             }
 
+            this.courses = this.courseRepository.getAllCourse();
             loadAllCourses();
 
             if (courses.size() > 0) {
@@ -262,11 +303,23 @@ public class AssignClass extends javax.swing.JFrame {
         studentCourses = this.courseRepository.getAllStudentCourses(studentId);
         DefaultTableModel model = (DefaultTableModel) tblCourses.getModel();
         model.setRowCount(0);
-       
 
         for (CourseAssignmentDto dto : studentCourses) {
-            System.out.println(dto);
             model.addRow(new Object[]{dto.getCourseId(), dto.getCourseName(), dto.getJoinedDate().toString()});
+        }
+    }
+
+    private void removeCourseAssignment(int deletedCourse) {
+        int studentId = Integer.parseInt(txtFieldStudentId.getText());
+        try {
+            int status = this.courseRepository.removeStudentCourse(studentId, deletedCourse);
+            if (status == 1) {
+                System.out.println("Successfully removed course assignment");
+                loadStudentCourse(studentId);
+                loadAllCourses();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(AssignClass.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -317,4 +370,19 @@ public class AssignClass extends javax.swing.JFrame {
     private javax.swing.JTable tblCourses;
     private javax.swing.JTextField txtFieldStudentId;
     // End of variables declaration//GEN-END:variables
+
+    private void modifyTableConfigurations() {
+
+        JTableHeader th = tblCourses.getTableHeader();
+        th.setFont(new Font("Serif", Font.BOLD, 15));
+
+        CenterCellRenderer centerRenderer = new CenterCellRenderer();
+
+        tblCourses.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
+        tblCourses.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
+        tblCourses.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
+
+        tblCourses.getColumnModel().getColumn(3).setCellRenderer(new TableActionCellRender("./delete.png", event));
+        tblCourses.getColumnModel().getColumn(3).setCellEditor(new TableActionCellEditor("./delete.png", event));
+    }
 }

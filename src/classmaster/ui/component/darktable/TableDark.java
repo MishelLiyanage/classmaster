@@ -57,7 +57,7 @@ public class TableDark extends JTable {
             if (alignment.containsKey(i1)) {
                 setHorizontalAlignment(alignment.get(i1));
             } else {
-                setHorizontalAlignment(JLabel.LEFT);
+                setHorizontalAlignment(JLabel.CENTER);
             }
             return com;
 
@@ -93,7 +93,7 @@ public class TableDark extends JTable {
             if (alignment.containsKey(column)) {
                 setHorizontalAlignment(alignment.get(column));
             } else {
-                setHorizontalAlignment(JLabel.LEFT);
+                setHorizontalAlignment(JLabel.CENTER);
             }
             return com;
         }

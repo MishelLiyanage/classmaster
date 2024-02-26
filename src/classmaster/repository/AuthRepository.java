@@ -6,10 +6,12 @@ package classmaster.repository;
 
 import classmaster.models.Account;
 import classmaster.models.Staff;
+import classmaster.models.Student;
 import classmaster.shared.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import classmaster.models.Teacher;
+import java.time.LocalDate;
 
 /**
  *
@@ -70,8 +72,18 @@ public class AuthRepository implements Component {
                 th.setNicNo(rs.getString("nic"));
             }
             return th;
+        }else if (account.getRole().equalsIgnoreCase("STUDENT")) {
+            Object[] params = {account.getId()};
+            ResultSet rs = dbCOnnection.execute("select * from student where id = ?", params);
+            Student st = new Student(account);
+            while (rs.next()) {
+                st.setGuardianName(rs.getString("guardian_name"));
+                st.setGuardianNum(rs.getString("guardian_no"));
+                st.setDob(LocalDate.parse(rs.getString("dob")));
+                st.setCity(rs.getString("city"));
+            }
+            return st;
         }
-
         return account;
 
     }

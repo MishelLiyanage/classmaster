@@ -2,6 +2,7 @@ package classmaster.ui;
 
 import classmaster.models.Account;
 import classmaster.models.Staff;
+import classmaster.models.Student;
 import classmaster.repository.AuthRepository;
 import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
@@ -11,6 +12,7 @@ import classmaster.ui.teacher.TeacherHomePage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import classmaster.models.Teacher;
+import classmaster.ui.student.StudentHomePage;
 
 public class Login extends javax.swing.JFrame {
 
@@ -217,6 +219,9 @@ public class Login extends javax.swing.JFrame {
             } else if (account instanceof Teacher) {
                 System.out.println("Teacher");
                 redirect(new TeacherHomePage());
+            } else if (account instanceof Student) {
+                System.out.println("Student");
+                redirect(new StudentHomePage());
             }else if(account.getRole().equalsIgnoreCase("ADMIN")){
                 setVisible(false);
                 new HomePage().setVisible(true);

@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package classmaster.ui.teacher;
+package classmaster.ui.student;
 
-import classmaster.models.CourseNoOfStudentsDto;
+import classmaster.models.StudentCourseDto;
 import classmaster.repository.AuthRepository;
 import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
-import classmaster.repository.TeacherRepository;
+import classmaster.repository.StudentRepository;
 import classmaster.utils.Page;
 import java.sql.SQLException;
 import java.util.List;
@@ -20,21 +20,22 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Mishel Fernando
  */
-public class ViewClasses extends javax.swing.JFrame {
-
-    private TeacherRepository teacherRepository;
+public class ViewStudentClasses extends javax.swing.JFrame {
+    private StudentRepository studentRepository;
     private AuthRepository authRepository;
-    private List<CourseNoOfStudentsDto> courseNoOfStudents;
+    private List<StudentCourseDto> studentCourse;
     private Page page;
+    
+
     /**
-     * Creates new form ViewClasses
+     * Creates new form ViewStudentClasses
      */
-    public ViewClasses(Page page) {
-        Component teacherComponent = ComponentRegistry.getInstance()
-                .getComponent("TeacherRepository");
+    public ViewStudentClasses(Page page) {
+        Component studentComponent = ComponentRegistry.getInstance()
+                .getComponent("StudentRepository");
         
-        if (teacherComponent instanceof TeacherRepository) {
-            this.teacherRepository = (TeacherRepository) teacherComponent;
+        if (studentComponent instanceof StudentRepository) {
+            this.studentRepository = (StudentRepository) studentComponent;
         }
         
         Component Component = ComponentRegistry.getInstance()
@@ -43,34 +44,35 @@ public class ViewClasses extends javax.swing.JFrame {
         if (Component instanceof AuthRepository) {
             this.authRepository = (AuthRepository) Component;
         }
-        
         this.page = page;
         
         initComponents();
         
-        loadCourseNoOfStudents();
+        loadStudentCourses();
     }
-
-    public void loadCourseNoOfStudents() {
-        int teacherID = this.authRepository.getCurrentAccount().getId();
-        
+    
+    public void loadStudentCourses(){
+        int studentID = this.authRepository.getCurrentAccount().getId();
+   
         try {
-            courseNoOfStudents = this.teacherRepository.getAllCourseNoOfStudents(teacherID);
+            studentCourse = this.studentRepository.getAllCourseNoOfStudents(studentID);
         } catch (SQLException ex) {
-            Logger.getLogger(ViewClasses.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ViewStudentClasses.class.getName()).log(Level.SEVERE, null, ex);
         }
-        DefaultTableModel model = (DefaultTableModel) tblClasses.getModel();
+        
+        DefaultTableModel model = (DefaultTableModel) tblStudentCourses.getModel();
         model.setRowCount(0);
         
-        for (CourseNoOfStudentsDto dto : courseNoOfStudents) {
+        for (StudentCourseDto dto : studentCourse) {
             System.out.println(dto);
-            model.addRow(new Object[]{dto.getCourseID(), dto.getCourseName(), dto.getNoOfStudents(), dto.getDay()});
+            model.addRow(new Object[]{dto.getCourseID(), dto.getCourseName(), dto.getDay(), dto.getAmount()});
         }
         
-        if (courseNoOfStudents.size() > 0) {
-                tblClasses.setVisible(true);
+        if (studentCourse.size() > 0) {
+                tblStudentCourses.setVisible(true);
             }
     }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -80,29 +82,28 @@ public class ViewClasses extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tblClasses = new javax.swing.JTable();
+        tblStudentCourses = new javax.swing.JTable();
+        jLabel1 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setResizable(false);
+
+        tblStudentCourses.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Course Name", "Teacher Name", "Day", "Amount"
+            }
+        ));
+        jScrollPane1.setViewportView(tblStudentCourses);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
         jLabel1.setText("View Classes");
-
-        tblClasses.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Class", "Class Name", "No of Students"
-            }
-        ));
-        jScrollPane1.setViewportView(tblClasses);
 
         jButton1.setBackground(new java.awt.Color(0, 0, 102));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -119,16 +120,12 @@ public class ViewClasses extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(17, 17, 17)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(17, 17, 17)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 483, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton1))))
-                .addContainerGap(32, Short.MAX_VALUE))
+                    .addComponent(jButton1)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 532, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -136,10 +133,10 @@ public class ViewClasses extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(17, 17, 17))
+                .addGap(26, 26, 26))
         );
 
         pack();
@@ -168,20 +165,20 @@ public class ViewClasses extends javax.swing.JFrame {
 //                }
 //            }
 //        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(ViewClasses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(ViewStudentClasses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(ViewClasses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(ViewStudentClasses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(ViewClasses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(ViewStudentClasses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(ViewClasses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//            java.util.logging.Logger.getLogger(ViewStudentClasses.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
 //        }
 //        //</editor-fold>
 //
 //        /* Create and display the form */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                new ViewClasses().setVisible(true);
+//                new ViewStudentClasses().setVisible(true);
 //            }
 //        });
     }
@@ -190,6 +187,6 @@ public class ViewClasses extends javax.swing.JFrame {
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable tblClasses;
+    private javax.swing.JTable tblStudentCourses;
     // End of variables declaration//GEN-END:variables
 }

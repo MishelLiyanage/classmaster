@@ -67,6 +67,21 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="jMenu3">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Payment"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItem1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Add Teacher Payment"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItem1ActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="jMnuView">
           <Properties>
             <Property name="text" type="java.lang.String" value="View"/>
@@ -74,8 +89,11 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="jMnuItmClassPaymentHistory">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Payment history per month of each class"/>
+                <Property name="text" type="java.lang.String" value="Teacher Payment Summery"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMnuItmClassPaymentHistoryActionPerformed"/>
+              </Events>
             </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="jMnuItmMonthlyIncome">
               <Properties>

@@ -83,5 +83,14 @@ CREATE TABLE CourseAssignmentPayment (
     paidDate DATE,
     PRIMARY KEY (studentId, courseId, payingYear, payingMonth),
     FOREIGN KEY (studentId) REFERENCES CourseAssignment(studentId),
-    FOREIGN KEY (courseId) REFERENCES CourseAssignment(courseId)
+    FOREIGN KEY (courseId) REFERENCES CourseAssignment(courseId));
+    
+CREATE TABLE Attendance (
+    student_id INT,
+    course_id INT,
+    attend_date DATE,
+    attend_time TIME,
+    PRIMARY KEY (student_id, course_id, attend_date),
+    FOREIGN KEY (student_id) REFERENCES Student (id),
+    FOREIGN KEY (course_id) REFERENCES Course (id)
 );

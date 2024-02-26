@@ -4,58 +4,74 @@
  */
 package classmaster.ui.teacher;
 
+import classmaster.models.ClassPaidStudentsDto;
 import classmaster.models.Course;
+import classmaster.models.TeacherClassPaymentSummaryDto;
 import classmaster.repository.AuthRepository;
 import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
 import classmaster.repository.CourseRepository;
+import classmaster.repository.CourseStudentPaymentRepository;
 import classmaster.repository.TeacherRepository;
 import classmaster.utils.Page;
+import java.awt.BorderLayout;
 import java.sql.SQLException;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartPanel;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.data.category.CategoryDataset;
+import org.jfree.data.category.DefaultCategoryDataset;
 
 /**
  *
  * @author Mishel Fernando
  */
-public class PaymentHistory extends javax.swing.JFrame {
+public class CoursePaymentHistory extends javax.swing.JFrame {
 
     private Page page;
     private TeacherRepository teacherRepository;
     private AuthRepository authRepository;
     private List<Course> teacherCourses;
-    private int teacherId = 5;
-    private CourseRepository courseComponent;
+    private int teacherId;
+    private CourseRepository courseRepository;
+    private CourseStudentPaymentRepository paymentRepository;
 
     /**
      * Creates new form PaymentHistory
      */
-    public PaymentHistory(Page page) {
+    public CoursePaymentHistory(Page page) {
         this.page = page;
 
         Component teacherComponent = ComponentRegistry.getInstance()
                 .getComponent("TeacherRepository");
-
         if (teacherComponent instanceof TeacherRepository) {
             this.teacherRepository = (TeacherRepository) teacherComponent;
         }
 
         Component Component = ComponentRegistry.getInstance()
                 .getComponent("AuthRepository");
-
         if (Component instanceof AuthRepository) {
             this.authRepository = (AuthRepository) Component;
         }
 
         Component courseComponent = ComponentRegistry.getInstance()
                 .getComponent("CourseRepository");
-
         if (courseComponent instanceof CourseRepository) {
-            this.courseComponent = (CourseRepository) courseComponent;
+            this.courseRepository = (CourseRepository) courseComponent;
         }
+
+        Component paymentComponent = ComponentRegistry.getInstance()
+                .getComponent("CourseStudentPaymentRepository");
+        if (paymentComponent instanceof CourseStudentPaymentRepository) {
+            this.paymentRepository = (CourseStudentPaymentRepository) paymentComponent;
+        }
+
+       teacherId = this.authRepository.getCurrentAccount().getId();
+        // teacherId = 5;
 
         initComponents();
         loadStudentCourses();
@@ -64,7 +80,7 @@ public class PaymentHistory extends javax.swing.JFrame {
     private void loadStudentCourses() {
 
         try {
-            teacherCourses = this.courseComponent.getTeacherCourses(teacherId);
+            teacherCourses = this.courseRepository.getTeacherCourses(teacherId);
 
             DefaultComboBoxModel model = (DefaultComboBoxModel) cbTchCourses.getModel();
             model.removeAllElements();
@@ -93,7 +109,7 @@ public class PaymentHistory extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         cbTchCourses = new javax.swing.JComboBox<>();
-        jButton1 = new javax.swing.JButton();
+        btnSearch = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
         yearChooser = new com.toedter.calendar.JYearChooser();
         jLabel3 = new javax.swing.JLabel();
@@ -101,10 +117,12 @@ public class PaymentHistory extends javax.swing.JFrame {
         jTabbedPane1 = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        tableDark1 = new classmaster.ui.component.darktable.TableDark();
+        tblStuPayment = new classmaster.ui.component.darktable.TableDark();
         jButton2 = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
-        jPanel4 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        tableDark1 = new classmaster.ui.component.darktable.TableDark();
+        panelCharts = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ClassMaster");
@@ -118,13 +136,13 @@ public class PaymentHistory extends javax.swing.JFrame {
 
         cbTchCourses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jButton1.setBackground(new java.awt.Color(0, 0, 102));
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
-        jButton1.setText("Search");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btnSearch.setBackground(new java.awt.Color(0, 0, 102));
+        btnSearch.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnSearch.setForeground(new java.awt.Color(255, 255, 255));
+        btnSearch.setText("Search");
+        btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btnSearchActionPerformed(evt);
             }
         });
 
@@ -145,7 +163,7 @@ public class PaymentHistory extends javax.swing.JFrame {
                         .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 60, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cbTchCourses, javax.swing.GroupLayout.PREFERRED_SIZE, 218, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(218, 218, 218)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
@@ -171,13 +189,13 @@ public class PaymentHistory extends javax.swing.JFrame {
                         .addComponent(yearChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel3)
                     .addComponent(monthChooser, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        tableDark1.setModel(new javax.swing.table.DefaultTableModel(
+        tblStuPayment.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -196,7 +214,7 @@ public class PaymentHistory extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane1.setViewportView(tableDark1);
+        jScrollPane1.setViewportView(tblStuPayment);
 
         jButton2.setBackground(new java.awt.Color(0, 0, 102));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -231,41 +249,51 @@ public class PaymentHistory extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Payments", jPanel2);
 
+        tableDark1.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Summary", "Value"
+            }
+        ));
+        jScrollPane2.setViewportView(tableDark1);
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 980, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(161, 161, 161)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 685, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(134, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 373, Short.MAX_VALUE)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(91, Short.MAX_VALUE))
         );
 
         jTabbedPane1.addTab("Summary", jPanel3);
 
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 980, Short.MAX_VALUE)
-        );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 373, Short.MAX_VALUE)
-        );
-
-        jTabbedPane1.addTab("Charts", jPanel4);
+        panelCharts.setLayout(new java.awt.BorderLayout());
+        jTabbedPane1.addTab("Charts", panelCharts);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
             .addComponent(jTabbedPane1, javax.swing.GroupLayout.Alignment.TRAILING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(14, 14, 14)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,58 +316,99 @@ public class PaymentHistory extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+    private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
+        try {
+            // TODO add your handling code here:
 
-        int selectedCourseName = cbTchCourses.getSelectedIndex();
-        System.out.println(" index : " + selectedCourseName);
-        System.out.println(teacherCourses.get(selectedCourseName).getName());
+            int selectedCourseName = cbTchCourses.getSelectedIndex();
+            int selectedCourseId = teacherCourses.get(selectedCourseName).getId();
+            System.out.println(" index : " + selectedCourseName);
+            System.out.println(teacherCourses.get(selectedCourseName).getName());
 
-        int year = yearChooser.getYear();
-        int month = monthChooser.getMonth();
-        
-//        teacherRepository.getTeacherClassPayment(year, year, month)
+            int year = yearChooser.getYear();
+            int month = monthChooser.getMonth() + 1;
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+            System.out.println("year : " + year);
+            System.out.println("month : " + month);
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(PaymentHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(PaymentHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(PaymentHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(PaymentHistory.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new PaymentHistory().setVisible(true);
-//            }
-//        });
+            List<ClassPaidStudentsDto> paidStudents = this.paymentRepository.getClassStudentPayment(selectedCourseId, year, month);
+
+            TeacherClassPaymentSummaryDto summary = this.paymentRepository.getTeacherClassPayment(selectedCourseId, year, month);
+
+            updateTable(paidStudents);
+            updateSummaryTable(summary);
+            drawChart(summary);
+
+        } catch (SQLException ex) {
+            System.out.println("failed to get paid student for class");
+            ex.printStackTrace();
+        }
+    }//GEN-LAST:event_btnSearchActionPerformed
+
+    private void updateTable(List<ClassPaidStudentsDto> paidStudents) {
+
+        DefaultTableModel model = (DefaultTableModel) tblStuPayment.getModel();
+        model.setRowCount(0);
+
+        for (ClassPaidStudentsDto dto : paidStudents) {
+            String name = dto.getFirstName() + " " + dto.getLastName();
+
+            String paidMsg = dto.getPaidDate() == null ? "Not Paid" : dto.getPaidDate().toString();
+
+            model.addRow(new Object[]{
+                dto.getStudentId(),
+                name,
+                dto.getPaid(),
+                dto.getPaidAmount(),
+                paidMsg
+            });
+        }
     }
 
+    private void drawChart(TeacherClassPaymentSummaryDto summary) {
+        CategoryDataset dataset = createDataset(summary.getTotalPaidStudents(), summary.getTotalStudents() - summary.getTotalPaidStudents());
+
+        //Create chart  
+        JFreeChart chart = ChartFactory.createBarChart(
+                "Class Payment Chart", //Chart Title  
+                "Type", // Category axis  
+                "Student Class Fees Payment", // Value axis  
+                dataset,
+                PlotOrientation.VERTICAL,
+                true, true, false
+        );
+
+        ChartPanel panel = new ChartPanel(chart);
+        panelCharts.removeAll();
+        panelCharts.add(panel, BorderLayout.CENTER);
+        panelCharts.validate();
+
+    }
+
+    private CategoryDataset createDataset(int paidCount, int notPaidCount) {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        dataset.addValue(paidCount, "", "Paid");
+        dataset.addValue(notPaidCount, "", "Not Paid");
+
+        return dataset;
+    }
+
+    private void updateSummaryTable(TeacherClassPaymentSummaryDto summary) {
+        DefaultTableModel model = (DefaultTableModel) tableDark1.getModel();
+        model.setRowCount(0);
+
+        model.addRow(new Object[]{"Course Id", summary.getCourseId()});
+        model.addRow(new Object[]{"Course Fee", summary.getCourseFee()});
+        model.addRow(new Object[]{"Total Income", summary.getTotalIncome()});
+        model.addRow(new Object[]{"Total Students", summary.getTotalStudents()});
+        model.addRow(new Object[]{"Total Paid Student", summary.getTotalPaidStudents()});
+    }
+
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnSearch;
     private javax.swing.JComboBox<String> cbTchCourses;
-    private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -348,11 +417,13 @@ public class PaymentHistory extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private com.toedter.calendar.JMonthChooser monthChooser;
+    private javax.swing.JPanel panelCharts;
     private classmaster.ui.component.darktable.TableDark tableDark1;
+    private classmaster.ui.component.darktable.TableDark tblStuPayment;
     private com.toedter.calendar.JYearChooser yearChooser;
     // End of variables declaration//GEN-END:variables
 }

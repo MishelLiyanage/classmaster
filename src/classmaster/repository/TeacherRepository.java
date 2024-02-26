@@ -89,32 +89,6 @@ public class TeacherRepository implements Component {
         return courseNoOfStudents;
     }
 
-    public TeacherClassPaymentSummaryDto getTeacherClassPayment(int classId, int year, int month) throws SQLException {
-
-        String query = "select ca.courseId, c.name as course_name, c.amount as course_fee, sum(cap.amount) as total_income, count(*) as total_students, count(cap.amount) as paid_students"
-                + " FROM CourseAssignment ca"
-                + " LEFT JOIN CourseAssignmentPayment cap ON ca.studentId = cap.studentId AND ca.courseId = cap.courseId"
-                + " and cap.payingMonth = ? and cap.payingYear = ? LEFT JOIN Course c on ca.courseId = c.id"
-                + " where ca.courseId = ?";
-        Object[] params = {month, year, classId};
-        ResultSet rs = dBConnection.execute(query, params);
-
-        TeacherClassPaymentSummaryDto teacherClassPaymentSummaryDto = null;
-        while (rs.next()) {
-            teacherClassPaymentSummaryDto = new TeacherClassPaymentSummaryDto();
-            teacherClassPaymentSummaryDto.setCourseId(rs.getInt("courseId"));
-            teacherClassPaymentSummaryDto.setCourseName(rs.getString("course_name"));
-            teacherClassPaymentSummaryDto.setCourseFee(rs.getDouble("course_fee"));
-            teacherClassPaymentSummaryDto.setTotalIncome(rs.getDouble("total_income"));
-            teacherClassPaymentSummaryDto.setTotalStudents(rs.getInt("total_students"));
-            teacherClassPaymentSummaryDto.setTotalPaidStudents(rs.getInt("paid_students"));
-        }
-        return teacherClassPaymentSummaryDto;
-    }
-    
-    
-    
-
     @Override
     public String getName() {
         return "TeacherRepository";

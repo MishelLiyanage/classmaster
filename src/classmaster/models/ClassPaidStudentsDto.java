@@ -16,12 +16,25 @@ public class ClassPaidStudentsDto {
     
     private int studentId;
     
-    private String studentName;
+    private String firstName;
     
-    private boolean paid;
+    private String lastName;
+    
+    private String paid;
     
     private LocalDate paidDate;
+    
+    private double paidAmount;
 
+    public double getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(double paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
+    
     public int getClassId() {
         return classId;
     }
@@ -38,28 +51,36 @@ public class ClassPaidStudentsDto {
         this.studentId = studentId;
     }
 
-    public String getStudentName() {
-        return studentName;
-    }
-
-    public void setStudentName(String studentName) {
-        this.studentName = studentName;
-    }
-
-    public boolean isPaid() {
-        return paid;
-    }
-
-    public void setPaid(boolean paid) {
-        this.paid = paid;
-    }
-
     public LocalDate getPaidDate() {
         return paidDate;
     }
 
     public void setPaidDate(LocalDate paidDate) {
         this.paidDate = paidDate;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getPaid() {
+        return paid;
+    }
+
+    public void setPaid(String paid) {
+        this.paid = paid;
     }
     
     

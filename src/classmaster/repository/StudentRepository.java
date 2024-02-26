@@ -5,10 +5,13 @@
 package classmaster.repository;
 
 import classmaster.models.Student;
+import classmaster.models.StudentCourseDto;
 import classmaster.shared.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -58,6 +61,28 @@ public class StudentRepository implements Component {
             st.setGuardianNum(rs.getString("guardian_no"));
         }
         return st;
+    }
+    
+    public List<StudentCourseDto> getAllCourseNoOfStudents(int studentID) throws SQLException {
+        List<StudentCourseDto> studentCourse = new ArrayList<>();
+        
+        Object[] params = {studentID};
+        ResultSet rs = dBConnection.execute("SELECT c.id, c.name AS courseName, c.day, c.amount"
+                + " FROM course c"
+                + " JOIN courseAssignment ca ON c.id = ca.courseID"
+                + " WHERE ca.StudentID = ?", params);
+        
+        while (rs.next()) {
+            StudentCourseDto sc = new StudentCourseDto();
+            sc.setCourseID(rs.getInt("id"));
+            sc.setCourseName(rs.getString("courseName"));
+            sc.setDay(rs.getString("day"));
+            sc.setAmount(rs.getDouble("amount"));
+        
+            studentCourse.add(sc);
+        }
+        
+        return studentCourse;
     }
 
     @Override

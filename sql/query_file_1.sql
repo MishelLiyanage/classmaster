@@ -73,3 +73,15 @@ CREATE TABLE CourseAssignment (
     FOREIGN KEY (studentId) REFERENCES Student(id),
     FOREIGN KEY (courseId) REFERENCES Course(id)
 );
+
+CREATE TABLE CourseAssignmentPayment (
+    studentId INT,
+    courseId INT,
+    amount DOUBLE,
+    payingYear int,
+    payingMonth int,
+    paidDate DATE,
+    PRIMARY KEY (studentId, courseId, payingYear, payingMonth),
+    FOREIGN KEY (studentId) REFERENCES CourseAssignment(studentId),
+    FOREIGN KEY (courseId) REFERENCES CourseAssignment(courseId)
+);

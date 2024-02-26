@@ -6,6 +6,7 @@ package classmaster.repository;
 
 import classmaster.models.CourseNoOfStudentsDto;
 import classmaster.models.Teacher;
+import classmaster.models.TeacherClassPaymentSummaryDto;
 import classmaster.shared.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -65,29 +66,55 @@ public class TeacherRepository implements Component {
         return dBConnection.executeUpdate(teacherInsertQuery, teacherParams);
 
     }
-    
+
     public List<CourseNoOfStudentsDto> getAllCourseNoOfStudents(int teacherID) throws SQLException {
         List<CourseNoOfStudentsDto> courseNoOfStudents = new ArrayList<>();
-        
+
         Object[] params = {teacherID};
         ResultSet rs = dBConnection.execute("SELECT c.id, c.name AS courseName, COUNT(ca.studentID) AS studentCount"
                 + " FROM course c"
                 + " JOIN courseAssignment ca ON c.id = ca.courseID"
                 + " WHERE c.teacherID = ?"
                 + " GROUP BY c.id, c.name", params);
-        
+
         while (rs.next()) {
             CourseNoOfStudentsDto cs = new CourseNoOfStudentsDto();
             cs.setCourseID(rs.getInt("id"));
             cs.setCourseName(rs.getString("courseName"));
             cs.setNoOfStudents(rs.getInt("studentCount"));
-        
+
             courseNoOfStudents.add(cs);
         }
-        
+
         return courseNoOfStudents;
     }
+
+    public TeacherClassPaymentSummaryDto getTeacherClassPayment(int classId, int year, int month) throws SQLException {
+
+        String query = "select ca.courseId, c.name as course_name, c.amount as course_fee, sum(cap.amount) as total_income, count(*) as total_students, count(cap.amount) as paid_students"
+                + " FROM CourseAssignment ca"
+                + " LEFT JOIN CourseAssignmentPayment cap ON ca.studentId = cap.studentId AND ca.courseId = cap.courseId"
+                + " and cap.payingMonth = ? and cap.payingYear = ? LEFT JOIN Course c on ca.courseId = c.id"
+                + " where ca.courseId = ?";
+        Object[] params = {month, year, classId};
+        ResultSet rs = dBConnection.execute(query, params);
+
+        TeacherClassPaymentSummaryDto teacherClassPaymentSummaryDto = null;
+        while (rs.next()) {
+            teacherClassPaymentSummaryDto = new TeacherClassPaymentSummaryDto();
+            teacherClassPaymentSummaryDto.setCourseId(rs.getInt("courseId"));
+            teacherClassPaymentSummaryDto.setCourseName(rs.getString("course_name"));
+            teacherClassPaymentSummaryDto.setCourseFee(rs.getDouble("course_fee"));
+            teacherClassPaymentSummaryDto.setTotalIncome(rs.getDouble("total_income"));
+            teacherClassPaymentSummaryDto.setTotalStudents(rs.getInt("total_students"));
+            teacherClassPaymentSummaryDto.setTotalPaidStudents(rs.getInt("paid_students"));
+        }
+        return teacherClassPaymentSummaryDto;
+    }
     
+    
+    
+
     @Override
     public String getName() {
         return "TeacherRepository";

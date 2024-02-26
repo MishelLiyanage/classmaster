@@ -217,7 +217,6 @@ public class AddStudent extends javax.swing.JFrame {
     }//GEN-LAST:event_txtFNameActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-
         this.page.onChildPageClose();
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed

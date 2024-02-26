@@ -79,6 +79,11 @@ public class StaffHomePage extends javax.swing.JFrame implements Page {
         jMenu3.setText("Payment");
 
         jMnuItmStudentPayment.setText("Student Payment");
+        jMnuItmStudentPayment.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMnuItmStudentPaymentActionPerformed(evt);
+            }
+        });
         jMenu3.add(jMnuItmStudentPayment);
 
         jMenuBar1.add(jMenu3);
@@ -119,20 +124,24 @@ public class StaffHomePage extends javax.swing.JFrame implements Page {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMnuItmAddStudentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuItmAddStudentActionPerformed
-
         new AddStudent(this).setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_jMnuItmAddStudentActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        new AssignClass(this).setVisible(true);
         setVisible(false);
-        new AssignClass().setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void jMnuItmMarkAttendenceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuItmMarkAttendenceActionPerformed
+        new MarkAttendence(this).setVisible(true);
         setVisible(false);
-        new MarkAttendence().setVisible(true);
     }//GEN-LAST:event_jMnuItmMarkAttendenceActionPerformed
+
+    private void jMnuItmStudentPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuItmStudentPaymentActionPerformed
+        new StudentPayment(this).setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_jMnuItmStudentPaymentActionPerformed
 
     /**
      * @param args the command line arguments

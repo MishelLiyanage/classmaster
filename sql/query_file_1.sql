@@ -73,3 +73,13 @@ CREATE TABLE CourseAssignment (
     FOREIGN KEY (studentId) REFERENCES Student(id),
     FOREIGN KEY (courseId) REFERENCES Course(id)
 );
+
+CREATE TABLE Attendance (
+    student_id INT,
+    course_id INT,
+    attend_date DATE,
+    attend_time TIME,
+    PRIMARY KEY (student_id, course_id, attend_date),
+    FOREIGN KEY (student_id) REFERENCES Student (id),
+    FOREIGN KEY (course_id) REFERENCES Course (id)
+);

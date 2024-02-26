@@ -45,6 +45,9 @@ public class ComponentRegistry {
         CourseRepository courseRepository = new CourseRepository(dbConnection);
         registry.put(courseRepository.getName(), courseRepository);
         
+        CourseStudentPaymentRepository courseStudentPaymentRepository = new CourseStudentPaymentRepository(dbConnection);
+        registry.put(courseStudentPaymentRepository.getName(), courseStudentPaymentRepository);
+        
         AttendanceRepository attendanceRepository = new AttendanceRepository(dbConnection);
         registry.put(attendanceRepository.getName(), attendanceRepository);
     }

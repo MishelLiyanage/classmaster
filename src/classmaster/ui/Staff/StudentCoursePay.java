@@ -300,14 +300,14 @@ public class StudentCoursePay extends javax.swing.JFrame {
 
     private void tblPaymentsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblPaymentsMouseClicked
 
-        JTable source = (JTable)evt.getSource();
-            int row = source.rowAtPoint( evt.getPoint() );
-            int column = source.columnAtPoint( evt.getPoint() );
-            String s=source.getModel().getValueAt(row, column)+"";
+        JTable source = (JTable) evt.getSource();
+        int row = source.rowAtPoint(evt.getPoint());
+        int column = source.columnAtPoint(evt.getPoint());
+        String s = source.getModel().getValueAt(row, column) + "";
 
-            this.selectedPayment = paymentTblRows.get(row);
-            
-            System.out.println(this.selectedPayment.getPaidDate());
+        this.selectedPayment = paymentTblRows.get(row);
+
+        System.out.println(this.selectedPayment.getPaidDate());
 
     }//GEN-LAST:event_tblPaymentsMouseClicked
 
@@ -316,24 +316,43 @@ public class StudentCoursePay extends javax.swing.JFrame {
     }//GEN-LAST:event_cmbCourseActionPerformed
 
     private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-            if(selectedPayment==null){
-                JOptionPane.showMessageDialog(rootPane, "Choose payment item to be edited!");
-            }
-            
-            
+        if (selectedPayment == null) {
+            JOptionPane.showMessageDialog(rootPane, "Choose payment item to be edited!");
+            return;
+        }
+
+        this.btnAddPayment.setText("Edit Payment");
+        cmbCourse.setEnabled(false);
+        this.jYear.setYear(this.selectedPayment.getPayingYear());
+        this.jMonth.setMonth(this.selectedPayment.getMonth());
+        this.selectedPayment.setPayingYear(this.jYear.getYear());
+        this.selectedPayment.setMonth(this.jMonth.getMonth());
+
+        try {
+            this.courseStudentPaymentRepository.save(selectedPayment);
+            this.jYear.setYear(2024);
+            this.jMonth.setMonth(1);
+            this.btnAddPayment.setText("Add Payment");
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentCoursePay.class.getName()).log(Level.SEVERE, "Error in saving payment!", ex);
+        }
+
+
     }//GEN-LAST:event_btnEditActionPerformed
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        if(selectedPayment==null){
-                JOptionPane.showMessageDialog(rootPane, "Choose payment item to be deleted!");
-            }
-        
+        if (selectedPayment == null) {
+            JOptionPane.showMessageDialog(rootPane, "Choose payment item to be deleted!");
+        }
+
         try {
             this.courseStudentPaymentRepository.delete(
                     this.selectedPayment.getStudentId(),
                     this.selectedPayment.getCourseId(),
                     this.selectedPayment.getPayingYear(),
                     this.selectedPayment.getMonth());
+
+            JOptionPane.showMessageDialog(rootPane, "Payment successfully deleted!");
         } catch (SQLException ex) {
             Logger.getLogger(StudentCoursePay.class.getName()).log(Level.SEVERE, "Failed to delete student payment!", ex);
         }
@@ -360,6 +379,7 @@ public class StudentCoursePay extends javax.swing.JFrame {
 
     private void updatePaymentTable() {
         try {
+            this.selectedPayment = null;
             paymentTblRows = this.courseStudentPaymentRepository.getStudentPayments(this.studentId);
             DefaultTableModel model = (DefaultTableModel) this.tblPayments.getModel();
             model.setRowCount(0);

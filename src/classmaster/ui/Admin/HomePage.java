@@ -4,11 +4,13 @@
  */
 package classmaster.ui.Admin;
 
+import classmaster.utils.Page;
+
 /**
  *
  * @author Mishel Fernando
  */
-public class HomePage extends javax.swing.JFrame {
+public class HomePage extends javax.swing.JFrame implements Page {
 
     /**
      * Creates new form HomePage
@@ -39,6 +41,8 @@ public class HomePage extends javax.swing.JFrame {
         jMnuItmAddTeacher = new javax.swing.JMenuItem();
         jMnuClass = new javax.swing.JMenu();
         jMnuItmCreateNewClass = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMnuView = new javax.swing.JMenu();
         jMnuItmClassPaymentHistory = new javax.swing.JMenuItem();
         jMnuItmMonthlyIncome = new javax.swing.JMenuItem();
@@ -48,6 +52,7 @@ public class HomePage extends javax.swing.JFrame {
         jMenu2.setText("jMenu2");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ClassMaster");
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Sylfaen", 0, 36)); // NOI18N
@@ -124,9 +129,26 @@ public class HomePage extends javax.swing.JFrame {
 
         jMenuBar1.add(jMnuClass);
 
+        jMenu3.setText("Payment");
+
+        jMenuItem1.setText("Add Teacher Payment");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu3);
+
         jMnuView.setText("View");
 
-        jMnuItmClassPaymentHistory.setText("Payment history per month of each class");
+        jMnuItmClassPaymentHistory.setText("Teacher Payment Summery");
+        jMnuItmClassPaymentHistory.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMnuItmClassPaymentHistoryActionPerformed(evt);
+            }
+        });
         jMnuView.add(jMnuItmClassPaymentHistory);
 
         jMnuItmMonthlyIncome.setText("Monthly total income");
@@ -152,19 +174,29 @@ public class HomePage extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMnuItmAddStaffActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuItmAddStaffActionPerformed
+        new AddStaffForm(this).setVisible(true);
         setVisible(false);
-        new AddStaffForm().setVisible(true);
     }//GEN-LAST:event_jMnuItmAddStaffActionPerformed
 
     private void jMnuItmAddTeacherActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuItmAddTeacherActionPerformed
+        new AddTeacherForm(this).setVisible(true);
         setVisible(false);
-        new AddTeacherForm().setVisible(true);
     }//GEN-LAST:event_jMnuItmAddTeacherActionPerformed
 
     private void jMnuItmCreateNewClassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuItmCreateNewClassActionPerformed
+        new CreateClass(this).setVisible(true);
         setVisible(false);
-        new CreateClass().setVisible(true);
     }//GEN-LAST:event_jMnuItmCreateNewClassActionPerformed
+
+    private void jMnuItmClassPaymentHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuItmClassPaymentHistoryActionPerformed
+        new TeacherPaymentSummery(this).setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_jMnuItmClassPaymentHistoryActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        new AddTeacherPayment(this).setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -206,7 +238,9 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenu jMnuClass;
     private javax.swing.JMenuItem jMnuItmAddStaff;
     private javax.swing.JMenuItem jMnuItmAddTeacher;
@@ -219,4 +253,11 @@ public class HomePage extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public void onChildPageClose() {
+        this.setVisible(true);
+    }
+
+
 }

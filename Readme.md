@@ -33,3 +33,18 @@ JLocaleChooser
 References:
 
 Video Tutorial: https://www.youtube.com/watch?v=4c3WYK5FpqI
+
+
+LGoodDatePicker
+
+https://github.com/LGoodDatePicker/LGoodDatePicker/releases
+
+Table cell icon
+video: https://www.youtube.com/watch?v=RMwufjRRHBU
+github: https://github.com/DJ-Raven/raven-java-swing-tutorial-project/tree/main/table-cell-custom
+
+
+JFree chart
+download https://sourceforge.net/projects/jfreechart/files/1.%20JFreeChart/1.0.19/
+extract and go to \jfreechart-1.0.19\lib
+import jfreechart-1.0.19 and jcommon-1.0.23

@@ -1,6 +1,4 @@
-package models;
-
-import classmaster.models.Account;
+package classmaster.models;
 
 public class Teacher extends Account{
     private String degree;

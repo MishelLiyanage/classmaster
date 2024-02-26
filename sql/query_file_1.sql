@@ -51,3 +51,35 @@ VALUES
 
 INSERT INTO `Teacher` (`id`, `degree`, `description`, `contact_no`, `nic`) 
 VALUES (5, 'Bsc in Science', 'OL Science Teacher', '0778548963', '895685120V');
+
+
+CREATE TABLE Course (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255),
+    amount DOUBLE,
+    teacherId INT,
+    day VARCHAR(255),
+    fromTime TIME,
+    toTime TIME,
+    FOREIGN KEY (teacherId) REFERENCES Teacher(id)
+);
+
+CREATE TABLE CourseAssignment (
+    studentId INT,
+    courseId INT,
+    joinedDate DATE,
+    complete BOOLEAN,
+    PRIMARY KEY (studentId, courseId),
+    FOREIGN KEY (studentId) REFERENCES Student(id),
+    FOREIGN KEY (courseId) REFERENCES Course(id)
+);
+
+CREATE TABLE Attendance (
+    student_id INT,
+    course_id INT,
+    attend_date DATE,
+    attend_time TIME,
+    PRIMARY KEY (student_id, course_id, attend_date),
+    FOREIGN KEY (student_id) REFERENCES Student (id),
+    FOREIGN KEY (course_id) REFERENCES Course (id)
+);

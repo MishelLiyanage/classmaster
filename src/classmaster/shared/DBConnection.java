@@ -1,11 +1,17 @@
 package classmaster.shared;
 
+import java.lang.reflect.Array;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -53,10 +59,15 @@ public class DBConnection {
             } else if (obj instanceof Double) {
                 st.setDouble(i + 1, (Double) obj);
             } else if (obj instanceof String) {
-                st.setString(i + 1, (String)obj);
-            }else if(obj instanceof Date){
-                st.setDate(i + 1, new java.sql.Date(((Date)obj).getTime()));
+                st.setString(i + 1, (String) obj);
+            } else if (obj instanceof LocalDate) {
+                st.setDate(i + 1, java.sql.Date.valueOf((LocalDate) obj));
+            } else if (obj instanceof LocalTime) {
+                st.setTime(i + 1, java.sql.Time.valueOf((LocalTime) obj));
+            } else if (obj instanceof Boolean) {
+                st.setBoolean(i + 1, (boolean) obj);
             }
+
         }
 
     }

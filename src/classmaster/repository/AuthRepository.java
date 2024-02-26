@@ -6,10 +6,12 @@ package classmaster.repository;
 
 import classmaster.models.Account;
 import classmaster.models.Staff;
+import classmaster.models.Student;
 import classmaster.shared.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import models.Teacher;
+import classmaster.models.Teacher;
+import java.time.LocalDate;
 
 /**
  *
@@ -19,6 +21,8 @@ public class AuthRepository implements Component {
 
     private final DBConnection dbCOnnection;
 
+    private Account currentLoggedAccount;
+
     public AuthRepository(DBConnection dbCOnnection) {
         this.dbCOnnection = dbCOnnection;
     }
@@ -27,24 +31,23 @@ public class AuthRepository implements Component {
         Object[] params = {email, password};
         ResultSet rs = dbCOnnection.execute("select * from Account a where a.email = ? and a.password = ?", params);
 
-        Account account = null;
+        currentLoggedAccount = null;
         while (rs.next()) {
-            account = new Account();
-            account.setId(rs.getInt("id"));
-            account.setEmail(rs.getString("email"));
-            account.setPassword(rs.getString("password"));
-            account.setFirstName(rs.getString("first_name"));
-            account.setLastName(rs.getString("last_name"));
-            account.setDisplayName(rs.getString("display_name"));
-            account.setRole(rs.getString("role"));
+            currentLoggedAccount = new Account();
+            currentLoggedAccount.setId(rs.getInt("id"));
+            currentLoggedAccount.setEmail(rs.getString("email"));
+            currentLoggedAccount.setPassword(rs.getString("password"));
+            currentLoggedAccount.setFirstName(rs.getString("first_name"));
+            currentLoggedAccount.setLastName(rs.getString("last_name"));
+            currentLoggedAccount.setDisplayName(rs.getString("display_name"));
+            currentLoggedAccount.setRole(rs.getString("role"));
         }
 
-        if (account != null) {
-            account = setProfileInfo(account);
-
+        if (currentLoggedAccount != null) {
+            currentLoggedAccount = setProfileInfo(currentLoggedAccount);
         }
 
-        return account;
+        return currentLoggedAccount;
     }
 
     private Account setProfileInfo(Account account) throws SQLException {
@@ -69,8 +72,18 @@ public class AuthRepository implements Component {
                 th.setNicNo(rs.getString("nic"));
             }
             return th;
+        }else if (account.getRole().equalsIgnoreCase("STUDENT")) {
+            Object[] params = {account.getId()};
+            ResultSet rs = dbCOnnection.execute("select * from student where id = ?", params);
+            Student st = new Student(account);
+            while (rs.next()) {
+                st.setGuardianName(rs.getString("guardian_name"));
+                st.setGuardianNum(rs.getString("guardian_no"));
+                st.setDob(LocalDate.parse(rs.getString("dob")));
+                st.setCity(rs.getString("city"));
+            }
+            return st;
         }
-
         return account;
 
     }
@@ -106,21 +119,25 @@ public class AuthRepository implements Component {
 
         ResultSet rs = dbCOnnection.execute(getAccIdQuery, new Object[]{email});
 
-        Account account = null;
+        Account acc = null;
 
         while (rs.next()) {
-            account = new Account();
-            account.setId(rs.getInt("id"));
-            account.setEmail(rs.getString("email"));
-            account.setPassword(rs.getString("password"));
-            account.setFirstName(rs.getString("first_name"));
-            account.setLastName(rs.getString("last_name"));
-            account.setDisplayName(rs.getString("display_name"));
-            account.setRole(rs.getString("role"));
+            acc = new Account();
+            acc.setId(rs.getInt("id"));
+            acc.setEmail(rs.getString("email"));
+            acc.setPassword(rs.getString("password"));
+            acc.setFirstName(rs.getString("first_name"));
+            acc.setLastName(rs.getString("last_name"));
+            acc.setDisplayName(rs.getString("display_name"));
+            acc.setRole(rs.getString("role"));
         }
 
-        return account;
+        return acc;
 
+    }
+
+    public Account getCurrentAccount() {
+        return currentLoggedAccount;
     }
 
     @Override

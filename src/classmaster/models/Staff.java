@@ -23,6 +23,9 @@ public class Staff extends Account{
         this.setRole(account.getRole());
     }
 
+    public Staff() {
+    }
+
     public String getNic() {
         return nic;
     }

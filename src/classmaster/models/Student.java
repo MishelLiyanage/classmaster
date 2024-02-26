@@ -4,6 +4,7 @@
  */
 package classmaster.models;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -14,9 +15,9 @@ public class Student extends Account{
     
     private String guardianName;
     
-    private String guardianNum;
+    private String guardianNo;
     
-    private Date dob;
+    private LocalDate dob;
     
     private String city;
     
@@ -34,7 +35,7 @@ public class Student extends Account{
         this.setRole(account.getRole());
     }
     
-    public Student(Account account, String guardianName, String guardianNum, Date dob, String city){
+    public Student(Account account, String guardianName, String guardianNum, LocalDate dob, String city){
         Student s = new Student(account);
         s.setCity(city);
         s.setDob(dob);
@@ -51,18 +52,18 @@ public class Student extends Account{
     }
 
     public String getGuardianNum() {
-        return guardianNum;
+        return guardianNo;
     }
 
     public void setGuardianNum(String guardianNum) {
-        this.guardianNum = guardianNum;
+        this.guardianNo = guardianNum;
     }
 
-    public Date getDob() {
+    public LocalDate getDob() {
         return dob;
     }
 
-    public void setDob(Date dob) {
+    public void setDob(LocalDate dob) {
         this.dob = dob;
     }
 

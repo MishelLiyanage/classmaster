@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -416,6 +417,12 @@ public class AssignClass extends javax.swing.JFrame {
             int studentId = Integer.valueOf(txtFieldStudentId.getText());
             CourseAssignmentDto dto = studentCourses.get(tblCourseAssignment.getSelectedRow());
             
+            boolean alreadyPaid = hasAlreadyPaid(studentId, dto.getCourseId());
+            if(alreadyPaid){
+                JOptionPane.showMessageDialog(null, "This account has already paid for this course");
+                return;
+            }
+            
             System.out.println("student id : " + strStudentID + " course id " + dto.getCourseId());
             this.courseRepository.removeStudentCourse(studentId, dto.getCourseId());
 
@@ -494,18 +501,9 @@ public class AssignClass extends javax.swing.JFrame {
     private javax.swing.JTextField txtFieldStudentId;
     // End of variables declaration//GEN-END:variables
 
-//    private void modifyTableConfigurations() {
-//
-//        JTableHeader th = tblCourses.getTableHeader();
-//        th.setFont(new Font("Serif", Font.BOLD, 15));
-//
-//        CenterCellRenderer centerRenderer = new CenterCellRenderer();
-//
-//        tblCourses.getColumnModel().getColumn(0).setCellRenderer(centerRenderer);
-//        tblCourses.getColumnModel().getColumn(1).setCellRenderer(centerRenderer);
-//        tblCourses.getColumnModel().getColumn(2).setCellRenderer(centerRenderer);
-//
-//        tblCourses.getColumnModel().getColumn(3).setCellRenderer(new TableActionCellRender("./delete.png", event));
-//        tblCourses.getColumnModel().getColumn(3).setCellEditor(new TableActionCellEditor("./delete.png", event));
-//    }
+    private boolean hasAlreadyPaid(int studentId, int courseId) throws SQLException {
+        return this.courseRepository.hasStudentPaidForCourse(studentId, courseId);
+    }
+
+
 }

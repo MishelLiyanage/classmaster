@@ -159,4 +159,21 @@ public class CourseRepository implements Component {
 
     }
 
+    public boolean hasStudentPaidForCourse(int studentId, int courseId) throws SQLException {
+        String query = "select count(cap.amount) as total_payment"
+                + " from CourseAssignmentPayment cap"
+                + " where cap.studentId = ? and cap.courseId = ?";
+        Object[] params = {studentId, courseId};
+
+        ResultSet rs = dBConnection.execute(query, params);
+
+        int count = 0;
+        while (rs.next()) {
+            count = rs.getInt("total_payment");
+        }
+
+        return count > 0;
+
+    }
+
 }

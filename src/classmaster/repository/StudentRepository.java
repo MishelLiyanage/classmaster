@@ -84,6 +84,26 @@ public class StudentRepository implements Component {
         
         return studentCourse;
     }
+    
+    public List<StudentCourseDto> getAllStudentCourses(int studentID) throws SQLException {
+        List<StudentCourseDto> studentCourse = new ArrayList<>();
+        
+        Object[] params = {studentID};
+        ResultSet rs = dBConnection.execute("SELECT c.id, c.name AS courseName"
+                + " FROM course c"
+                + " JOIN courseAssignment ca ON c.id = ca.courseID"
+                + " WHERE ca.studentID = ?", params);
+        
+        while (rs.next()) {
+            StudentCourseDto sc = new StudentCourseDto();
+            sc.setCourseID(rs.getInt("id"));
+            sc.setCourseName(rs.getString("courseName"));
+        
+            studentCourse.add(sc);
+        }
+        
+        return studentCourse;
+    }
 
     @Override
     public String getName() {

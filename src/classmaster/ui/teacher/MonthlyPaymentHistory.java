@@ -11,7 +11,10 @@ import classmaster.repository.ComponentRegistry;
 import classmaster.repository.CourseStudentPaymentRepository;
 import classmaster.utils.Page;
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.time.Month;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
@@ -54,6 +57,11 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
 
 //        teacherId = this.authRepository.getCurrentAccount().getId();
         teacherId = 5;
+        cbChartType.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                loadChart();
+            }
+        });
 
     }
 
@@ -64,7 +72,7 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
 
         summary = this.paymentRepository.getTeacherMonthlyPaymentSummary(teacherId, year, month);
         updateTable(summary);
-        drawChart();
+        loadChart();
 
     }
 
@@ -83,19 +91,44 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
         }
     }
 
-    private void drawChart() {
+    public void loadChart() {
 
-        CategoryDataset dataset = createDataset();
+        if (summary.size() == 0) {
+            System.out.println("No data to show");
+            return;
+        }
 
-        JFreeChart chart = ChartFactory.createBarChart(
-                "Monthly Income", //Chart Title  
-                "Month", // Category axis  
-                "Income", // Value axis  
-                dataset,
-                PlotOrientation.VERTICAL,
-                true, true, false
-        );
+        if (String.valueOf(cbChartType.getSelectedItem()).equalsIgnoreCase("salary")) {
+            CategoryDataset dataset = createSalaryDataset();
 
+            JFreeChart chart = ChartFactory.createBarChart(
+                    "Income for Month : " + Month.of(monthChooser.getMonth() + 1).name(), //Chart Title  
+                    "Month", // Category axis  
+                    "Income", // Value axis  
+                    dataset,
+                    PlotOrientation.VERTICAL,
+                    true, true, false
+            );
+
+            drawChart(dataset, chart);
+        } else if (String.valueOf(cbChartType.getSelectedItem()).equalsIgnoreCase("student count")) {
+            CategoryDataset dataset = createStudentCount();
+
+            JFreeChart chart = ChartFactory.createBarChart(
+                    "Total Students for Month : " + Month.of(monthChooser.getMonth() + 1).name(), //Chart Title  
+                    "Month", // Category axis  
+                    "Total Students", // Value axis  
+                    dataset,
+                    PlotOrientation.VERTICAL,
+                    true, true, false
+            );
+
+            drawChart(dataset, chart);
+        }
+
+    }
+
+    private void drawChart(CategoryDataset dataset, JFreeChart chart) {
         ChartPanel panel = new ChartPanel(chart);
         panelCharts.removeAll();
         panelCharts.add(panel, BorderLayout.CENTER);
@@ -103,11 +136,21 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
 
     }
 
-    private CategoryDataset createDataset() {
+    private CategoryDataset createSalaryDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         for (TeacherClassPaymentSummaryDto dto : summary) {
             dataset.addValue(dto.getTotalIncome(), "", dto.getCourseName());
+        }
+
+        return dataset;
+    }
+
+    private CategoryDataset createStudentCount() {
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+
+        for (TeacherClassPaymentSummaryDto dto : summary) {
+            dataset.addValue(dto.getTotalStudents(), "", dto.getCourseName());
         }
 
         return dataset;
@@ -133,6 +176,9 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblMoPaySummary = new classmaster.ui.component.darktable.TableDark();
+        jPanel2 = new javax.swing.JPanel();
+        panelChartMenu = new javax.swing.JPanel();
+        cbChartType = new javax.swing.JComboBox<>();
         panelCharts = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -212,7 +258,7 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 915, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
+                .addContainerGap(35, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -224,8 +270,43 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Summary", jPanel3);
 
+        cbChartType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Salary", "Student Count" }));
+
+        javax.swing.GroupLayout panelChartMenuLayout = new javax.swing.GroupLayout(panelChartMenu);
+        panelChartMenu.setLayout(panelChartMenuLayout);
+        panelChartMenuLayout.setHorizontalGroup(
+            panelChartMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelChartMenuLayout.createSequentialGroup()
+                .addContainerGap(754, Short.MAX_VALUE)
+                .addComponent(cbChartType, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
+        );
+        panelChartMenuLayout.setVerticalGroup(
+            panelChartMenuLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelChartMenuLayout.createSequentialGroup()
+                .addComponent(cbChartType, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 11, Short.MAX_VALUE))
+        );
+
         panelCharts.setLayout(new java.awt.BorderLayout());
-        jTabbedPane1.addTab("Charts", panelCharts);
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelChartMenu, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelCharts, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(panelChartMenu, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelCharts, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 376, Short.MAX_VALUE))
+        );
+
+        jTabbedPane1.addTab("Charts", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -270,14 +351,17 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
+    private javax.swing.JComboBox<String> cbChartType;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private com.toedter.calendar.JMonthChooser monthChooser;
+    private javax.swing.JPanel panelChartMenu;
     private javax.swing.JPanel panelCharts;
     private classmaster.ui.component.darktable.TableDark tblMoPaySummary;
     private com.toedter.calendar.JYearChooser yearChooser;

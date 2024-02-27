@@ -94,3 +94,17 @@ CREATE TABLE Attendance (
     FOREIGN KEY (student_id) REFERENCES Student (id),
     FOREIGN KEY (course_id) REFERENCES Course (id)
 );
+
+
+CREATE TABLE Teacher_Class_Payment (
+    teacher_id INT,
+    class_id INT,
+    year INT,
+    month INT,
+    total_students INT,
+    total_income DOUBLE,
+    total_salary DOUBLE,
+    PRIMARY KEY (teacher_id, class_id, year, month),
+    FOREIGN KEY (teacher_id) REFERENCES Teacher (id),
+    FOREIGN KEY (class_id) REFERENCES Course (id)
+);

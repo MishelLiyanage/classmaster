@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class MarkAttendence extends javax.swing.JFrame {
@@ -41,7 +42,6 @@ public class MarkAttendence extends javax.swing.JFrame {
         tblClasses.fixTable(jScrollPane3);
 
         courseDatePanel.setVisible(false);
-        footerPanel.setVisible(false);
         btnCancel.setVisible(false);
 
         Component Component = ComponentRegistry.getInstance()
@@ -117,7 +117,8 @@ public class MarkAttendence extends javax.swing.JFrame {
             });
         }
 
-        footerPanel.setVisible(studentAttendance.size() > 0);
+        btnEdit.setVisible(studentAttendance.size() > 0);
+        btnDelete.setVisible(studentAttendance.size() > 0);
     }
 
     /**
@@ -129,44 +130,72 @@ public class MarkAttendence extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jLabel1 = new javax.swing.JLabel();
-        jPanel4 = new javax.swing.JPanel();
+        jPanel1 = new javax.swing.JPanel();
+        jPanel5 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         txtFieldStudentId = new javax.swing.JTextField();
         btnStuSearch = new javax.swing.JButton();
         courseDatePanel = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
-        cbClasses = new javax.swing.JComboBox<>();
-        jLabel3 = new javax.swing.JLabel();
-        dateTimePicker = new com.github.lgooddatepicker.components.DateTimePicker();
-        btnMark = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         lblNameInfo = new javax.swing.JLabel();
-        btnCancel = new javax.swing.JButton();
+        jLabel4 = new javax.swing.JLabel();
+        cbClasses = new javax.swing.JComboBox<>();
         lblCourseInfo = new javax.swing.JLabel();
-        btnCancel1 = new javax.swing.JButton();
-        tblPanel = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
+        dateTimePicker = new com.github.lgooddatepicker.components.DateTimePicker();
+        btnCancel = new javax.swing.JButton();
+        btnMark = new javax.swing.JButton();
+        jLabel7 = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tblClasses = new classmaster.ui.component.darktable.TableDark();
-        jLabel7 = new javax.swing.JLabel();
-        footerPanel = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
         btnEdit = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        btnCancel1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ClassMaster");
         setBackground(new java.awt.Color(0, 51, 153));
         setResizable(false);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setText("Mark Attendence");
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setForeground(new java.awt.Color(255, 255, 255));
 
-        jPanel4.setBackground(new java.awt.Color(0, 51, 102));
+        jPanel5.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel5.setForeground(new java.awt.Color(51, 51, 51));
 
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setText("Mark Attendence");
+
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/classmaster/images/logo/teacher.jpg"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(27, 27, 27)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(31, 31, 31)
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 22, Short.MAX_VALUE))
+        );
+
+        jPanel6.setBackground(new java.awt.Color(241, 254, 241));
+
         jLabel2.setText("Student Id");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
         txtFieldStudentId.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -174,57 +203,53 @@ public class MarkAttendence extends javax.swing.JFrame {
             }
         });
 
-        btnStuSearch.setBackground(new java.awt.Color(204, 204, 204));
-        btnStuSearch.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnStuSearch.setText("Search");
+        btnStuSearch.setBackground(new java.awt.Color(0, 153, 153));
+        btnStuSearch.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnStuSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnStuSearchActionPerformed(evt);
             }
         });
 
-        courseDatePanel.setBackground(new java.awt.Color(0, 51, 101));
+        courseDatePanel.setBackground(new java.awt.Color(241, 254, 241));
 
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("Student Info");
+        jLabel5.setBackground(new java.awt.Color(0, 51, 102));
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+
+        jLabel6.setText("Name");
+        jLabel6.setBackground(new java.awt.Color(0, 51, 102));
+
+        lblNameInfo.setText("Name");
+        lblNameInfo.setBackground(new java.awt.Color(0, 51, 102));
+
         jLabel4.setText("Course");
 
         cbClasses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
+        lblCourseInfo.setText("Name");
+        lblCourseInfo.setBackground(new java.awt.Color(0, 51, 102));
+
         jLabel3.setText("Date");
 
-        btnMark.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnMark.setText("Mark");
-        btnMark.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnMarkActionPerformed(evt);
-            }
-        });
-
-        jLabel5.setBackground(new java.awt.Color(0, 51, 102));
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Student Info");
-
-        jLabel6.setBackground(new java.awt.Color(0, 51, 102));
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("Name");
-
-        lblNameInfo.setBackground(new java.awt.Color(0, 51, 102));
-        lblNameInfo.setForeground(new java.awt.Color(255, 255, 255));
-        lblNameInfo.setText("Name");
-
-        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnCancel.setText("Cancel");
+        btnCancel.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnCancel.setForeground(new java.awt.Color(0, 153, 153));
         btnCancel.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCancelActionPerformed(evt);
             }
         });
 
-        lblCourseInfo.setBackground(new java.awt.Color(0, 51, 102));
-        lblCourseInfo.setForeground(new java.awt.Color(255, 255, 255));
-        lblCourseInfo.setText("Name");
+        btnMark.setText("Mark");
+        btnMark.setBackground(new java.awt.Color(0, 153, 153));
+        btnMark.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        btnMark.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMarkActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout courseDatePanelLayout = new javax.swing.GroupLayout(courseDatePanel);
         courseDatePanel.setLayout(courseDatePanelLayout);
@@ -233,31 +258,34 @@ public class MarkAttendence extends javax.swing.JFrame {
             .addGroup(courseDatePanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(courseDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(courseDatePanelLayout.createSequentialGroup()
-                        .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(lblNameInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(courseDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, courseDatePanelLayout.createSequentialGroup()
-                            .addComponent(btnCancel)
-                            .addGap(18, 18, 18)
-                            .addComponent(btnMark))
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, courseDatePanelLayout.createSequentialGroup()
-                            .addGroup(courseDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addGroup(courseDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblCourseInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(courseDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 163, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(265, 265, 265))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, courseDatePanelLayout.createSequentialGroup()
+                        .addGroup(courseDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(courseDatePanelLayout.createSequentialGroup()
+                                .addComponent(btnCancel)
+                                .addGap(36, 36, 36)
+                                .addComponent(btnMark))
+                            .addGroup(courseDatePanelLayout.createSequentialGroup()
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 95, Short.MAX_VALUE)
+                                .addComponent(dateTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 295, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, courseDatePanelLayout.createSequentialGroup()
+                                .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(18, 18, 18)
                                 .addGroup(courseDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(cbClasses, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(dateTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))))))
-                .addContainerGap(22, Short.MAX_VALUE))
+                                    .addComponent(lblCourseInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(cbClasses, 0, 295, Short.MAX_VALUE)
+                                    .addComponent(lblNameInfo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addContainerGap())))
         );
         courseDatePanelLayout.setVerticalGroup(
             courseDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(courseDatePanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jLabel5)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(courseDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -268,67 +296,54 @@ public class MarkAttendence extends javax.swing.JFrame {
                     .addComponent(cbClasses, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(lblCourseInfo)
-                .addGap(27, 27, 27)
+                .addComponent(lblCourseInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(courseDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(dateTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(29, 29, 29)
+                    .addComponent(dateTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(31, 31, 31)
                 .addGroup(courseDatePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnMark)
                     .addComponent(btnCancel))
-                .addContainerGap(59, Short.MAX_VALUE))
-        );
-
-        btnCancel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        btnCancel1.setText("Back");
-        btnCancel1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancel1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(txtFieldStudentId, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(69, 69, 69)
-                        .addComponent(btnStuSearch))
-                    .addComponent(courseDatePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 16, Short.MAX_VALUE))
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnCancel1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(34, 34, 34)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtFieldStudentId, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnStuSearch, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addGap(25, 25, 25)
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtFieldStudentId, javax.swing.GroupLayout.PREFERRED_SIZE, 127, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnStuSearch)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(courseDatePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(117, 117, 117)
-                .addComponent(btnCancel1)
-                .addGap(15, 15, 15))
+                .addGap(9, 9, 9))
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel2)
+                    .addComponent(txtFieldStudentId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnStuSearch))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addComponent(courseDatePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 10, Short.MAX_VALUE))
         );
 
-        tblPanel.setBackground(new java.awt.Color(0, 51, 102));
+        jLabel7.setText("Attendance History");
+        jLabel7.setFont(new java.awt.Font("Segoe UI Symbol", 0, 20)); // NOI18N
+        jLabel7.setForeground(new java.awt.Color(0, 51, 51));
 
         tblClasses.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Date", "Time", "Class Started Time", "Late"
@@ -336,114 +351,98 @@ public class MarkAttendence extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(tblClasses);
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Attendance History");
-
-        javax.swing.GroupLayout tblPanelLayout = new javax.swing.GroupLayout(tblPanel);
-        tblPanel.setLayout(tblPanelLayout);
-        tblPanelLayout.setHorizontalGroup(
-            tblPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tblPanelLayout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addGroup(tblPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(25, Short.MAX_VALUE))
-        );
-        tblPanelLayout.setVerticalGroup(
-            tblPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(tblPanelLayout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 357, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(47, Short.MAX_VALUE))
-        );
-
-        footerPanel.setBackground(new java.awt.Color(0, 51, 102));
-
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setText("Delete");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-
-        btnEdit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnEdit.setText("Edit");
+        btnEdit.setBackground(new java.awt.Color(0, 153, 153));
+        btnEdit.setFont(new java.awt.Font("Segoe UI Symbol", 0, 14)); // NOI18N
+        btnEdit.setForeground(new java.awt.Color(255, 255, 255));
         btnEdit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEditActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout footerPanelLayout = new javax.swing.GroupLayout(footerPanel);
-        footerPanel.setLayout(footerPanelLayout);
-        footerPanelLayout.setHorizontalGroup(
-            footerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, footerPanelLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnEdit)
-                .addGap(26, 26, 26)
-                .addComponent(jButton1)
-                .addGap(25, 25, 25))
+        btnDelete.setText("Delete");
+        btnDelete.setBackground(new java.awt.Color(204, 0, 0));
+        btnDelete.setFont(new java.awt.Font("Segoe UI Symbol", 1, 13)); // NOI18N
+        btnDelete.setForeground(new java.awt.Color(255, 255, 255));
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
+        btnCancel1.setText("Back");
+        btnCancel1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        btnCancel1.setForeground(new java.awt.Color(0, 153, 153));
+        btnCancel1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancel1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(btnCancel1)
+                .addGap(0, 770, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 818, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnEdit)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnDelete)
+                        .addGap(26, 26, 26))))
+            .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        footerPanelLayout.setVerticalGroup(
-            footerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(footerPanelLayout.createSequentialGroup()
-                .addGroup(footerPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(btnEdit))
-                .addGap(0, 19, Short.MAX_VALUE))
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnEdit)
+                    .addComponent(btnDelete))
+                .addGap(12, 12, 12)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(btnCancel1)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(tblPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(footerPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(tblPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(footerPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtFieldStudentIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFieldStudentIdActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtFieldStudentIdActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
         try {
             // TODO add your handling code here:
 
             if (tblClasses.getSelectedRow() < 0) {
-                System.out.println("select a row before delete");
+                JOptionPane.showMessageDialog(rootPane, "Select an attendence record to delete");
                 return;
             }
 
@@ -466,8 +465,8 @@ public class MarkAttendence extends javax.swing.JFrame {
             LocalDate date = LocalDate.parse(strDate);
 
             System.out.println(" student id : " + studentId
-                    + " selectd course " + selectedCourseDto.getCourseId()
-                    + " date : " + date
+                + " selectd course " + selectedCourseDto.getCourseId()
+                + " date : " + date
             );
 
             int status = this.attendanceRepository.deleteAttendace(studentId, selectedCourseDto.getCourseId(), date);
@@ -482,8 +481,45 @@ public class MarkAttendence extends javax.swing.JFrame {
             ex.printStackTrace();
         }
 
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+
+        if (tblClasses.getSelectedRow() < 0) {
+            JOptionPane.showMessageDialog(rootPane, "Select an attendence record to edit");
+            return;
+        }
+
+        String stStr = String.valueOf(tblClasses.getModel().getValueAt(tblClasses.getSelectedRow(), 0));
+        LocalDate selectedRowLocalDate = LocalDate.parse(stStr);
+
+        StudentCourseAttendance selectedAttendance = null;
+        for (StudentCourseAttendance sca : studentAttendance) {
+            if (sca.getAttendDate().isEqual(selectedRowLocalDate)) {
+                selectedAttendance = sca;
+                break;
+            }
+        }
+
+        if (selectedAttendance == null) {
+            System.out.println("-- selected attendance cannot found ---");
+            return;
+        }
+
+        btnCancel.setVisible(true);
+        tblClasses.setEnabled(false);
+        cbClasses.setEnabled(false);
+        txtFieldStudentId.setEnabled(false);
+
+        dateTimePicker.setDateTimePermissive(selectedAttendance.getAttendDate().atTime(selectedAttendance.getAttendTime()));
+
+    }//GEN-LAST:event_btnEditActionPerformed
+
+    private void btnCancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancel1ActionPerformed
+        // TODO add your handling code here:
+        this.page.onChildPageClose();
+        this.dispose();
+    }//GEN-LAST:event_btnCancel1ActionPerformed
 
     private void btnStuSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStuSearchActionPerformed
         try {
@@ -506,20 +542,11 @@ public class MarkAttendence extends javax.swing.JFrame {
         } catch (SQLException ex) {
             Logger.getLogger(MarkAttendence.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }//GEN-LAST:event_btnStuSearchActionPerformed
 
-    private CourseAssignmentDto getSelectedCourseDto(String selectedCourse) {
-        CourseAssignmentDto selectedCourseDto = null;
-        for (CourseAssignmentDto dto : studentCourse) {
-            if (selectedCourse.equals(dto.getCourseName())) {
-                selectedCourseDto = dto;
-                break;
-            }
-        }
-
-        return selectedCourseDto;
-    }
+    private void txtFieldStudentIdActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFieldStudentIdActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtFieldStudentIdActionPerformed
 
     private void btnMarkActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMarkActionPerformed
 
@@ -556,50 +583,22 @@ public class MarkAttendence extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnMarkActionPerformed
 
-    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
-
-        if (tblClasses.getSelectedRow() < 0) {
-            System.out.println("select a row before delete");
-            return;
-        }
-
-        String stStr = String.valueOf(tblClasses.getModel().getValueAt(tblClasses.getSelectedRow(), 0));
-        LocalDate selectedRowLocalDate = LocalDate.parse(stStr);
-
-        StudentCourseAttendance selectedAttendance = null;
-        for (StudentCourseAttendance sca : studentAttendance) {
-            if (sca.getAttendDate().isEqual(selectedRowLocalDate)) {
-                selectedAttendance = sca;
-                break;
-            }
-        }
-
-        if (selectedAttendance == null) {
-            System.out.println("-- selected attendance cannot found ---");
-            return;
-        }
-
-        btnCancel.setVisible(true);
-        tblClasses.setEnabled(false);
-        cbClasses.setEnabled(false);
-        txtFieldStudentId.setEnabled(false);
-
-        dateTimePicker.setDateTimePermissive(selectedAttendance.getAttendDate().atTime(selectedAttendance.getAttendTime()));
-
-
-    }//GEN-LAST:event_btnEditActionPerformed
-
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         clean();
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelActionPerformed
 
-    private void btnCancel1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancel1ActionPerformed
-        // TODO add your handling code here:
-        this.page.onChildPageClose();
-        this.dispose();
+    private CourseAssignmentDto getSelectedCourseDto(String selectedCourse) {
+        CourseAssignmentDto selectedCourseDto = null;
+        for (CourseAssignmentDto dto : studentCourse) {
+            if (selectedCourse.equals(dto.getCourseName())) {
+                selectedCourseDto = dto;
+                break;
+            }
+        }
 
-    }//GEN-LAST:event_btnCancel1ActionPerformed
+        return selectedCourseDto;
+    }
 
     private void clean() {
         btnCancel.setVisible(false);
@@ -622,27 +621,28 @@ public class MarkAttendence extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancel;
     private javax.swing.JButton btnCancel1;
+    private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnEdit;
     private javax.swing.JButton btnMark;
     private javax.swing.JButton btnStuSearch;
     private javax.swing.JComboBox<String> cbClasses;
     private javax.swing.JPanel courseDatePanel;
     private com.github.lgooddatepicker.components.DateTimePicker dateTimePicker;
-    private javax.swing.JPanel footerPanel;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JPanel jPanel4;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblCourseInfo;
     private javax.swing.JLabel lblNameInfo;
     private classmaster.ui.component.darktable.TableDark tblClasses;
-    private javax.swing.JPanel tblPanel;
     private javax.swing.JTextField txtFieldStudentId;
     // End of variables declaration//GEN-END:variables
 

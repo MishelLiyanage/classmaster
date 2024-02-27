@@ -369,6 +369,8 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
 
     private void btnSearch1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearch1ActionPerformed
         // TODO add your handling code here:
+        this.page.onChildPageClose();
+        this.dispose();
     }//GEN-LAST:event_btnSearch1ActionPerformed
 
 

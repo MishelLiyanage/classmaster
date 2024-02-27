@@ -154,7 +154,7 @@ public class StaffHomePage extends javax.swing.JFrame implements Page {
     }//GEN-LAST:event_jMnuItmMarkAttendenceActionPerformed
 
     private void jMnuItmStudentPaymentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuItmStudentPaymentActionPerformed
-        new StudentPayment().setVisible(true);
+        new StudentPayment(this).setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_jMnuItmStudentPaymentActionPerformed
 

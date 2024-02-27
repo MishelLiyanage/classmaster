@@ -19,6 +19,10 @@ public class StudentCourseAttendance {
     
     private int studentId;
     
+    private String firstName;
+    
+    private String lastName;
+    
     private LocalTime courseStartTime;
     
     private String day;
@@ -26,7 +30,24 @@ public class StudentCourseAttendance {
     private LocalTime attendTime;
     
     private LocalDate attendDate;
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
   
+    
     public int getCourseId() {
         return courseId;
     }

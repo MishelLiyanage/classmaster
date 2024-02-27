@@ -9,6 +9,7 @@ import classmaster.repository.AuthRepository;
 import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
 import classmaster.repository.TeacherRepository;
+import classmaster.utils.Page;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.sql.SQLException;
@@ -33,8 +34,9 @@ public class ViewClassCharts extends javax.swing.JFrame {
     private TeacherRepository teacherRepository;
     private AuthRepository authRepository;
     private List<CourseNoOfStudentsDto> courseNoOfStudents;
+    private Page page;
 
-    public ViewClassCharts() {
+    public ViewClassCharts(Page page) {
 
         Component teacherComponent = ComponentRegistry.getInstance()
                 .getComponent("TeacherRepository");
@@ -49,6 +51,8 @@ public class ViewClassCharts extends javax.swing.JFrame {
         if (Component instanceof AuthRepository) {
             this.authRepository = (AuthRepository) Component;
         }
+        
+        this.page = page;
 
         initComponents();
         getContentPane().setBackground(new Color(30, 30, 30));
@@ -191,10 +195,12 @@ public class ViewClassCharts extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        this.page.onChildPageClose();
+        this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void displayAsChart() {
@@ -251,8 +257,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
     }
 
     public void loadCourseNoOfStudents() {
-//        int teacherID = this.authRepository.getCurrentAccount().getId();
-        int teacherID = 5;
+        int teacherID = this.authRepository.getCurrentAccount().getId();
 
         try {
             courseNoOfStudents = this.teacherRepository.getAllCourseNoOfStudents(teacherID);

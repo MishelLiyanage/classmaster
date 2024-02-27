@@ -144,6 +144,11 @@ public class AssignClass extends javax.swing.JFrame {
         lblClasses.setText("Class");
 
         cbClasses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbClasses.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbClassesActionPerformed(evt);
+            }
+        });
 
         btnCreate.setText("Assign");
         btnCreate.addActionListener(new java.awt.event.ActionListener() {
@@ -321,6 +326,10 @@ public class AssignClass extends javax.swing.JFrame {
         this.page.onChildPageClose();
         this.dispose();
     }//GEN-LAST:event_btnBackActionPerformed
+
+    private void cbClassesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbClassesActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbClassesActionPerformed
 
     public void loadStudentCourse(int studentId) throws SQLException {
         studentCourses = this.courseRepository.getAllStudentCourses(studentId);

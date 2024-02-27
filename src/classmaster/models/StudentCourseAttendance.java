@@ -12,21 +12,21 @@ import java.time.LocalTime;
  * @author bhagy
  */
 public class StudentCourseAttendance {
-
+    
     private int courseId;
-
+    
     private String courseName;
-
+    
     private int studentId;
-
+    
     private LocalTime courseStartTime;
-
+    
     private String day;
-
+    
     private LocalTime attendTime;
-
+    
     private LocalDate attendDate;
-
+  
     public int getCourseId() {
         return courseId;
     }

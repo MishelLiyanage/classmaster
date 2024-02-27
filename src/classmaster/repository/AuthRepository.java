@@ -139,6 +139,13 @@ public class AuthRepository implements Component {
     public Account getCurrentAccount() {
         return currentLoggedAccount;
     }
+    
+    public void changePassword(String newPassword, String id) throws SQLException{
+        Object[] params = {newPassword, id};
+        dbCOnnection.executeUpdate("UPDATE account "
+                + "SET password = ?"
+                + "WHERE id = ?", params);
+    }
 
     @Override
     public String getName() {

@@ -74,6 +74,32 @@ public class AttendanceRepository implements Component {
 
         return result;
     }
+    
+    public List<StudentCourseAttendance> findAllStudentCourseAttendance(int studentId, int courseId, int year, int month) throws SQLException {
+        List<StudentCourseAttendance> result = new ArrayList();
+
+        Object[] params = {studentId, courseId, year, month};
+        ResultSet rs = dBConnection.execute("select a.student_id, a.course_id, a.attend_date, a.attend_time, c.name, c.fromTime, c.day"
+                + " from Attendance a inner join Course c on a.course_id = c.id and a.student_id = ? and c.id = ?"
+                + " where year(a.attend_date) = ? and month(a.attend_date) = ?"
+                + " order by a.attend_date desc, a.attend_time desc", params);
+
+        while (rs.next()) {
+            StudentCourseAttendance attendance = new StudentCourseAttendance();
+            attendance.setCourseId(rs.getInt("course_id"));
+            attendance.setStudentId(rs.getInt("student_id"));
+            attendance.setAttendDate(LocalDate.parse(rs.getString("attend_date")));
+            attendance.setAttendTime(LocalTime.parse(rs.getString("attend_time")));
+            attendance.setCourseName(rs.getString("name"));
+            attendance.setCourseStartTime(LocalTime.parse(rs.getString("fromTime")));
+            attendance.setDay(rs.getString("day"));
+
+            result.add(attendance);
+
+        }
+
+        return result;
+    }
 
     public int deleteAttendace(int studentId, int courseId, LocalDate date) throws SQLException {
 

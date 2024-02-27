@@ -17,6 +17,7 @@ public class Staff extends Account{
     public Staff(Account account) {
         this.setId(account.getId());
         this.setEmail(account.getEmail());
+        this.setPassword(account.getPassword());
         this.setFirstName(account.getFirstName());
         this.setLastName(account.getLastName());
         this.setDisplayName(account.getDisplayName());

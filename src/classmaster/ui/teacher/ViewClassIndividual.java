@@ -4,13 +4,30 @@
  */
 package classmaster.ui.teacher;
 
+import classmaster.models.TeacherCourseDto;
+import classmaster.repository.AuthRepository;
+import classmaster.repository.Component;
+import classmaster.repository.ComponentRegistry;
+import classmaster.repository.TeacherRepository;
 import classmaster.utils.Page;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Mishel Fernando
  */
 public class ViewClassIndividual extends javax.swing.JFrame {
+    private AuthRepository authRepository;
+    private TeacherRepository teacherRepository;
+    private List<TeacherCourseDto> teacherCourse;
+    private TeacherCourseDto selectedCourse;
+    private List<TeacherCourseDto> teacherCourseStudent;
+    private List<TeacherCourseDto> teacherCourseAllStudent;
     private Page page;
     
 
@@ -18,10 +35,49 @@ public class ViewClassIndividual extends javax.swing.JFrame {
      * Creates new form ViewClassIndividual
      */
     public ViewClassIndividual(Page page) {
+        Component component = ComponentRegistry.getInstance()
+                .getComponent("AuthRepository");
+        
+        if (component instanceof AuthRepository) {
+            this.authRepository = (AuthRepository) component;
+        }
+        
+        Component teachercomponent = ComponentRegistry.getInstance()
+                .getComponent("TeacherRepository");
+        
+        if (teachercomponent instanceof TeacherRepository) {
+            this.teacherRepository = (TeacherRepository) teachercomponent;
+        }
         this.page = page;
         
         initComponents();
+        
+        panelAfterSearched.setVisible(false);
+        loadAllTeacherCourses();
     }
+    
+    public void loadAllTeacherCourses(){
+        int teacherID = this.authRepository.getCurrentAccount().getId();
+        
+        try {
+            teacherCourse = this.teacherRepository.getAllTeacherCourses(teacherID);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewClassIndividual.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        displayClassesComboBox(teacherCourse);
+    }
+    
+    private void displayClassesComboBox(List<TeacherCourseDto> teacherCourse) {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cbcourses.getModel();
+        model.removeAllElements();
+        for (TeacherCourseDto crs : teacherCourse) {
+            model.addElement(crs.getCourseName());
+            System.out.println(crs.getCourseID());
+        }
+        cbcourses.setModel(model);
+    }
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -34,26 +90,27 @@ public class ViewClassIndividual extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        txtStudentID = new javax.swing.JTextField();
         jButton1 = new javax.swing.JButton();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jLabel4 = new javax.swing.JLabel();
+        panelAfterSearched = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        individualStudentTable = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        allStudentsTable = new javax.swing.JTable();
         jButton2 = new javax.swing.JButton();
+        cbcourses = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ClassMaster");
         setResizable(false);
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jLabel1.setText("Physics - 2024");
+        jLabel1.setText("View Students");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel2.setText("Search by Student ID");
-
-        jTextField1.setText("jTextField1");
+        jLabel2.setText("Student ID");
 
         jButton1.setBackground(new java.awt.Color(0, 0, 102));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -65,7 +122,13 @@ public class ViewClassIndividual extends javax.swing.JFrame {
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel4.setText("Course ");
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jLabel3.setText("All Students Details");
+
+        individualStudentTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -76,12 +139,9 @@ public class ViewClassIndividual extends javax.swing.JFrame {
                 "Student ID", "Name", "Contact No"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(individualStudentTable);
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jLabel3.setText("All Students Details");
-
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        allStudentsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null},
                 {null, null, null},
@@ -92,7 +152,7 @@ public class ViewClassIndividual extends javax.swing.JFrame {
                 "Student ID", "Name", "Contact no"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(allStudentsTable);
 
         jButton2.setBackground(new java.awt.Color(0, 0, 102));
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -104,52 +164,76 @@ public class ViewClassIndividual extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout panelAfterSearchedLayout = new javax.swing.GroupLayout(panelAfterSearched);
+        panelAfterSearched.setLayout(panelAfterSearchedLayout);
+        panelAfterSearchedLayout.setHorizontalGroup(
+            panelAfterSearchedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelAfterSearchedLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelAfterSearchedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(panelAfterSearchedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 770, Short.MAX_VALUE)
+                        .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1)))
+                .addGap(16, 16, 16))
+        );
+        panelAfterSearchedLayout.setVerticalGroup(
+            panelAfterSearchedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAfterSearchedLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 293, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        cbcourses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+                .addContainerGap()
+                .addComponent(panelAfterSearched, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+            .addGroup(layout.createSequentialGroup()
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 178, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jScrollPane1)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(42, 42, 42)
-                                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(25, 25, 25))))
+                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtStudentID, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(58, 58, 58)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 87, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(cbcourses, javax.swing.GroupLayout.PREFERRED_SIZE, 177, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 89, Short.MAX_VALUE)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(24, 24, 24))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtStudentID, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbcourses, javax.swing.GroupLayout.DEFAULT_SIZE, 35, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(8, Short.MAX_VALUE))
+                .addComponent(panelAfterSearched, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -157,7 +241,50 @@ public class ViewClassIndividual extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
+        panelAfterSearched.setVisible(true);
+        String studentID = txtStudentID.getText();
+        String selectedClassName = String.valueOf(cbcourses.getSelectedItem());
+        
+        for (TeacherCourseDto c : teacherCourse) {
+            if (c.getCourseName().equalsIgnoreCase(selectedClassName)) {
+                selectedCourse = c;
+                break;
+            }
+        }
+        
+        String courseID = String.valueOf(selectedCourse.getCourseID());
+        String teacherID = String.valueOf(this.authRepository.getCurrentAccount().getId());
+        
+        try {
+            teacherCourseStudent = this.teacherRepository.getindividualStudent(studentID, courseID, teacherID);
+            teacherCourseAllStudent = this.teacherRepository.getCourseStudent(courseID, teacherID);
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewClassIndividual.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        DefaultTableModel individualStudentTableModel = (DefaultTableModel) individualStudentTable.getModel();
+        individualStudentTableModel.setRowCount(0);
+        
+        DefaultTableModel allStudentsTableModel = (DefaultTableModel) allStudentsTable.getModel();
+        allStudentsTableModel.setRowCount(0);
+        
+        for (TeacherCourseDto dto : teacherCourseStudent) {
+            System.out.println(dto);
+            individualStudentTableModel.addRow(new Object[]{dto.getStudentID(), dto.getStudentName(), dto.getContactNo()});
+        }
+        
+        for (TeacherCourseDto dto : teacherCourseAllStudent) {
+            System.out.println(dto);
+            allStudentsTableModel.addRow(new Object[]{dto.getStudentID(), dto.getStudentName(), dto.getContactNo()});
+        }
+        
+        if (!teacherCourseStudent.isEmpty()) {
+                individualStudentTable.setVisible(true);
+            }
+        
+        if (!teacherCourseAllStudent.isEmpty()) {
+                allStudentsTable.setVisible(true);
+            }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -201,15 +328,18 @@ public class ViewClassIndividual extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable allStudentsTable;
+    private javax.swing.JComboBox<String> cbcourses;
+    private javax.swing.JTable individualStudentTable;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
-    private javax.swing.JTextField jTextField1;
+    private javax.swing.JPanel panelAfterSearched;
+    private javax.swing.JTextField txtStudentID;
     // End of variables declaration//GEN-END:variables
 }

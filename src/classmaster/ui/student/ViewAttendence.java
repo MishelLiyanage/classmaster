@@ -110,6 +110,7 @@ public class ViewAttendence extends javax.swing.JFrame {
         jMonthChooser1 = new com.toedter.calendar.JMonthChooser();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("ClassMaster");
 
         jLabel1.setText("View Attendence");
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N

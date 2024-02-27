@@ -7,7 +7,6 @@ package classmaster.repository;
 import classmaster.models.Course;
 import classmaster.models.CourseAssignment;
 import classmaster.models.CourseAssignmentDto;
-import classmaster.models.Student;
 import classmaster.shared.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -109,7 +108,7 @@ public class CourseRepository implements Component {
 
         Object[] params = {studentId};
         ResultSet rs = dBConnection.execute("select c.*, ca.joinedDate, ca.studentId from CourseAssignment ca inner join Course c"
-                + " on c.id = ca.courseId and ca.studentId = ?", params);
+                + " on c.id = ca.courseId and ca.studentId = ? order by ca.joinedDate desc", params);
 
         while (rs.next()) {
             CourseAssignmentDto ca = new CourseAssignmentDto();
@@ -136,6 +135,28 @@ public class CourseRepository implements Component {
         };
 
         return dBConnection.executeUpdate(query, params);
+    }
+
+    public List<Course> getTeacherCourses(int teacherId) throws SQLException {
+
+        List<Course> courses = new ArrayList<>();
+
+        Object[] params = {teacherId};
+        ResultSet rs = dBConnection.execute("select * from Course where teacherId = ?", params);
+
+        while (rs.next()) {
+            Course course = new Course();
+            course.setId(rs.getInt("id"));
+            course.setName(rs.getString("name"));
+            course.setAmount(rs.getDouble("amount"));
+            course.setDay(rs.getString("day"));
+            course.setFrom(LocalTime.parse(rs.getString("fromTime")));
+            course.setTo(LocalTime.parse(rs.getString("toTime")));
+            courses.add(course);
+        }
+
+        return courses;
+
     }
 
 }

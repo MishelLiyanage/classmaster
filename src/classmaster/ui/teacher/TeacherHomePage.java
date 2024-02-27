@@ -125,7 +125,7 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
-        new PaymentHistory(this).setVisible(true);
+        new CoursePaymentHistory(this).setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 

@@ -6,6 +6,7 @@ package classmaster.repository;
 
 import classmaster.models.CourseNoOfStudentsDto;
 import classmaster.models.Teacher;
+import classmaster.models.TeacherClassPaymentSummaryDto;
 import classmaster.models.TeacherCourseDto;
 import classmaster.shared.DBConnection;
 import java.sql.ResultSet;
@@ -66,28 +67,29 @@ public class TeacherRepository implements Component {
         return dBConnection.executeUpdate(teacherInsertQuery, teacherParams);
 
     }
-    
+
     public List<CourseNoOfStudentsDto> getAllCourseNoOfStudents(int teacherID) throws SQLException {
         List<CourseNoOfStudentsDto> courseNoOfStudents = new ArrayList<>();
-        
+
         Object[] params = {teacherID};
         ResultSet rs = dBConnection.execute("SELECT c.id, c.name AS courseName, COUNT(ca.studentID) AS studentCount"
                 + " FROM course c"
                 + " JOIN courseAssignment ca ON c.id = ca.courseID"
                 + " WHERE c.teacherID = ?"
                 + " GROUP BY c.id, c.name", params);
-        
+
         while (rs.next()) {
             CourseNoOfStudentsDto cs = new CourseNoOfStudentsDto();
             cs.setCourseID(rs.getInt("id"));
             cs.setCourseName(rs.getString("courseName"));
             cs.setNoOfStudents(rs.getInt("studentCount"));
-        
+
             courseNoOfStudents.add(cs);
         }
-        
+
         return courseNoOfStudents;
     }
+
     
     public List<TeacherCourseDto> getAllTeacherCourses(int teacherID) throws SQLException {
         List<TeacherCourseDto> teacherCourse = new ArrayList<>();

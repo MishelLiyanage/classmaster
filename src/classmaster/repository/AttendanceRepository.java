@@ -74,7 +74,7 @@ public class AttendanceRepository implements Component {
 
         return result;
     }
-    
+
     public List<StudentCourseAttendance> findAllStudentCourseAttendance(int studentId, int courseId, int year, int month) throws SQLException {
         List<StudentCourseAttendance> result = new ArrayList();
 
@@ -110,9 +110,48 @@ public class AttendanceRepository implements Component {
             courseId,
             date
         };
-
         return dBConnection.executeUpdate(query, params);
+    }
 
+    public List<StudentCourseAttendance> getAttendanceForCourse(int courseId, LocalDate scheduledDate) throws SQLException {
+
+        String query = "with CourseDates as ("
+                + " select ? as attend_date"
+                + " ),"
+                + " StudentAllAttendance as ("
+                + " select ca.courseId, ca.studentId, cd.attend_date as scheduled_date"
+                + " from CourseAssignment ca cross join CourseDates cd"
+                + " where ca.courseId = ? )"
+                + " select ssa.courseId as course_id, ssa.studentId as student_id, acc.first_name, acc.last_name ,ssa.scheduled_date, a.attend_date, a.attend_time"
+                + " from StudentAllAttendance ssa"
+                + "	left join Attendance a on ssa.studentId = a.student_id and ssa.courseId = a.course_id"
+                + "		and ssa.scheduled_date = a.attend_date"
+                + " left join Account acc on ssa.studentId = acc.id"
+                + " order by ssa.studentId, ssa.scheduled_date";
+
+        Object[] params = {scheduledDate, courseId};
+
+        List<StudentCourseAttendance> result = new ArrayList();
+
+        ResultSet rs = dBConnection.execute(query, params);
+
+        while (rs.next()) {
+            StudentCourseAttendance attendance = new StudentCourseAttendance();
+            attendance.setCourseId(rs.getInt("course_id"));
+            attendance.setStudentId(rs.getInt("student_id"));
+            attendance.setFirstName(rs.getString("first_name"));
+            attendance.setLastName(rs.getString("last_name"));
+            if (rs.getString("attend_date") != null) {
+                attendance.setAttendDate(LocalDate.parse(rs.getString("attend_date")));
+            }
+            if (rs.getString("attend_time") != null) {
+                attendance.setAttendTime(LocalTime.parse(rs.getString("attend_time")));
+            }
+
+            result.add(attendance);
+        }
+
+        return result;
     }
 
 }

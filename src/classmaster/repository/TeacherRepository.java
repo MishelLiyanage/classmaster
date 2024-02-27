@@ -7,6 +7,7 @@ package classmaster.repository;
 import classmaster.models.CourseNoOfStudentsDto;
 import classmaster.models.Teacher;
 import classmaster.models.TeacherClassPaymentSummaryDto;
+import classmaster.models.TeacherCourseDto;
 import classmaster.shared.DBConnection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -89,6 +90,68 @@ public class TeacherRepository implements Component {
         return courseNoOfStudents;
     }
 
+    
+    public List<TeacherCourseDto> getAllTeacherCourses(int teacherID) throws SQLException {
+        List<TeacherCourseDto> teacherCourse = new ArrayList<>();
+        
+        Object[] params = {teacherID};
+        ResultSet rs = dBConnection.execute("SELECT c.id as courseID, c.name"
+                + " FROM course c"
+                + " WHERE teacherID = ?", params);
+        
+        while (rs.next()) {
+            TeacherCourseDto tc = new TeacherCourseDto();
+            tc.setCourseID(rs.getInt("courseID"));
+            tc.setCourseName(rs.getString("name"));
+        
+            teacherCourse.add(tc);
+        }
+        
+        return teacherCourse;
+    }
+    
+    public List<TeacherCourseDto> getindividualStudent(String studentID, String courseID, String teacherID) throws SQLException {
+        List<TeacherCourseDto> result = new ArrayList();
+        
+        Object[] params = {studentID, courseID, teacherID};
+        ResultSet rs = dBConnection.execute("SELECT c.id AS courseID, ca.studentID AS studentID, a.display_name AS StudentName, s.guardian_no AS GuardianNo"
+                + " FROM course c INNER JOIN courseAssignment ca INNER JOIN account a INNER JOIN student s"
+                + " on c.id = ca.courseId and ca.studentId = a.id and a.id = s.id"
+                + " where studentId = ? and courseId = ? and teacherId = ?",params);
+        
+        while (rs.next()) {
+            TeacherCourseDto tc = new TeacherCourseDto();
+            tc.setCourseID(rs.getInt("courseID"));
+            tc.setStudentID(rs.getInt("studentID"));
+            tc.setStudentName(rs.getString("StudentName"));
+            tc.setContactNo(rs.getString("GuardianNo"));
+            
+            result.add(tc);
+        }
+        return result;
+    }
+    
+    public List<TeacherCourseDto> getCourseStudent(String courseID, String teacherID) throws SQLException {
+        List<TeacherCourseDto> result = new ArrayList();
+        
+        Object[] params = {courseID, teacherID};
+        ResultSet rs = dBConnection.execute("SELECT c.id AS courseID, ca.studentID AS studentID, a.display_name AS StudentName, s.guardian_no AS GuardianNo"
+                + " FROM course c INNER JOIN courseAssignment ca INNER JOIN account a INNER JOIN student s"
+                + " on c.id = ca.courseId and ca.studentId = a.id and a.id = s.id"
+                + " where courseId = ? and teacherId = ?",params);
+        
+        while (rs.next()) {
+            TeacherCourseDto tc = new TeacherCourseDto();
+            tc.setCourseID(rs.getInt("courseID"));
+            tc.setStudentID(rs.getInt("studentID"));
+            tc.setStudentName(rs.getString("StudentName"));
+            tc.setContactNo(rs.getString("GuardianNo"));
+            
+            result.add(tc);
+        }
+        return result;
+    }
+    
     @Override
     public String getName() {
         return "TeacherRepository";

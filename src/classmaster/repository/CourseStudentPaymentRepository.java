@@ -32,7 +32,8 @@ public class CourseStudentPaymentRepository implements Component {
 
     private final String insertPaymentQuery = "INSERT INTO CourseAssignmentPayment\n"
             + "(studentId, courseId, amount, payingYear, payingMonth, paidDate)\n"
-            + "VALUES(?, ?, ?, ?, ?, ?);";
+            + "VALUES(?, ?, ?, ?, ?, ?)\n"
+            + "ON DUPLICATE KEY UPDATE courseId=?,payingYear=?, payingMonth=?;";
 
     private final String deletePaymentQuery = "DELETE FROM CourseAssignmentPayment\n"
             + "WHERE studentId=? AND courseId=? AND payingYear=? AND payingMonth=?;";
@@ -58,7 +59,10 @@ public class CourseStudentPaymentRepository implements Component {
             courseStudentPayment.getAmount(),
             courseStudentPayment.getPayingYear(),
             courseStudentPayment.getMonth(),
-            courseStudentPayment.getPaidDate()
+            courseStudentPayment.getPaidDate(),
+            courseStudentPayment.getCourseId(),
+            courseStudentPayment.getPayingYear(),
+            courseStudentPayment.getMonth()
         };
 
         return dBConnection.executeUpdate(insertPaymentQuery, params);

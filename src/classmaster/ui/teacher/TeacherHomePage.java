@@ -29,6 +29,7 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem1 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
 
@@ -69,6 +70,14 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
             }
         });
         jMenu1.add(jMenuItem4);
+
+        jMenuItem1.setText("Monthly Payment History");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu1.add(jMenuItem1);
 
         jMenuBar1.add(jMenu1);
 
@@ -139,6 +148,11 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
         setVisible(false);
     }//GEN-LAST:event_jMenuItem5ActionPerformed
 
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        new MonthlyPaymentHistory(this).setVisible(true);
+        setVisible(false);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -180,6 +194,7 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;

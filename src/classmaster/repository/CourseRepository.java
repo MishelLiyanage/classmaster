@@ -176,4 +176,21 @@ public class CourseRepository implements Component {
 
     }
 
+    public List<LocalDate> getCompletedCourseDates(int courseId, int year, int month) throws SQLException {
+
+        String query = "select distinct a.attend_date "
+                + " from Attendance a "
+                + " where year(a.attend_date) = ? and month(a.attend_date) = ? and a.course_id = ?"
+                + " order by a.attend_date";
+        Object[] params = {year, month, courseId};
+
+        ResultSet rs = dBConnection.execute(query, params);
+        List<LocalDate> classDates = new ArrayList<>();
+        while (rs.next()) {
+            System.out.println("---------------");
+            classDates.add(LocalDate.parse(rs.getString("attend_date")));
+        }
+        return classDates;
+    }
+   
 }

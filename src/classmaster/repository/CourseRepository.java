@@ -187,7 +187,6 @@ public class CourseRepository implements Component {
         ResultSet rs = dBConnection.execute(query, params);
         List<LocalDate> classDates = new ArrayList<>();
         while (rs.next()) {
-            System.out.println("---------------");
             classDates.add(LocalDate.parse(rs.getString("attend_date")));
         }
         return classDates;

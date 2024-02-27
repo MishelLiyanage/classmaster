@@ -177,4 +177,34 @@ public class CourseStudentPaymentRepository implements Component {
 
     }
 
+    public List<TeacherClassPaymentSummaryDto> getTeacherAnnualPaymentSummary(int teacherId, int year) throws SQLException {
+
+        String query = "select ca.courseId, c.name as course_name, c.amount as course_fee, cap.payingMonth as paying_month,"
+                + " sum(cap.amount) as total_income, count(*) as total_students, count(cap.amount) as paid_students"
+                + " FROM CourseAssignment ca"
+                + " INNER JOIN CourseAssignmentPayment cap ON ca.studentId = cap.studentId AND ca.courseId = cap.courseId"
+                + " and cap.payingYear = ? INNER JOIN Course c on ca.courseId = c.id"
+                + " where c.teacherId = ?"
+                + " group by ca.courseId, c.name, c.amount, cap.payingMonth"
+                + " order by cap.payingMonth";
+        Object[] params = { year, teacherId};
+        ResultSet rs = dBConnection.execute(query, params);
+
+        List<TeacherClassPaymentSummaryDto> result = new ArrayList<>();
+
+        while (rs.next()) {
+            TeacherClassPaymentSummaryDto teacherClassPaymentSummaryDto = new TeacherClassPaymentSummaryDto();
+            teacherClassPaymentSummaryDto.setCourseId(rs.getInt("courseId"));
+            teacherClassPaymentSummaryDto.setCourseName(rs.getString("course_name"));
+            teacherClassPaymentSummaryDto.setCourseFee(rs.getDouble("course_fee"));
+            teacherClassPaymentSummaryDto.setMonth(rs.getInt("paying_month"));
+            teacherClassPaymentSummaryDto.setTotalIncome(rs.getDouble("total_income"));
+            teacherClassPaymentSummaryDto.setTotalStudents(rs.getInt("total_students"));
+            teacherClassPaymentSummaryDto.setTotalPaidStudents(rs.getInt("paid_students"));
+            result.add(teacherClassPaymentSummaryDto);
+        }
+        return result;
+
+    }
+
 }

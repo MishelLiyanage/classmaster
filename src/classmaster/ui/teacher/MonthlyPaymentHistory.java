@@ -15,7 +15,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.Month;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -35,6 +38,7 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
     private AuthRepository authRepository;
     private int teacherId;
     private List<TeacherClassPaymentSummaryDto> summary;
+    private List<TeacherClassPaymentSummaryDto> annualSummary;
 
     /**
      * Creates new form MonthlyPaymentHistory
@@ -55,11 +59,20 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
             this.authRepository = (AuthRepository) Component;
         }
 
-        teacherId = this.authRepository.getCurrentAccount().getId();
-//        teacherId = 5;
+        summary = new ArrayList<>();
+        annualSummary = new ArrayList<>();
+
+//        teacherId = this.authRepository.getCurrentAccount().getId();
+        teacherId = 5;
         cbChartType.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 loadChart();
+            }
+        });
+        
+                cbChartAnnual.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                loadAnnualChart();
             }
         });
 
@@ -73,6 +86,13 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
         summary = this.paymentRepository.getTeacherMonthlyPaymentSummary(teacherId, year, month);
         updateTable(summary);
         loadChart();
+
+    }
+
+    public void loadAnnalSummary() throws SQLException {
+        int year = yearChooser.getYear();
+        annualSummary = this.paymentRepository.getTeacherAnnualPaymentSummary(teacherId, year);
+        loadAnnualChart();
 
     }
 
@@ -110,7 +130,7 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
                     true, true, false
             );
 
-            drawChart(dataset, chart);
+            drawChart(dataset, chart, panelCharts);
         } else if (String.valueOf(cbChartType.getSelectedItem()).equalsIgnoreCase("student count")) {
             CategoryDataset dataset = createStudentCount();
 
@@ -123,17 +143,56 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
                     true, true, false
             );
 
-            drawChart(dataset, chart);
+            drawChart(dataset, chart, panelCharts);
         }
 
     }
 
-    private void drawChart(CategoryDataset dataset, JFreeChart chart) {
-        ChartPanel panel = new ChartPanel(chart);
-        panelCharts.removeAll();
-        panelCharts.add(panel, BorderLayout.CENTER);
-        panelCharts.validate();
+    private void loadAnnualChart() {
 
+        if (annualSummary.size() == 0) {
+            System.out.println("No annual data to show");
+            return;
+        }
+
+        if (String.valueOf(cbChartAnnual.getSelectedItem()).equalsIgnoreCase("salary")) {
+            CategoryDataset dataset = createAnnualCourseIncomeDataSet();
+
+            JFreeChart chart = ChartFactory.createLineChart(
+                    "Income SUmmary for " + yearChooser.getYear(), //Chart Title  
+                    "Year", // Category axis  
+                    "Total Income", // Value axis  
+                    dataset,
+                    PlotOrientation.VERTICAL,
+                    true, true, false
+            );
+            drawChart(dataset, chart, panelAnnualReport);
+        } else if (String.valueOf(cbChartAnnual.getSelectedItem()).equalsIgnoreCase("student count")) {
+            CategoryDataset dataset = createAnnualCourseStudentCountDataSet();
+
+            JFreeChart chart = ChartFactory.createLineChart(
+                    "Total Paid Students for Year " + yearChooser.getYear(), //Chart Title  
+                    "Year", // Category axis  
+                    "Total Paid Students", // Value axis  
+                    dataset,
+                    PlotOrientation.VERTICAL,
+                    true, true, false
+            );
+
+            drawChart(dataset, chart, panelAnnualReport);
+        }
+    }
+
+    private void drawChart(CategoryDataset dataset, JFreeChart chart, javax.swing.JPanel displayPanel) {
+        ChartPanel panel = new ChartPanel(chart);
+
+        displayPanel.removeAll();
+        displayPanel.add(panel, BorderLayout.CENTER);
+        displayPanel.validate();
+
+//        panelCharts.removeAll();
+//        panelCharts.add(panel, BorderLayout.CENTER);
+//        panelCharts.validate();
     }
 
     private CategoryDataset createSalaryDataset() {
@@ -153,6 +212,29 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
             dataset.addValue(dto.getTotalStudents(), "", dto.getCourseName());
         }
 
+        return dataset;
+    }
+
+    private DefaultCategoryDataset createAnnualCourseIncomeDataSet() {
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (TeacherClassPaymentSummaryDto dto : annualSummary) {
+            if(dto.getMonth() > 0){
+                 dataset.addValue(dto.getTotalIncome(), dto.getCourseName(),
+                    Month.of(dto.getMonth()).getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+            }
+           
+        }
+        return dataset;
+    }
+
+    private DefaultCategoryDataset createAnnualCourseStudentCountDataSet() {
+
+        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
+        for (TeacherClassPaymentSummaryDto dto : annualSummary) {
+            dataset.addValue(dto.getTotalStudents(), dto.getCourseName(),
+                    Month.of(dto.getMonth()).getDisplayName(TextStyle.FULL, Locale.ENGLISH));
+        }
         return dataset;
     }
 
@@ -180,6 +262,10 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
         panelChartMenu = new javax.swing.JPanel();
         cbChartType = new javax.swing.JComboBox<>();
         panelCharts = new javax.swing.JPanel();
+        jPanel4 = new javax.swing.JPanel();
+        panelChartMenu1 = new javax.swing.JPanel();
+        cbChartAnnual = new javax.swing.JComboBox<>();
+        panelAnnualReport = new javax.swing.JPanel();
         btnSearch1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -309,6 +395,44 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Charts", jPanel2);
 
+        cbChartAnnual.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Salary", "Student Count" }));
+
+        javax.swing.GroupLayout panelChartMenu1Layout = new javax.swing.GroupLayout(panelChartMenu1);
+        panelChartMenu1.setLayout(panelChartMenu1Layout);
+        panelChartMenu1Layout.setHorizontalGroup(
+            panelChartMenu1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelChartMenu1Layout.createSequentialGroup()
+                .addContainerGap(772, Short.MAX_VALUE)
+                .addComponent(cbChartAnnual, javax.swing.GroupLayout.PREFERRED_SIZE, 189, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(30, 30, 30))
+        );
+        panelChartMenu1Layout.setVerticalGroup(
+            panelChartMenu1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelChartMenu1Layout.createSequentialGroup()
+                .addComponent(cbChartAnnual, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 11, Short.MAX_VALUE))
+        );
+
+        panelAnnualReport.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(panelChartMenu1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelAnnualReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addComponent(panelChartMenu1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(panelAnnualReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Annual Report", jPanel4);
+
         btnSearch1.setBackground(new java.awt.Color(0, 0, 102));
         btnSearch1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSearch1.setForeground(new java.awt.Color(255, 255, 255));
@@ -360,6 +484,7 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
         try {
             // TODO add your handling code here:
             loadSummary();
+            loadAnnalSummary();
 
         } catch (SQLException ex) {
             System.out.println("failed to get paid student for class");
@@ -377,6 +502,7 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSearch1;
+    private javax.swing.JComboBox<String> cbChartAnnual;
     private javax.swing.JComboBox<String> cbChartType;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -384,10 +510,13 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTabbedPane jTabbedPane1;
     private com.toedter.calendar.JMonthChooser monthChooser;
+    private javax.swing.JPanel panelAnnualReport;
     private javax.swing.JPanel panelChartMenu;
+    private javax.swing.JPanel panelChartMenu1;
     private javax.swing.JPanel panelCharts;
     private classmaster.ui.component.darktable.TableDark tblMoPaySummary;
     private com.toedter.calendar.JYearChooser yearChooser;

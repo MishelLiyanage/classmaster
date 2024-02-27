@@ -21,7 +21,18 @@ public class TeacherClassPaymentSummaryDto {
     private int totalStudents;
     
     private int totalPaidStudents;
+    
+    private int month;
 
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    
     public int getCourseId() {
         return courseId;
     }

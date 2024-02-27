@@ -36,7 +36,7 @@ public class TableDark extends JTable {
         JPanel panel = new JPanel();
         panel.setBackground(new Color(0, 105, 105));
         scroll.setCorner(JScrollPane.UPPER_RIGHT_CORNER, panel);
-        scroll.getViewport().setBackground(new Color(30, 30, 30));
+//        scroll.getViewport().setBackground(new Color(30, 30, 30));
         scroll.setBorder(BorderFactory.createLineBorder(new Color(0, 51, 51), 10));
     }
 

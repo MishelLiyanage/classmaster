@@ -74,7 +74,7 @@ public class AssignClass extends javax.swing.JFrame {
     private void init() {
         btnDelete.setVisible(false);
         lblDelete.setVisible(false);
-       
+
         try {
             this.courses = this.courseRepository.getAllCourse();
         } catch (SQLException ex) {
@@ -404,13 +404,18 @@ public class AssignClass extends javax.swing.JFrame {
 
             int studentId = Integer.valueOf(txtFieldStudentId.getText());
             CourseAssignmentDto dto = studentCourses.get(tblCourseAssignment.getSelectedRow());
-            
+
             boolean alreadyPaid = hasAlreadyPaid(studentId, dto.getCourseId());
-            if(alreadyPaid){
-                JOptionPane.showMessageDialog(null, "This account has already paid for this course");
+            if (alreadyPaid) {
+                JOptionPane.showMessageDialog(null, "Unable to delete! There are associated payments for this course");
+                btnSearch.setEnabled(true);
+                txtFieldStudentId.setEnabled(true);
+                btnCreate.setEnabled(true);
+                cbClasses.setEnabled(true);
+                tblCourseAssignment.clearSelection();
                 return;
             }
-            
+
             System.out.println("student id : " + strStudentID + " course id " + dto.getCourseId());
             this.courseRepository.removeStudentCourse(studentId, dto.getCourseId());
 
@@ -426,6 +431,7 @@ public class AssignClass extends javax.swing.JFrame {
             loadAllCourses();
 
         } catch (SQLException ex) {
+
             Logger.getLogger(AssignClass.class.getName()).log(Level.SEVERE, null, ex);
         }
 
@@ -438,8 +444,6 @@ public class AssignClass extends javax.swing.JFrame {
     public void loadStudentCourse(int studentId) throws SQLException {
         studentCourses = this.courseRepository.getAllStudentCourses(studentId);
         loadAllCourses();
-
-
 
         DefaultTableModel model = (DefaultTableModel) tblCourseAssignment.getModel();
         model.setRowCount(0);
@@ -495,6 +499,5 @@ public class AssignClass extends javax.swing.JFrame {
     private boolean hasAlreadyPaid(int studentId, int courseId) throws SQLException {
         return this.courseRepository.hasStudentPaidForCourse(studentId, courseId);
     }
-
 
 }

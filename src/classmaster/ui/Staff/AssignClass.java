@@ -4,21 +4,14 @@
  */
 package classmaster.ui.Staff;
 
-import classmaster.models.ClassPaidStudentsDto;
 import classmaster.models.Course;
 import classmaster.models.CourseAssignment;
 import classmaster.models.CourseAssignmentDto;
-import classmaster.models.Student;
 import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
 import classmaster.repository.CourseRepository;
 import classmaster.repository.StudentRepository;
-import classmaster.shared.CenterCellRenderer;
-import classmaster.ui.component.customtablebutton.TableActionCellEditor;
-import classmaster.ui.component.customtablebutton.TableActionCellRender;
-import classmaster.ui.component.customtablebutton.TableActionEvent;
 import classmaster.utils.Page;
-import java.awt.Font;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,7 +20,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 
 /**
  *

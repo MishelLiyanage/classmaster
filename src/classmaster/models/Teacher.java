@@ -12,6 +12,7 @@ public class Teacher extends Account{
     public Teacher(Account account){
         this.setId(account.getId());
         this.setEmail(account.getEmail());
+        this.setPassword(account.getPassword());
         this.setFirstName(account.getFirstName());
         this.setLastName(account.getLastName());
         this.setRole(account.getRole());

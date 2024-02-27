@@ -108,7 +108,7 @@ public class CourseRepository implements Component {
 
         Object[] params = {studentId};
         ResultSet rs = dBConnection.execute("select c.*, ca.joinedDate, ca.studentId from CourseAssignment ca inner join Course c"
-                + " on c.id = ca.courseId and ca.studentId = ?", params);
+                + " on c.id = ca.courseId and ca.studentId = ? order by ca.joinedDate desc", params);
 
         while (rs.next()) {
             CourseAssignmentDto ca = new CourseAssignmentDto();

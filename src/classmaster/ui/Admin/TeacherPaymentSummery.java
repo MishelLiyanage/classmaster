@@ -50,10 +50,10 @@ public class TeacherPaymentSummery extends javax.swing.JFrame {
         setPreferredSize(new java.awt.Dimension(700, 711));
         setResizable(false);
 
-        jSubmit1.setText("Back");
         jSubmit1.setBackground(new java.awt.Color(0, 0, 102));
         jSubmit1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jSubmit1.setForeground(new java.awt.Color(255, 255, 255));
+        jSubmit1.setText("Back");
         jSubmit1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jSubmit1ActionPerformed(evt);
@@ -68,9 +68,9 @@ public class TeacherPaymentSummery extends javax.swing.JFrame {
         jPanel3.setBackground(new java.awt.Color(0, 0, 0));
         jPanel3.setForeground(new java.awt.Color(51, 51, 51));
 
-        jLabel1.setText("Teacher Payment Summery");
         jLabel1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setText("Teacher Payment Summery");
 
         jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/classmaster/images/logo/teacher.jpg"))); // NOI18N
 
@@ -95,13 +95,13 @@ public class TeacherPaymentSummery extends javax.swing.JFrame {
 
         jPanel4.setBackground(new java.awt.Color(241, 254, 241));
 
-        jLabel2.setText("Teacher ID");
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jLabel2.setText("Teacher ID");
 
-        jButton1.setText("Search");
         jButton1.setBackground(new java.awt.Color(0, 153, 153));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Search");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);

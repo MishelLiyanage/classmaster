@@ -1,15 +1,30 @@
 package classmaster.ui.teacher;
 
+import classmaster.models.Account;
+import classmaster.repository.AuthRepository;
+import classmaster.repository.Component;
+import classmaster.repository.ComponentRegistry;
 import classmaster.ui.ChangePassword;
 import classmaster.utils.Page;
 
 public class TeacherHomePage extends javax.swing.JFrame implements Page {
-
-    /**
-     * Creates new form TeacherHomePage
-     */
+    
+    private AuthRepository authRepository;
+    
+    private Account currentUser;
+    
     public TeacherHomePage() {
+        Component Component = ComponentRegistry.getInstance()
+                .getComponent("AuthRepository");
+        if (Component instanceof AuthRepository) {
+            this.authRepository = (AuthRepository) Component;
+        }
+        
+        this.currentUser = this.authRepository.getCurrentAccount();
+        
+        
         initComponents();
+        this.lblGoodDay.setText("Good Day " + this.currentUser.getFirstName() + " " + this.currentUser.getLastName()+"!");
     }
 
     /**
@@ -21,9 +36,9 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel3 = new javax.swing.JPanel();
+        lblGoodDay = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jSeparator1 = new javax.swing.JSeparator();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
@@ -35,15 +50,33 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ClassMaster");
+        setResizable(false);
 
-        jLabel1.setFont(new java.awt.Font("Sylfaen", 0, 36)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(0, 51, 51));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("ClassMaster");
+        jPanel3.setBackground(new java.awt.Color(0, 0, 0));
 
-        jLabel2.setFont(new java.awt.Font("Sylfaen", 0, 14)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Class Carding System");
+        lblGoodDay.setFont(new java.awt.Font("Yu Gothic UI", 1, 18)); // NOI18N
+        lblGoodDay.setForeground(new java.awt.Color(255, 255, 255));
+        lblGoodDay.setText("jLabel1");
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/classmaster/images/logo/teacherHome.png"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblGoodDay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1162, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblGoodDay, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 599, Short.MAX_VALUE))
+        );
 
         jMenu1.setText("View");
 
@@ -99,29 +132,13 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(323, 323, 323)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 248, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(329, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(377, 377, 377))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jSeparator1)
-                .addContainerGap())
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(378, Short.MAX_VALUE))
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -190,7 +207,6 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
@@ -199,7 +215,8 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
-    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JLabel lblGoodDay;
     // End of variables declaration//GEN-END:variables
 
     @Override

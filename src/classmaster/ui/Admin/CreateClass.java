@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -260,13 +261,21 @@ public class CreateClass extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-
+        Double amount = 0.0;
         String courseName = txtFeildCourseName.getText();
-        Double amount = Double.parseDouble(txtFieldAmout.getText());
+        
+        if(!txtFieldAmout.getText().isBlank() ){
+            if(txtFieldAmout.getText().matches("[0-9]+")){
+                amount = Double.parseDouble(txtFieldAmout.getText());
+            }else{
+                JOptionPane.showMessageDialog(rootPane, "Invalid amount");
+                return;
+            }
+        }
+        
         String selectedDay = String.valueOf(cbDays.getSelectedItem());
-
         String selectedTeachername = String.valueOf(cbTeacherNames.getSelectedItem());
+        
         Teacher selectedTeacher = null;
         for (Teacher tch : teachers) {
             if ((tch.getFirstName() + " " + tch.getLastName()).equals(selectedTeachername)) {
@@ -280,10 +289,16 @@ public class CreateClass extends javax.swing.JFrame {
             return;
         }
 
-        System.out.println("Selected teacher id " + selectedTeacher.getId() + " name " + selectedTeacher.getFirstName());
+//        System.out.println("Selected teacher id " + selectedTeacher.getId() + " name " + selectedTeacher.getFirstName());
+//
+//        System.out.println("from time : " + tpFrom.getTime());
 
-        System.out.println("from time : " + tpFrom.getTime());
-
+        boolean validate = true;
+            
+        if(validate != validateClass()){
+            return;
+        }
+            
         Course newCourse = new Course();
         newCourse.setName(courseName);
         newCourse.setAmount(amount);
@@ -293,16 +308,43 @@ public class CreateClass extends javax.swing.JFrame {
         newCourse.setTo(tpTo.getTime());
 
         try {
-            int states = this.courseRepository.save(newCourse);
-            System.out.println("Successfully saved course : " + states);
+            this.courseRepository.save(newCourse);
+            
+            JOptionPane.showMessageDialog(rootPane, "Successfully saved a course");
+               
+            clearAllFields();
+            
         } catch (SQLException ex) {
-            System.out.println("failed to save course");
+            JOptionPane.showMessageDialog(rootPane, "failed to save course");
             Logger.getLogger(CreateClass.class.getName()).log(Level.SEVERE, null, ex);
 
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private boolean validateClass(){
+        if(txtFeildCourseName.getText() == null || txtFieldAmout.getText() == null || cbDays.getSelectedItem() == null || 
+           cbTeacherNames.getSelectedItem() == null || tpFrom.getTime() == null || tpTo.getTime() == null ){
+            JOptionPane.showMessageDialog(rootPane, "All fields are required");
+            return false;
+        }
+        
+        if(txtFeildCourseName.getText().isBlank() || txtFieldAmout.getText().isBlank() ){
+            JOptionPane.showMessageDialog(rootPane, "All fields are required");
+            return false;
+        }
+        return true;
+    }
+    
+    private void clearAllFields(){
+        txtFeildCourseName.setText("");
+        txtFieldAmout.setText("");
+        cbDays.setSelectedIndex(0);
+        cbTeacherNames.setSelectedIndex(0);
+        tpFrom.setTimeToNow();
+        tpTo.setTimeToNow();
+    }
+    
     private void cbDaysActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbDaysActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_cbDaysActionPerformed

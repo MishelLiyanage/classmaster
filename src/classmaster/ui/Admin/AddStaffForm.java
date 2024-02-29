@@ -11,6 +11,7 @@ import classmaster.utils.Page;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 public class AddStaffForm extends javax.swing.JFrame {
 
@@ -48,13 +49,11 @@ public class AddStaffForm extends javax.swing.JFrame {
         jLabel16 = new javax.swing.JLabel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
         jLabel20 = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jtxtFirstName = new javax.swing.JTextField();
         jtxtLastName = new javax.swing.JTextField();
         jtxtEmail = new javax.swing.JTextField();
-        jtxtRole = new javax.swing.JTextField();
         jtxtNICNo = new javax.swing.JTextField();
         jtxtContactNumber = new javax.swing.JTextField();
         jSubmit4 = new javax.swing.JButton();
@@ -79,8 +78,6 @@ public class AddStaffForm extends javax.swing.JFrame {
 
         jLabel18.setText("E-mail");
 
-        jLabel19.setText("Role");
-
         jLabel20.setText("NIC Number");
 
         jLabel21.setText("Contact Number");
@@ -88,12 +85,6 @@ public class AddStaffForm extends javax.swing.JFrame {
         jtxtFirstName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtxtFirstNameActionPerformed(evt);
-            }
-        });
-
-        jtxtRole.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtxtRoleActionPerformed(evt);
             }
         });
 
@@ -121,39 +112,38 @@ public class AddStaffForm extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(38, 38, 38)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(jtxtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 247, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(134, 134, 134)
+                                .addComponent(jtxtNICNo, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(39, 39, 39)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jtxtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jtxtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
+                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(18, 18, 18)
+                            .addComponent(jtxtContactNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanel1Layout.createSequentialGroup()
                             .addComponent(jSubmit5, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jtxtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jtxtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jtxtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jtxtRole, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jtxtNICNo, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jSubmit4, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jtxtContactNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addContainerGap(21, Short.MAX_VALUE))))))
+                            .addGap(140, 140, 140)
+                            .addComponent(jSubmit4, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addGap(0, 21, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,31 +154,27 @@ public class AddStaffForm extends javax.swing.JFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jtxtFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtxtLastName, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
+                .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel18, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtxtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(28, 28, 28)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jtxtRole, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(27, 27, 27)
+                .addGap(37, 37, 37)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtxtNICNo, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25)
+                .addGap(36, 36, 36)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jtxtContactNumber, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 44, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 51, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jSubmit4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jSubmit5, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(25, 25, 25))
+                .addGap(40, 40, 40))
         );
 
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/classmaster/images/logo/teacher.jpg"))); // NOI18N
@@ -218,14 +204,20 @@ public class AddStaffForm extends javax.swing.JFrame {
 
     private void jSubmit4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSubmit4ActionPerformed
         try{
-            String email = jtxtEmail.getText();
-            String password = Constants.DEFAULT_PASSWORD;
             String firstName = jtxtFirstName.getText();
             String lastName = jtxtLastName.getText();
+            String email = jtxtEmail.getText();
+            String password = Constants.DEFAULT_PASSWORD;
             String displayName = firstName + " " + lastName;
             String role = Constants.ROLE_STAFF;
         
-        Account newAccount = new Account(
+            boolean validate = true;
+            
+            if(validate != validateStaff()){
+                return;
+            }
+            
+            Account newAccount = new Account(
                     email,
                     password,
                     firstName,
@@ -234,7 +226,7 @@ public class AddStaffForm extends javax.swing.JFrame {
                     role
             );
         
-        int accountId = this.authRepository.signup(new Account(
+            int accountId = this.authRepository.signup(new Account(
                     jtxtEmail.getText(),
                     Constants.DEFAULT_PASSWORD,
                     jtxtFirstName.getText(),
@@ -243,29 +235,55 @@ public class AddStaffForm extends javax.swing.JFrame {
                     Constants.ROLE_STUDENT
             ));
         
-        Staff st = new Staff();
-        st.setId(accountId);
-        st.setNic(jtxtNICNo.getText());
-        st.setContact_no(jtxtContactNumber.getText());
-        
-        int state = this.staffRepository.save(st);
-        
-        System.out.println("Successfully saved staff. state : " + state);
-        
-        } catch (SQLException ex) {
-            Logger.getLogger(AddStaffForm.class.getName()).log(Level.SEVERE, null, ex);
-        }
+            Staff st = new Staff();
+            st.setId(accountId);
+            st.setNic(jtxtNICNo.getText());
+            st.setContact_no(jtxtContactNumber.getText());
+
+            this.staffRepository.save(st);
+
+            JOptionPane.showMessageDialog(rootPane, "Successfully saved staff.");
+               
+            clearAllFields();
+
+            } catch (SQLException ex) {
+                Logger.getLogger(AddStaffForm.class.getName()).log(Level.SEVERE, null, ex);
+            }
             
     }//GEN-LAST:event_jSubmit4ActionPerformed
 
+    private boolean validateStaff(){
+        if(jtxtFirstName.getText() == null || jtxtLastName.getText() == null || jtxtEmail.getText() == null || jtxtNICNo.getText() == null ||
+          jtxtContactNumber.getText() == null ){
+            JOptionPane.showMessageDialog(rootPane, "All fields are required");
+            return false;
+        }
+        
+        if(jtxtFirstName.getText().isBlank() || jtxtLastName.getText().isBlank() || jtxtEmail.getText().isBlank() || jtxtNICNo.getText().isBlank()
+           || jtxtContactNumber.getText().isBlank()){
+            JOptionPane.showMessageDialog(rootPane, "All fields are required");
+            return false;
+        }
+        
+        if(jtxtContactNumber.getText().length() != 10){
+            JOptionPane.showMessageDialog(rootPane, "Invalide phone number");
+            return false;
+        }
+        return true;
+    }
+    
+    private void clearAllFields(){
+        jtxtFirstName.setText("");
+        jtxtLastName.setText("");
+        jtxtEmail.setText("");
+        jtxtNICNo.setText("");
+        jtxtContactNumber.setText("");
+    }
+    
     private void jSubmit5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSubmit5ActionPerformed
         this.page.onChildPageClose();
         this.dispose();
     }//GEN-LAST:event_jSubmit5ActionPerformed
-
-    private void jtxtRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtxtRoleActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jtxtRoleActionPerformed
 
     /**
      * @param args the command line arguments
@@ -309,7 +327,6 @@ public class AddStaffForm extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JPanel jPanel1;
@@ -320,6 +337,5 @@ public class AddStaffForm extends javax.swing.JFrame {
     private javax.swing.JTextField jtxtFirstName;
     private javax.swing.JTextField jtxtLastName;
     private javax.swing.JTextField jtxtNICNo;
-    private javax.swing.JTextField jtxtRole;
     // End of variables declaration//GEN-END:variables
 }

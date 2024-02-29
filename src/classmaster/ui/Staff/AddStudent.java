@@ -15,6 +15,7 @@ import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -232,14 +233,21 @@ public class AddStudent extends javax.swing.JFrame {
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
         try {
-
-            String email = txtEmail.getText();
-            String password = Constants.DEFAULT_PASSWORD;
             String firstName = txtFName.getText();
             String lastName = txtLName.getText();
+            String email = txtEmail.getText();
+            LocalDate dob = dpDob.getDate();
+            String password = Constants.DEFAULT_PASSWORD;
             String displayName = firstName + " " + lastName;
             String role = Constants.ROLE_STUDENT;
-
+        
+           
+        boolean validate = true;
+            
+        if(validate != validateStudent()){
+            return;
+        }
+            
             Account newAccount = new Account(
                     email,
                     password,
@@ -263,19 +271,42 @@ public class AddStudent extends javax.swing.JFrame {
             s.setGuardianName(txtGuardianName.getText());
             s.setGuardianNum(txtGuardNum.getText());
             s.setCity(txtCity.getText());
-
-            LocalDate dob = dpDob.getDate();
             s.setDob(dob);
 
-            int state = this.studentRepository.save(s);
-
-            System.out.println("Successfully saved student. state : " + state);
-
+            this.studentRepository.save(s); 
+           
+            JOptionPane.showMessageDialog(rootPane, "Successfully saved student.");
+               
+            clearAllFields();
+           
         } catch (SQLException ex) {
             Logger.getLogger(AddStudent.class.getName()).log(Level.SEVERE, "Error is saving student", ex);
         }
     }//GEN-LAST:event_btnCreateActionPerformed
 
+    private boolean validateStudent(){
+        if(txtFName.getText() == null || txtLName.getText() == null || txtEmail.getText() == null || dpDob.getDate() == null ||
+           txtCity.getText() == null || txtGuardianName.getText() == null || txtGuardNum.getText() == null){
+            JOptionPane.showMessageDialog(rootPane, "All fields are required");
+            return false;
+        }
+        if(txtGuardNum.getText().length() != 10){
+            JOptionPane.showMessageDialog(rootPane, "Invalide phone number");
+            return false;
+        }
+        return true;
+    }
+    
+    private void clearAllFields(){
+        txtFName.setText("");
+        txtLName.setText("");
+        txtEmail.setText("");
+        dpDob.clear();
+        txtCity.setText("");
+        txtGuardianName.setText("");
+        txtGuardNum.setText("");
+    }
+    
     /**
      * @param args the command line arguments
      */

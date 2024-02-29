@@ -4,6 +4,7 @@
  */
 package classmaster.repository;
 
+import classmaster.models.AttendanceSummary;
 import classmaster.models.Course;
 import classmaster.models.CourseAssignment;
 import classmaster.models.CourseAssignmentDto;
@@ -190,6 +191,41 @@ public class CourseRepository implements Component {
             classDates.add(LocalDate.parse(rs.getString("attend_date")));
         }
         return classDates;
+    }
+    
+    public List<AttendanceSummary> findMonthlyAttendanceSummaryForClass(int courseID, int year, int month) throws SQLException {
+        String query = "with CourseDates as ("
+                + " select distinct a.attend_date"
+                + " from Attendance a\n"
+                + " where year(a.attend_date) = ? and month(a.attend_date) = ? and a.course_id = ?"
+                + " order by a.attend_date"
+                + " ),"
+                + " StudentAllAttendance as ("
+                + " select ca.courseId, ca.studentId, cd.attend_date as scheduled_date"
+                + " from CourseAssignment ca cross join CourseDates cd"
+                + " where ca.courseId = ?)"
+                + " select ssa.scheduled_date, count(*) as total_students, count(a.attend_date) as total_attend_students"
+                + " from StudentAllAttendance ssa left join Attendance a on ssa.studentId = a.student_id and ssa.courseId = a.course_id"
+                + "	and ssa.scheduled_date = a.attend_date"
+                + " group by ssa.scheduled_date;";
+
+        Object[] params = {year, month, courseID, courseID};
+
+        List<AttendanceSummary> result = new ArrayList();
+
+        ResultSet rs = dBConnection.execute(query, params);
+
+        while (rs.next()) {
+            AttendanceSummary attendance = new AttendanceSummary();
+            attendance.setScheduledDate(LocalDate.parse(rs.getString("scheduled_date")));
+            attendance.setTotalStudent(rs.getInt("total_students"));
+            attendance.setTotalAttendants(rs.getInt("total_attend_students"));
+            
+            result.add(attendance);
+        }
+
+        return result;
+
     }
    
 }

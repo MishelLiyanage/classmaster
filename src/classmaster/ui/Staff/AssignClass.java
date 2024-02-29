@@ -197,8 +197,6 @@ public class AssignClass extends javax.swing.JFrame {
         lblClasses.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         lblClasses.setText("Class");
 
-        cbClasses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         btnCreate.setBackground(new java.awt.Color(0, 153, 153));
         btnCreate.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnCreate.setForeground(new java.awt.Color(255, 255, 255));
@@ -347,7 +345,7 @@ public class AssignClass extends javax.swing.JFrame {
             int studentId = Integer.parseInt(strStudentID);
 
             int courseId = unAssingedCourses.get(cbClasses.getSelectedIndex()).getId();
-
+           
             CourseAssignment courseAssignment = new CourseAssignment();
             courseAssignment.setClassId(courseId);
             courseAssignment.setSudentId(studentId);
@@ -355,12 +353,12 @@ public class AssignClass extends javax.swing.JFrame {
             courseAssignment.setComplete(false);
 
             this.courseRepository.assignCourse(courseAssignment);
-            System.out.println("successfully assigned student to course");
             loadStudentCourse(studentId);
             loadAllCourses();
+            JOptionPane.showMessageDialog(rootPane, "Successfully assigned student to course");
 
         } catch (SQLException ex) {
-            System.out.println("failed to assign student to a class");
+            JOptionPane.showMessageDialog(rootPane, "Failed to assign student to a class");
             ex.printStackTrace();
         }
     }//GEN-LAST:event_btnCreateActionPerformed
@@ -369,7 +367,7 @@ public class AssignClass extends javax.swing.JFrame {
 
         String strStudentID = txtFieldStudentId.getText();
         if (strStudentID == null || strStudentID.isBlank()) {
-            System.out.println(" -- pls addd a student id first --");
+            JOptionPane.showMessageDialog(rootPane, "Please add a student id first");
             return;
         }
         try {

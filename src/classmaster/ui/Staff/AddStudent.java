@@ -290,6 +290,13 @@ public class AddStudent extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(rootPane, "All fields are required");
             return false;
         }
+        
+        if(txtFName.getText().isBlank() || txtLName.getText().isBlank() || txtEmail.getText().isBlank() || txtCity.getText().isBlank() ||
+          txtGuardianName.getText().isBlank() || txtGuardNum.getText().isBlank()){
+            JOptionPane.showMessageDialog(rootPane, "All fields are required");
+            return false;
+        }
+        
         if(txtGuardNum.getText().length() != 10){
             JOptionPane.showMessageDialog(rootPane, "Invalide phone number");
             return false;

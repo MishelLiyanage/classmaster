@@ -4,6 +4,7 @@
  */
 package classmaster.ui;
 
+import classmaster.models.Account;
 import classmaster.repository.AuthRepository;
 import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
@@ -52,7 +53,7 @@ public class ChangePassword extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txtAccountID = new javax.swing.JTextField();
+        txtEmail = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         txtOldPassword1 = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
@@ -93,7 +94,7 @@ public class ChangePassword extends javax.swing.JFrame {
         );
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel2.setText("Account ID");
+        jLabel2.setText("Email");
         jLabel2.setToolTipText("");
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
@@ -151,7 +152,7 @@ public class ChangePassword extends javax.swing.JFrame {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(txtAccountID, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(31, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -161,7 +162,7 @@ public class ChangePassword extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtAccountID, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -198,30 +199,42 @@ public class ChangePassword extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBackActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String accountID = txtAccountID.getText();
+//        String accountID = txtAccountID.getText();
+        String email = txtEmail.getText();
         String newPassword = txtNewPassword.getText();
         String oldPassword = txtOldPassword1.getText();
 
-        JFrame messageBox = new JFrame();
-        
-        String currentAccountID = String.valueOf(this.authRepository.getCurrentAccount().getId());
+        Account currentUser = this.authRepository.getCurrentAccount();
+        String currentEmail = currentUser.getEmail();
         String savedOldPassword = this.authRepository.getCurrentAccount().getPassword();
-
-        System.out.println(accountID + " " + newPassword + " " + oldPassword + " " + currentAccountID + " " + savedOldPassword);
         
-        if(accountID.equals(currentAccountID) && oldPassword.equals(savedOldPassword)){
-            try {
-                this.authRepository.changePassword(newPassword, accountID);
-            } catch (SQLException ex) {
-                Logger.getLogger(ChangePassword.class.getName()).log(Level.SEVERE, null, ex);
+        if(validateAccount()){
+            if(email.equals(currentEmail) && oldPassword.equals(savedOldPassword)){
+                try {
+                    this.authRepository.changePassword(newPassword, email);
+                } catch (SQLException ex) {
+                        Logger.getLogger(ChangePassword.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                    JOptionPane.showMessageDialog(rootPane, "Password changed successfully");
+            }else{
+                JOptionPane.showMessageDialog(rootPane, "Invalid email or password");
             }
-            
-            JOptionPane.showMessageDialog(messageBox, "Password changed Successfully");
-        }else {
-            JOptionPane.showMessageDialog(messageBox, "ID/old password is not equal");
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
+    private boolean validateAccount(){
+        if(txtEmail.getText() == null || txtNewPassword.getText() == null || txtOldPassword1.getText() == null){
+            JOptionPane.showMessageDialog(rootPane, "All fields are required");
+            return false;
+        }
+        
+        if(txtEmail.getText().isBlank() || txtNewPassword.getText().isBlank() || txtOldPassword1.getText().isBlank()){
+            JOptionPane.showMessageDialog(rootPane, "All fields are required");
+            return false;
+        }
+        return true;
+    }
+    
     private void txtOldPassword1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtOldPassword1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtOldPassword1ActionPerformed
@@ -271,7 +284,7 @@ public class ChangePassword extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JTextField txtAccountID;
+    private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtNewPassword;
     private javax.swing.JTextField txtOldPassword1;
     // End of variables declaration//GEN-END:variables

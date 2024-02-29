@@ -140,11 +140,11 @@ public class AuthRepository implements Component {
         return currentLoggedAccount;
     }
     
-    public void changePassword(String newPassword, String id) throws SQLException{
-        Object[] params = {newPassword, id};
+    public void changePassword(String newPassword, String email) throws SQLException{
+        Object[] params = {newPassword, email};
         dbCOnnection.executeUpdate("UPDATE account "
                 + "SET password = ?"
-                + "WHERE id = ?", params);
+                + "WHERE email = ?", params);
     }
 
     @Override

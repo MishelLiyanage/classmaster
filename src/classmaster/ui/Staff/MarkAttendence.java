@@ -465,8 +465,8 @@ public class MarkAttendence extends javax.swing.JFrame {
             LocalDate date = LocalDate.parse(strDate);
 
             System.out.println(" student id : " + studentId
-                + " selectd course " + selectedCourseDto.getCourseId()
-                + " date : " + date
+                    + " selectd course " + selectedCourseDto.getCourseId()
+                    + " date : " + date
             );
 
             int status = this.attendanceRepository.deleteAttendace(studentId, selectedCourseDto.getCourseId(), date);
@@ -523,13 +523,18 @@ public class MarkAttendence extends javax.swing.JFrame {
 
     private void btnStuSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnStuSearchActionPerformed
         try {
-            // TODO add your handling code here:
+            int studentId;
 
-            int studentId = Integer.valueOf(txtFieldStudentId.getText());
+            if (txtFieldStudentId.getText().isBlank() || txtFieldStudentId.getText() == null) {
+                JOptionPane.showMessageDialog(rootPane, "Please add a student id first");
+                return;
+            } else {
+                studentId = Integer.valueOf(txtFieldStudentId.getText());
+            }
 
             Student st = studentRepository.getStudentById(studentId);
             if (st == null) {
-                System.out.println("cannot find student for id " + studentId);
+                JOptionPane.showMessageDialog(rootPane, "cannot find student for id " + studentId);
                 return;
             }
 
@@ -566,22 +571,48 @@ public class MarkAttendence extends javax.swing.JFrame {
             attendance.setStudentId(studentId);
             attendance.setClassId(selectedCourseDto.getCourseId());
 
+            System.out.println(dateTimePicker.getDatePicker().getComponentDateTextField().getText().isBlank());
+            System.out.println(dateTimePicker.getTimePicker().getComponentTimeTextField().getText().isBlank());
+
             LocalDateTime dateTime = dateTimePicker.getDateTimePermissive();
-            attendance.setAttendDate(dateTime.toLocalDate());
-            attendance.setAttendTime(dateTime.toLocalTime());
+            if (dateTime != null && dateTimePicker.getDatePicker().getComponentDateTextField().getText().isBlank() == false
+                    && dateTimePicker.getTimePicker().getComponentTimeTextField().getText().isBlank() == false) {
 
-            int status = this.attendanceRepository.markAttendance(attendance);
+                attendance.setAttendDate(dateTime.toLocalDate());
+                attendance.setAttendTime(dateTime.toLocalTime());
 
-            System.out.println("successfully marked attendance : " + status);
+            } else {
+                JOptionPane.showMessageDialog(rootPane, "All fields are required");
+                return;
+            }
+
+            if (validateCourse(selectedCourseDto, dateTime)) {
+                this.attendanceRepository.markAttendance(attendance);
+                JOptionPane.showMessageDialog(rootPane, "Successfully marked attendance");
+            }
+
             getStudentAttendance(selectedCourse);
             clean();
 
             // TODO add your handling code here:
         } catch (SQLException ex) {
-            System.out.println("--- failed to mark attendance ----");
+            JOptionPane.showMessageDialog(rootPane, "Failed to mark attendance");
+
             ex.printStackTrace();
         }
     }//GEN-LAST:event_btnMarkActionPerformed
+
+    private boolean validateCourse(CourseAssignmentDto selectedCourseDto, LocalDateTime dateTime) {
+        if (!selectedCourseDto.getDay().equalsIgnoreCase(String.valueOf(dateTime.getDayOfWeek()))) {
+            int result = JOptionPane.showConfirmDialog(rootPane, "Selected day is not equal to the day of the class."
+                    + " Do you want to continue?");
+            System.out.println(result);
+            if (result == JOptionPane.NO_OPTION || result == JOptionPane.CANCEL_OPTION) {
+                return false;
+            }
+        }
+        return true;
+    }
 
     private void btnCancelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelActionPerformed
         clean();

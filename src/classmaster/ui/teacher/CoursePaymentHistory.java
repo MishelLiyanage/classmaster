@@ -234,7 +234,7 @@ public class CoursePaymentHistory extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Student Id", "Name", "Paid", "Paid Date", "Paid Amount"
+                "Student Id", "Name", "Paid", "Paid Amount", "Paid Date"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -388,9 +388,9 @@ public class CoursePaymentHistory extends javax.swing.JFrame {
 
         //Create chart  
         JFreeChart chart = ChartFactory.createBarChart(
-                "Class Payment Chart", //Chart Title  
-                "Type", // Category axis  
-                "Student Class Fees Payment", // Value axis  
+                "Paid/Not Paid Stats of Students", //Chart Title  
+                "Payment State for the course", // Category axis  
+                "Student Count", // Value axis  
                 dataset,
                 PlotOrientation.VERTICAL,
                 true, true, false

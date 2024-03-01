@@ -143,10 +143,6 @@ public class ViewClassCharts extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jTabbedPane1 = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        tblClsStudentCount = new classmaster.ui.component.darktable.TableDark();
-        panelChart = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
         panelAttendanceCboxPanel = new javax.swing.JPanel();
         cbCourses = new javax.swing.JComboBox<>();
@@ -160,6 +156,10 @@ public class ViewClassCharts extends javax.swing.JFrame {
         lblEmptyDataMsg = new javax.swing.JLabel();
         jScrollPane5 = new javax.swing.JScrollPane();
         tblAttendance = new classmaster.ui.component.darktable.TableDark();
+        jPanel1 = new javax.swing.JPanel();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        tblClsStudentCount = new classmaster.ui.component.darktable.TableDark();
+        panelChart = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -241,46 +241,6 @@ public class ViewClassCharts extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-
-        tblClsStudentCount.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
-            },
-            new String [] {
-                "Id", "Class Name", "Total Students"
-            }
-        ));
-        jScrollPane3.setViewportView(tblClsStudentCount);
-
-        panelChart.setLayout(new java.awt.BorderLayout());
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23)
-                .addComponent(panelChart, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(33, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addComponent(panelChart, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(161, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3)
-                .addContainerGap())
-        );
-
-        jTabbedPane1.addTab("Student Count", jPanel1);
 
         panelAttendanceCboxPanel.setBackground(new java.awt.Color(250, 250, 250));
 
@@ -389,6 +349,46 @@ public class ViewClassCharts extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Attendance", jPanel2);
 
+        tblClsStudentCount.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
+            },
+            new String [] {
+                "Id", "Class Name", "Total Students"
+            }
+        ));
+        jScrollPane3.setViewportView(tblClsStudentCount);
+
+        panelChart.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
+                .addComponent(panelChart, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(33, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(panelChart, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(161, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Student Count", jPanel1);
+
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Course Name");
 
@@ -463,6 +463,8 @@ public class ViewClassCharts extends javax.swing.JFrame {
         jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel11.setText("Month");
 
+        btnFilter.setBackground(new java.awt.Color(0, 153, 153));
+        btnFilter.setForeground(new java.awt.Color(255, 255, 255));
         btnFilter.setText("Filter");
         btnFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -559,7 +561,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+                .addComponent(jTabbedPane1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSearch1)
                 .addContainerGap())
@@ -700,7 +702,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
         //Create chart  
         JFreeChart chart = ChartFactory.createBarChart(
                 "Attendance Summary Per Course", //Chart Title  
-                "Presence State", // Category axis  
+                "Class held date", // Category axis  
                 "No of Students", // Value axis  
                 analyticDataset,
                 PlotOrientation.VERTICAL,
@@ -768,7 +770,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
     public void displayAsChart() {
         PieDataset dataset = createDataset(courseNoOfStudents);
         // based on the dataset we create the chart
-        JFreeChart chart = createChart(dataset, "Class student count");
+        JFreeChart chart = createChart(dataset, "Total Student Count per Course");
         // we put the chart into a panel
         ChartPanel chartPanel = new ChartPanel(chart);
 

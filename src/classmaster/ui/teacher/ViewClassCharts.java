@@ -4,10 +4,13 @@
  */
 package classmaster.ui.teacher;
 
+import classmaster.models.Account;
 import classmaster.models.AttendanceSummary;
 import classmaster.models.Course;
 import classmaster.models.CourseNoOfStudentsDto;
+import classmaster.models.DailyCourseAttendanceDto;
 import classmaster.models.StudentCourseAttendance;
+import classmaster.models.TeacherClassPaymentSummaryDto;
 import classmaster.repository.AttendanceRepository;
 import classmaster.repository.AuthRepository;
 import classmaster.repository.Component;
@@ -21,8 +24,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.DefaultComboBoxModel;
@@ -36,6 +48,13 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.general.PieDataset;
+import org.jfree.data.statistics.HistogramDataset;
+import org.jfree.data.time.Day;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.XYDataset;
+import org.jfree.data.xy.XYSeries;
+import org.jfree.data.xy.XYSeriesCollection;
 import org.jfree.util.Rotation;
 
 /**
@@ -149,6 +168,15 @@ public class ViewClassCharts extends javax.swing.JFrame {
         btnSearchAnalytics = new javax.swing.JButton();
         panelAttendanceSummaryChart = new javax.swing.JPanel();
         cmbAnalyticsCourses = new javax.swing.JComboBox<>();
+        jPanel5 = new javax.swing.JPanel();
+        jPanel8 = new javax.swing.JPanel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        jYearOverall = new com.toedter.calendar.JYearChooser();
+        jLabel11 = new javax.swing.JLabel();
+        jMonthOverall = new com.toedter.calendar.JMonthChooser();
+        btnFilter = new javax.swing.JButton();
+        pnlOverall = new javax.swing.JPanel();
         btnSearch1 = new javax.swing.JButton();
 
         jPanel6.setBackground(new java.awt.Color(0, 0, 0));
@@ -181,6 +209,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ClassMaster");
+        setResizable(false);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setToolTipText("");
@@ -207,10 +236,10 @@ public class ViewClassCharts extends javax.swing.JFrame {
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addContainerGap(20, Short.MAX_VALUE)
                 .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 28, Short.MAX_VALUE))
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
         tblClsStudentCount.setModel(new javax.swing.table.DefaultTableModel(
@@ -233,20 +262,22 @@ public class ViewClassCharts extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 425, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addGap(23, 23, 23)
                 .addComponent(panelChart, javax.swing.GroupLayout.PREFERRED_SIZE, 362, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(33, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 352, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addComponent(panelChart, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(161, Short.MAX_VALUE))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane3)
+                .addContainerGap())
         );
 
         jTabbedPane1.addTab("Student Count", jPanel1);
@@ -352,7 +383,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(panelAttendanceCboxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 4, Short.MAX_VALUE))
+                .addGap(0, 138, Short.MAX_VALUE))
             .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
@@ -413,7 +444,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
                     .addComponent(jMonthAnalytics, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSearchAnalytics)
-                .addContainerGap(170, Short.MAX_VALUE))
+                .addContainerGap(304, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelAttendanceSummaryChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -421,6 +452,86 @@ public class ViewClassCharts extends javax.swing.JFrame {
         );
 
         jTabbedPane1.addTab("Attendance Analytics", jPanel3);
+
+        jPanel8.setBackground(new java.awt.Color(204, 255, 204));
+
+        jLabel9.setText("You can view the monthly attendance fluctuations here. Choose the Year and Month to filter");
+
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel10.setText("Year");
+
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel11.setText("Month");
+
+        btnFilter.setText("Filter");
+        btnFilter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFilterActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(188, 188, 188)
+                        .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jYearOverall, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(85, 85, 85)
+                        .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jMonthOverall, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnFilter))
+                    .addGroup(jPanel8Layout.createSequentialGroup()
+                        .addGap(17, 17, 17)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 512, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(181, Short.MAX_VALUE))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel9)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel10)
+                    .addComponent(jYearOverall, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11)
+                    .addComponent(jMonthOverall, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnFilter))
+                .addContainerGap(21, Short.MAX_VALUE))
+        );
+
+        pnlOverall.setBackground(new java.awt.Color(255, 255, 255));
+        pnlOverall.setLayout(new java.awt.BorderLayout());
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(pnlOverall, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(pnlOverall, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jTabbedPane1.addTab("Overall Analytics", jPanel5);
 
         btnSearch1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSearch1.setForeground(new java.awt.Color(0, 153, 153));
@@ -447,11 +558,11 @@ public class ViewClassCharts extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 384, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 518, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnSearch1)
-                .addGap(0, 13, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -462,7 +573,9 @@ public class ViewClassCharts extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
@@ -511,6 +624,75 @@ public class ViewClassCharts extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnSearchAnalyticsActionPerformed
 
+    private void btnFilterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFilterActionPerformed
+        loadOverallAttendanceSummary();
+
+    }//GEN-LAST:event_btnFilterActionPerformed
+
+    private void loadOverallAttendanceSummary() {
+        int year = jYearOverall.getYear();
+        int month = jMonthOverall.getMonth();
+
+        Account currentUser = this.authRepository.getCurrentAccount();
+
+        try {
+            List<DailyCourseAttendanceDto> overallAttendance = this.attendanceRepository.getDailyAttendanceSummary(currentUser.getId(), year, month + 1);
+
+            XYDataset dataset = createOverallAttendanceDataSet(overallAttendance);
+
+            JFreeChart overallChart = ChartFactory.createTimeSeriesChart(
+                    "Overall Attendance Summary for " + jYearOverall.getYear() + " " + Month.of(jMonthOverall.getMonth() + 1), //Chart Title  
+                    "Course conducted Date", // Category axis  
+                    "Number of students attended", // Value axis  
+                    dataset
+            );
+
+            ChartPanel panel = new ChartPanel(overallChart);
+
+            pnlOverall.removeAll();
+            pnlOverall.add(panel, BorderLayout.CENTER);
+            pnlOverall.validate();
+        } catch (SQLException ex) {
+            Logger.getLogger(ViewClassCharts.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private TimeSeriesCollection createOverallAttendanceDataSet(List<DailyCourseAttendanceDto> attendance) {
+        TimeSeriesCollection dataset = new TimeSeriesCollection();  
+        
+        Set<String> courses = new HashSet<>();
+        
+        for(DailyCourseAttendanceDto cAtt: attendance){
+            courses.add(cAtt.getCourseName());
+        }
+        
+        Map<String,TimeSeries> series = new HashMap<>();
+        
+        for(String course: courses){
+            series.put(course,new TimeSeries(course));
+            System.out.println(course);
+        }
+        
+        
+        for (DailyCourseAttendanceDto dto : attendance) {
+            
+            TimeSeries courseSeries = series.get(dto.getCourseName());
+            int day = dto.getAttendDate().getDayOfMonth();
+            int month = dto.getAttendDate().getMonthValue();
+            int year = dto.getAttendDate().getYear();
+            courseSeries.add(new Day(day, month, year),dto.getTotalAttendandts());
+
+        }
+        
+        for(String course: courses){
+            dataset.addSeries(series.get(course));
+        }
+        
+        return dataset;
+
+
+    }
+
     private void prepareAttendanceSummaryChart(List<AttendanceSummary> summary) {
         // Create Dataset  
         CategoryDataset analyticDataset = createAttendanceSummaryDataset(summary);
@@ -524,21 +706,20 @@ public class ViewClassCharts extends javax.swing.JFrame {
                 PlotOrientation.VERTICAL,
                 true, true, false
         );
-        
 
         ChartPanel panel = new ChartPanel(chart);
 
         panelAttendanceSummaryChart.removeAll();
         panelAttendanceSummaryChart.add(panel, BorderLayout.CENTER);
         panelAttendanceSummaryChart.validate();
-                
+
     }
 
     private CategoryDataset createAttendanceSummaryDataset(List<AttendanceSummary> summary) {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        
+
         for (AttendanceSummary item : summary) {
-            dataset.addValue(item.getTotalStudent()-item.getTotalAttendants(), "ABSENT", item.getScheduledDate());
+            dataset.addValue(item.getTotalStudent() - item.getTotalAttendants(), "ABSENT", item.getScheduledDate());
             dataset.addValue(item.getTotalAttendants(), "PRESENT", item.getScheduledDate());
 
         }
@@ -698,6 +879,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
         }
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFilter;
     private javax.swing.JButton btnSearch;
     private javax.swing.JButton btnSearch1;
     private javax.swing.JButton btnSearchAnalytics;
@@ -705,6 +887,8 @@ public class ViewClassCharts extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cbCourses;
     private javax.swing.JComboBox<String> cmbAnalyticsCourses;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -712,23 +896,29 @@ public class ViewClassCharts extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private com.toedter.calendar.JMonthChooser jMonthAnalytics;
+    private com.toedter.calendar.JMonthChooser jMonthOverall;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTabbedPane jTabbedPane1;
     private com.toedter.calendar.JYearChooser jYearAnalytics;
+    private com.toedter.calendar.JYearChooser jYearOverall;
     private javax.swing.JLabel lblEmptyDataMsg;
     private javax.swing.JLabel lblSelectDate;
     private com.toedter.calendar.JMonthChooser monthChooser;
     private javax.swing.JPanel panelAttendanceCboxPanel;
     private javax.swing.JPanel panelAttendanceSummaryChart;
     private javax.swing.JPanel panelChart;
+    private javax.swing.JPanel pnlOverall;
     private classmaster.ui.component.darktable.TableDark tblAttendance;
     private classmaster.ui.component.darktable.TableDark tblClsStudentCount;
     private com.toedter.calendar.JYearChooser yearChooser;

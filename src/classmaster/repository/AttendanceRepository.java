@@ -154,19 +154,19 @@ public class AttendanceRepository implements Component {
 
         return result;
     }
-    
-       private List<DailyCourseAttendanceDto> getDailyAttendanceSummary(int teacherId, int year, int month) throws SQLException {
-        
+
+    public List<DailyCourseAttendanceDto> getDailyAttendanceSummary(int teacherId, int year, int month) throws SQLException {
+
         String query = "select c.id as course_id, c.name as course_name, a.attend_date, count(a.attend_date) as count"
                 + " from Attendance a inner join Course c on a.course_id = c.id and c.teacherId = ?"
                 + " where year(a.attend_date) = ? and month(a.attend_date) = ?"
-                + " group by c.id, c.name, a.attend_date";
-        
-        Object[] params = {teacherId, year, teacherId};
+                + " group by c.id, c.name, a.attend_date order by  a.attend_date";
+
+        Object[] params = {teacherId, year, month};
         ResultSet rs = dBConnection.execute(query, params);
-        
+
         List<DailyCourseAttendanceDto> result = new ArrayList<>();
-        
+
         while (rs.next()) {
             DailyCourseAttendanceDto dto = new DailyCourseAttendanceDto();
             dto.setCourseId(rs.getInt("course_id"));
@@ -176,7 +176,7 @@ public class AttendanceRepository implements Component {
             result.add(dto);
         }
         return result;
-        
+
     }
-    
+
 }

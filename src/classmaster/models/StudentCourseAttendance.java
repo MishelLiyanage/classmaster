@@ -30,6 +30,8 @@ public class StudentCourseAttendance {
     private LocalTime attendTime;
     
     private LocalDate attendDate;
+    
+    private LocalDate scheduledDate;
 
     public String getFirstName() {
         return firstName;
@@ -104,4 +106,13 @@ public class StudentCourseAttendance {
         this.day = day;
     }
 
+    public LocalDate getScheduledDate() {
+        return scheduledDate;
+    }
+
+    public void setScheduledDate(LocalDate scheduledDate) {
+        this.scheduledDate = scheduledDate;
+    }
+    
+    
 }

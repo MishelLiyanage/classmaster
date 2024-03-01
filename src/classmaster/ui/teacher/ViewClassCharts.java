@@ -643,7 +643,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
         try {
             courseNoOfStudents = this.teacherRepository.getAllCourseNoOfStudents(teacherID);
         } catch (SQLException ex) {
-            Logger.getLogger(ViewClasses.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ViewClassCharts.class.getName()).log(Level.SEVERE, null, ex);
         }
         DefaultTableModel model = (DefaultTableModel) tblClsStudentCount.getModel();
         model.setRowCount(0);

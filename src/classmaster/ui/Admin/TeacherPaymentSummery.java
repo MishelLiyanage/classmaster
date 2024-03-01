@@ -127,9 +127,8 @@ public class TeacherPaymentSummery extends javax.swing.JFrame {
         ));
         jScrollPane2.setViewportView(jTable1);
 
-        jSubmit1.setBackground(new java.awt.Color(0, 0, 102));
         jSubmit1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jSubmit1.setForeground(new java.awt.Color(255, 255, 255));
+        jSubmit1.setForeground(new java.awt.Color(0, 153, 153));
         jSubmit1.setText("Back");
         jSubmit1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -160,9 +159,9 @@ public class TeacherPaymentSummery extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSubmit1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(12, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());

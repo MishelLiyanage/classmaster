@@ -4,6 +4,8 @@
  */
 package classmaster.repository;
 
+import classmaster.models.CourseAssignmentDto;
+import classmaster.models.CourseStudentPaymentDto;
 import classmaster.models.Student;
 import classmaster.models.StudentCourseDto;
 import classmaster.shared.DBConnection;
@@ -85,6 +87,26 @@ public class StudentRepository implements Component {
         return studentCourse;
     }
     
+    public List<CourseStudentPaymentDto> getAllStudentCoursesForPayment(int studentID) throws SQLException {
+        List<CourseStudentPaymentDto> studentCourse = new ArrayList<>();
+        
+        Object[] params = {studentID};
+        ResultSet rs = dBConnection.execute("SELECT c.id, c.name AS courseName"
+                + " FROM course c"
+                + " JOIN courseAssignment ca ON c.id = ca.courseID"
+                + " WHERE ca.studentID = ?", params);
+        
+        while (rs.next()) {
+            CourseStudentPaymentDto sc = new CourseStudentPaymentDto();
+            sc.setCourseId(rs.getInt("id"));
+            sc.setCourseName(rs.getString("courseName"));
+        
+            studentCourse.add(sc);
+        }
+        
+        return studentCourse;
+    }
+    
     public List<StudentCourseDto> getAllStudentCourses(int studentID) throws SQLException {
         List<StudentCourseDto> studentCourse = new ArrayList<>();
         
@@ -105,6 +127,48 @@ public class StudentRepository implements Component {
         return studentCourse;
     }
 
+    public List<CourseStudentPaymentDto> getcourseStudentPayment(String studentId, String courseId, int selectedMonth) throws SQLException{
+        List<CourseStudentPaymentDto> result = new ArrayList();
+        
+        Object[] params = {studentId, courseId, selectedMonth};
+        ResultSet rs = dBConnection.execute("SELECT c.name AS courseName, cap.amount AS amount, cap.payingYear as paidYear, cap.payingMonth as paidMonth"
+                + " FROM course c INNER JOIN courseAssignmentPayment cap"
+                + " ON c.id = cap.courseId"
+                + " WHERE cap.studentId = ? AND c.id = ? AND cap.payingMonth = ?", params);
+        
+        while (rs.next()) {
+            CourseStudentPaymentDto ca = new CourseStudentPaymentDto();
+            ca.setCourseName(rs.getString("courseName"));
+            ca.setAmount(rs.getDouble("amount"));
+            ca.setPaidYear(rs.getInt("paidYear"));
+            ca.setPaidMonth(rs.getInt("paidMonth"));
+           
+            result.add(ca);
+        }
+        return result;
+    }
+    
+    public List<CourseStudentPaymentDto> getAllcourseStudentPayment(String studentId) throws SQLException{
+        List<CourseStudentPaymentDto> result = new ArrayList();
+        
+        Object[] params = {studentId};
+        ResultSet rs = dBConnection.execute("SELECT c.name AS courseName, cap.amount AS amount, cap.payingYear as paidYear, cap.payingMonth as paidMonth"
+                + " FROM course c INNER JOIN courseAssignmentPayment cap"
+                + " ON c.id = cap.courseId"
+                + " WHERE cap.studentId = ?", params);
+        
+        while (rs.next()) {
+            CourseStudentPaymentDto ca = new CourseStudentPaymentDto();
+            ca.setCourseName(rs.getString("courseName"));
+            ca.setAmount(rs.getDouble("amount"));
+            ca.setPaidYear(rs.getInt("paidYear"));
+            ca.setPaidMonth(rs.getInt("paidMonth"));
+           
+            result.add(ca);
+        }
+        return result;
+    }
+    
     @Override
     public String getName() {
         return "StudentRepository";

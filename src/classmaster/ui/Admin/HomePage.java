@@ -39,8 +39,6 @@ public class HomePage extends javax.swing.JFrame implements Page {
         jMnuItmAddTeacher = new javax.swing.JMenuItem();
         jMnuClass = new javax.swing.JMenu();
         jMnuItmCreateNewClass = new javax.swing.JMenuItem();
-        jMenu3 = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
         jMnuView = new javax.swing.JMenu();
         jMnuItmClassPaymentHistory = new javax.swing.JMenuItem();
         jMnuItmMonthlyIncome = new javax.swing.JMenuItem();
@@ -93,19 +91,7 @@ public class HomePage extends javax.swing.JFrame implements Page {
 
         jMenuBar1.add(jMnuClass);
 
-        jMenu3.setText("Payment");
-
-        jMenuItem1.setText("Add Teacher Payment");
-        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem1ActionPerformed(evt);
-            }
-        });
-        jMenu3.add(jMenuItem1);
-
-        jMenuBar1.add(jMenu3);
-
-        jMnuView.setText("View");
+        jMnuView.setText("Payment");
 
         jMnuItmClassPaymentHistory.setText("Teacher Payment Summery");
         jMnuItmClassPaymentHistory.addActionListener(new java.awt.event.ActionListener() {
@@ -169,11 +155,6 @@ public class HomePage extends javax.swing.JFrame implements Page {
         setVisible(false);
     }//GEN-LAST:event_jMnuItmClassPaymentHistoryActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        new AddTeacherPayment(this).setVisible(true);
-        setVisible(false);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
-
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         new ChangePassword(this).setVisible(true);
         setVisible(false);
@@ -218,10 +199,8 @@ public class HomePage extends javax.swing.JFrame implements Page {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenu jMnuClass;
     private javax.swing.JMenuItem jMnuItmAddStaff;

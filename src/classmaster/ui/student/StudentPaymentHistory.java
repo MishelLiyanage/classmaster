@@ -4,21 +4,82 @@
  */
 package classmaster.ui.student;
 
+import classmaster.models.CourseStudentPaymentDto;
+import classmaster.models.StudentCourseDto;
+import classmaster.repository.AuthRepository;
+import classmaster.repository.Component;
+import classmaster.repository.ComponentRegistry;
+import classmaster.repository.StudentRepository;
 import classmaster.utils.Page;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Mishel Fernando
  */
 public class StudentPaymentHistory extends javax.swing.JFrame {
+    private AuthRepository authRepository;
+    private StudentRepository studentRepository;
+    private List<CourseStudentPaymentDto> studentCourse;
+    private List<CourseStudentPaymentDto> studentCourses;
+    private List<CourseStudentPaymentDto> courseStudentPayment;
+    private List<CourseStudentPaymentDto> allCourseStudentPayment;
+    private CourseStudentPaymentDto selectedCourse;
     private Page page;
     /**
      * Creates new form StudentPaymentHistory
      */
     public StudentPaymentHistory(Page page) {
+        Component component = ComponentRegistry.getInstance()
+                .getComponent("AuthRepository");
+        
+        if (component instanceof AuthRepository) {
+            this.authRepository = (AuthRepository) component;
+        }
+        
+        Component studentComponent = ComponentRegistry.getInstance()
+                .getComponent("StudentRepository");
+        
+        if (studentComponent instanceof StudentRepository) {
+            this.studentRepository = (StudentRepository) studentComponent;
+        }
+        
         this.page = page;
         
         initComponents();
+        
+        panelAfterSearched.setVisible(false);
+        
+        loadAllStudentCourses();
+        
+    }
+    
+    public void loadAllStudentCourses(){
+        int studentId = this.authRepository.getCurrentAccount().getId();
+        
+        try {
+            studentCourse = this.studentRepository.getAllStudentCoursesForPayment(studentId);
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentPaymentHistory.class.getName()).log(Level.SEVERE, null, ex);
+        }
+       
+        
+        displayClassesComboBox(studentCourse);
+    }
+    
+    private void displayClassesComboBox(List<CourseStudentPaymentDto> studentCourse) {
+        DefaultComboBoxModel model = (DefaultComboBoxModel) cbcourses.getModel();
+        model.removeAllElements();
+        for (CourseStudentPaymentDto crs : studentCourse) {
+            model.addElement(crs.getCourseName());
+            System.out.println(crs.getCourseId());
+        }
+        cbcourses.setModel(model);
     }
 
     /**
@@ -30,14 +91,170 @@ public class StudentPaymentHistory extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jPanel1 = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jPanel4 = new javax.swing.JPanel();
+        jLabel4 = new javax.swing.JLabel();
+        cbcourses = new javax.swing.JComboBox<>();
+        jButton2 = new javax.swing.JButton();
+        monthPicker = new com.toedter.calendar.JMonthChooser();
+        jLabel7 = new javax.swing.JLabel();
+        panelAfterSearched = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        individualStudentPaymentTable = new classmaster.ui.component.darktable.TableDark();
+        jLabel8 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        AllStudentPaymentTable = new classmaster.ui.component.darktable.TableDark();
+        jLabel9 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ClassMaster");
 
-        jButton1.setBackground(new java.awt.Color(0, 0, 102));
+        jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+
+        jPanel3.setBackground(new java.awt.Color(0, 0, 0));
+        jPanel3.setForeground(new java.awt.Color(51, 51, 51));
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setText("My Payment History");
+
+        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/classmaster/images/logo/teacher.jpg"))); // NOI18N
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jLabel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 830, Short.MAX_VALUE)
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 28, Short.MAX_VALUE))
+        );
+
+        jPanel4.setBackground(new java.awt.Color(241, 254, 241));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel4.setText("Month");
+
+        jButton2.setBackground(new java.awt.Color(0, 153, 153));
+        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jButton2.setForeground(new java.awt.Color(255, 255, 255));
+        jButton2.setText("Search");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel7.setText("Course ");
+
+        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
+        jPanel4.setLayout(jPanel4Layout);
+        jPanel4Layout.setHorizontalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(290, 290, 290)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(79, 79, 79)
+                        .addComponent(monthPicker, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cbcourses, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel4Layout.setVerticalGroup(
+            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel4Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbcourses, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(monthPicker, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton2)
+                .addContainerGap(17, Short.MAX_VALUE))
+        );
+
+        panelAfterSearched.setBackground(new java.awt.Color(255, 255, 255));
+
+        individualStudentPaymentTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Course Name", "Amount", "Paid Year", "Paid Month"
+            }
+        ));
+        jScrollPane1.setViewportView(individualStudentPaymentTable);
+
+        jLabel8.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel8.setText("All Payment Details");
+
+        AllStudentPaymentTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Course Name", "Amount", "Paid Year", "Paid Month"
+            }
+        ));
+        jScrollPane2.setViewportView(AllStudentPaymentTable);
+
+        jLabel9.setFont(new java.awt.Font("Segoe UI Symbol", 0, 18)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(0, 51, 51));
+        jLabel9.setText("Search Results by Course and Month");
+
+        javax.swing.GroupLayout panelAfterSearchedLayout = new javax.swing.GroupLayout(panelAfterSearched);
+        panelAfterSearched.setLayout(panelAfterSearchedLayout);
+        panelAfterSearchedLayout.setHorizontalGroup(
+            panelAfterSearchedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAfterSearchedLayout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(panelAfterSearchedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelAfterSearchedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 781, Short.MAX_VALUE)
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1))
+                    .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 326, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        panelAfterSearchedLayout.setVerticalGroup(
+            panelAfterSearchedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelAfterSearchedLayout.createSequentialGroup()
+                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(45, 45, 45))
+        );
+
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setForeground(new java.awt.Color(0, 153, 153));
         jButton1.setText("Back");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -45,21 +262,40 @@ public class StudentPaymentHistory extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(panelAfterSearched, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addComponent(jButton1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelAfterSearched, javax.swing.GroupLayout.PREFERRED_SIZE, 406, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addContainerGap())
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(35, 35, 35)
-                .addComponent(jButton1)
-                .addContainerGap(524, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(442, 442, 442)
-                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGap(31, 31, 31))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
@@ -70,6 +306,53 @@ public class StudentPaymentHistory extends javax.swing.JFrame {
         this.page.onChildPageClose();
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        panelAfterSearched.setVisible(true);
+        String studentID = String.valueOf(this.authRepository.getCurrentAccount().getId());
+        String selectedClassName = String.valueOf(cbcourses.getSelectedItem());
+        int selectedMonth = monthPicker.getMonth()+1;
+        
+        for (CourseStudentPaymentDto c : studentCourse) {
+            if (c.getCourseName().equalsIgnoreCase(selectedClassName)) {
+                selectedCourse = c;
+                break;
+            }
+        }
+
+        String courseID = String.valueOf(selectedCourse.getCourseId());
+        
+        try {
+            courseStudentPayment = this.studentRepository.getcourseStudentPayment(studentID, courseID, selectedMonth);
+            allCourseStudentPayment = this.studentRepository.getAllcourseStudentPayment(studentID);
+        } catch (SQLException ex) {
+            Logger.getLogger(StudentPaymentHistory.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        DefaultTableModel individualStudentPaymentTableModel = (DefaultTableModel) individualStudentPaymentTable.getModel();
+        individualStudentPaymentTableModel.setRowCount(0);
+
+        DefaultTableModel AllStudentPaymentTableModel = (DefaultTableModel) AllStudentPaymentTable.getModel();
+        AllStudentPaymentTableModel.setRowCount(0);
+
+        for (CourseStudentPaymentDto dto : courseStudentPayment) {
+            System.out.println(dto);
+            individualStudentPaymentTableModel.addRow(new Object[]{dto.getCourseName(), dto.getAmount(), dto.getPaidYear(), dto.getPaidMonth()});
+        }
+
+        for (CourseStudentPaymentDto dto : allCourseStudentPayment) {
+            System.out.println(dto);
+            AllStudentPaymentTableModel.addRow(new Object[]{dto.getCourseName(), dto.getAmount(), dto.getPaidYear(), dto.getPaidMonth()});
+        }
+//
+        if (!courseStudentPayment.isEmpty()) {
+            individualStudentPaymentTable.setVisible(true);
+        }
+
+        if (!allCourseStudentPayment.isEmpty()) {
+            AllStudentPaymentTable.setVisible(true);
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -107,6 +390,23 @@ public class StudentPaymentHistory extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private classmaster.ui.component.darktable.TableDark AllStudentPaymentTable;
+    private javax.swing.JComboBox<String> cbcourses;
+    private classmaster.ui.component.darktable.TableDark individualStudentPaymentTable;
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JPanel jPanel4;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private com.toedter.calendar.JMonthChooser monthPicker;
+    private javax.swing.JPanel panelAfterSearched;
     // End of variables declaration//GEN-END:variables
 }

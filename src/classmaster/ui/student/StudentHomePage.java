@@ -82,7 +82,7 @@ public class StudentHomePage extends javax.swing.JFrame implements Page {
 
         jMenu1.setText("View");
 
-        jMenuItem1.setText("View Classes");
+        jMenuItem1.setText("My Courses");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -90,7 +90,7 @@ public class StudentHomePage extends javax.swing.JFrame implements Page {
         });
         jMenu1.add(jMenuItem1);
 
-        jMenuItem2.setText("View Attendence");
+        jMenuItem2.setText("My Attendence");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -98,7 +98,7 @@ public class StudentHomePage extends javax.swing.JFrame implements Page {
         });
         jMenu1.add(jMenuItem2);
 
-        jMenuItem3.setText("View Payment History");
+        jMenuItem3.setText("My Payment History");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);

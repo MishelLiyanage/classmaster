@@ -41,7 +41,6 @@ public class HomePage extends javax.swing.JFrame implements Page {
         jMnuItmCreateNewClass = new javax.swing.JMenuItem();
         jMnuView = new javax.swing.JMenu();
         jMnuItmClassPaymentHistory = new javax.swing.JMenuItem();
-        jMnuItmMonthlyIncome = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
 
@@ -100,9 +99,6 @@ public class HomePage extends javax.swing.JFrame implements Page {
             }
         });
         jMnuView.add(jMnuItmClassPaymentHistory);
-
-        jMnuItmMonthlyIncome.setText("Monthly total income");
-        jMnuView.add(jMnuItmMonthlyIncome);
 
         jMenuBar1.add(jMnuView);
 
@@ -207,7 +203,6 @@ public class HomePage extends javax.swing.JFrame implements Page {
     private javax.swing.JMenuItem jMnuItmAddTeacher;
     private javax.swing.JMenuItem jMnuItmClassPaymentHistory;
     private javax.swing.JMenuItem jMnuItmCreateNewClass;
-    private javax.swing.JMenuItem jMnuItmMonthlyIncome;
     private javax.swing.JMenu jMnuStaff;
     private javax.swing.JMenu jMnuTeacher;
     private javax.swing.JMenu jMnuView;

@@ -86,26 +86,26 @@ public class AddTeacherForm extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(750, 500));
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
         jLabel1.setText("Register Teacher");
+        jLabel1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel2.setText("First Name");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel3.setText("Last Name");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel4.setText("Email");
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
-        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel6.setText("Degree");
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
-        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel7.setText("Description");
+        jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
-        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel8.setText("NIC Number");
+        jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
         jtxtFirstName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,27 +113,27 @@ public class AddTeacherForm extends javax.swing.JFrame {
             }
         });
 
+        jSubmit.setText("Create");
         jSubmit.setBackground(new java.awt.Color(0, 153, 153));
         jSubmit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jSubmit.setForeground(new java.awt.Color(255, 255, 255));
-        jSubmit.setText("Create");
         jSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jSubmitActionPerformed(evt);
             }
         });
 
+        jSubmit1.setText("Back");
         jSubmit1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jSubmit1.setForeground(new java.awt.Color(0, 153, 153));
-        jSubmit1.setText("Back");
         jSubmit1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jSubmit1ActionPerformed(evt);
             }
         });
 
-        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel9.setText("Contact Number");
+        jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

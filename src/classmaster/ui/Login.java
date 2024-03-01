@@ -206,7 +206,7 @@ public class Login extends javax.swing.JFrame {
             Account account = this.authRepository.signin(username, password);
 
             if (account == null) {
-                System.out.println("---- User not found ----");
+                JOptionPane.showMessageDialog(rootPane, "User not found!");
                 return;
 
             }

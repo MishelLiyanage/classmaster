@@ -13,6 +13,7 @@ import classmaster.repository.ComponentRegistry;
 import classmaster.repository.StudentRepository;
 import classmaster.utils.Page;
 import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Mishel Fernando
  */
 public class ViewAttendence extends javax.swing.JFrame {
+
     private StudentRepository studentRepository;
     private AuthRepository authRepository;
     private AttendanceRepository attendanceRepository;
@@ -32,51 +34,51 @@ public class ViewAttendence extends javax.swing.JFrame {
     private StudentCourseDto selectedCourse;
     private List<StudentCourseDto> studentCourses;
     private Page page;
-    
+
     /**
      * Creates new form ViewAttendence
      */
     public ViewAttendence(Page page) {
         Component studentComponent = ComponentRegistry.getInstance()
                 .getComponent("StudentRepository");
-        
+
         if (studentComponent instanceof StudentRepository) {
             this.studentRepository = (StudentRepository) studentComponent;
         }
-        
+
         Component attendenceComponent = ComponentRegistry.getInstance()
                 .getComponent("AttendanceRepository");
-        
+
         if (attendenceComponent instanceof AttendanceRepository) {
             this.attendanceRepository = (AttendanceRepository) attendenceComponent;
         }
-        
+
         Component component = ComponentRegistry.getInstance()
                 .getComponent("AuthRepository");
-        
+
         if (component instanceof AuthRepository) {
             this.authRepository = (AuthRepository) component;
         }
-        
+
         this.page = page;
-        
+
         initComponents();
-        
+
         loadStudentCourse();
     }
-    
-    public void loadStudentCourse() {     
+
+    public void loadStudentCourse() {
         int studentID = this.authRepository.getCurrentAccount().getId();
-        
+
         try {
             studentCourses = this.studentRepository.getAllStudentCourses(studentID);
         } catch (SQLException ex) {
             Logger.getLogger(ViewAttendence.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         displayClassesComboBox(studentCourses);
     }
-    
+
     private void displayClassesComboBox(List<StudentCourseDto> studentCourses) {
         DefaultComboBoxModel model = (DefaultComboBoxModel) cmbxClasses.getModel();
         model.removeAllElements();
@@ -87,7 +89,6 @@ public class ViewAttendence extends javax.swing.JFrame {
         cmbxClasses.setModel(model);
     }
 
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -199,7 +200,7 @@ public class ViewAttendence extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Date", "Attend Time", "Starting Time", "Is Late"
+                "Scheduled Date", "Present/Absent", "Starting Time", "Attend Time", "Is Late"
             }
         ));
         jScrollPane2.setViewportView(attendenceTable);
@@ -282,49 +283,60 @@ public class ViewAttendence extends javax.swing.JFrame {
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         String selectedClassName = String.valueOf(cmbxClasses.getSelectedItem());
         int year = jYearChooser1.getYear();
-        int month = jMonthChooser1.getMonth()+ 1;
-        
+        int month = jMonthChooser1.getMonth() + 1;
+
         for (StudentCourseDto c : studentCourses) {
             if (c.getCourseName().equalsIgnoreCase(selectedClassName)) {
                 selectedCourse = c;
                 break;
             }
         }
-        
+
         int studentID = this.authRepository.getCurrentAccount().getId();
         int courseID = selectedCourse.getCourseID();
-        
+
         try {
             allStudentAttendence = this.attendanceRepository.findAllStudentCourseAttendance(studentID, courseID, year, month);
         } catch (SQLException ex) {
             Logger.getLogger(ViewAttendence.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+
         DefaultTableModel model = (DefaultTableModel) attendenceTable.getModel();
         model.setRowCount(0);
-        
-        if(allStudentAttendence.isEmpty()){
+
+        if (allStudentAttendence.isEmpty()) {
             JOptionPane.showMessageDialog(rootPane, "No attendence records found for this month!");
         }
-        
+
         for (StudentCourseAttendance dto : allStudentAttendence) {
-            System.out.println("asd" + dto.getScheduledDate());
-            
-            String isLate;
-            if(dto.getAttendTime() != null){
-                if(dto.getAttendTime().isAfter(dto.getCourseStartTime())){
-                isLate = "Late";
-            }else{
-                isLate = "Early";
+
+            String isLate = null;
+            String attendence = null;
+            String ifNull = "N/A";
+            if (dto.getAttendTime() != null) {
+                if (dto.getAttendTime().isAfter(dto.getCourseStartTime())) {
+                    isLate = "Late";
+                    attendence = "Present";
+                } else {
+                    isLate = "Early";
+                    attendence = "Present";
+                }
+            } else {
+                isLate = "N/A";
+                attendence = "Absent";
             }
-            model.addRow(new Object[]{dto.getAttendDate().toString(), 1, 2, 3});
             
-            }
+            String attendTime = dto.getAttendTime() == null ? "N/A" : dto.getAttendTime()
+                    .format(DateTimeFormatter.ofPattern("hh:mm a"));
+            String startingTime = dto.getCourseStartTime() == null ? "N/A" : dto.getCourseStartTime()
+                    .format(DateTimeFormatter.ofPattern("hh:mm a"));
+            
+            model.addRow(new Object[]{dto.getScheduledDate(), attendence, startingTime, attendTime, isLate});
         }
-        
+
         if (allStudentAttendence.size() > 0) {
-                attendenceTable.setVisible(true);
-            }
+            attendenceTable.setVisible(true);
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**

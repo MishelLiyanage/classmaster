@@ -129,7 +129,7 @@ public class CreateClass extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jButton1.setText("Create Class");
-        jButton1.setBackground(new java.awt.Color(0, 0, 102));
+        jButton1.setBackground(new java.awt.Color(0, 153, 153));
         jButton1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton1.setForeground(new java.awt.Color(255, 255, 255));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -155,9 +155,8 @@ public class CreateClass extends javax.swing.JFrame {
         jLabel6.setText("To");
 
         jSubmit1.setText("Back");
-        jSubmit1.setBackground(new java.awt.Color(0, 0, 102));
         jSubmit1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jSubmit1.setForeground(new java.awt.Color(255, 255, 255));
+        jSubmit1.setForeground(new java.awt.Color(0, 153, 153));
         jSubmit1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jSubmit1ActionPerformed(evt);

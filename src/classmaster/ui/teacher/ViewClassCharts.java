@@ -190,7 +190,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
 
         jLabel7.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("View Classes");
+        jLabel7.setText("Course Attendence Analytics");
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/classmaster/images/logo/teacher.jpg"))); // NOI18N
 

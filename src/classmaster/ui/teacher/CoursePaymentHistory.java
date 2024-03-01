@@ -118,12 +118,12 @@ public class CoursePaymentHistory extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         yearChooser = new com.toedter.calendar.JYearChooser();
         jTabbedPane1 = new javax.swing.JTabbedPane();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tblStuPayment = new classmaster.ui.component.darktable.TableDark();
         jPanel3 = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tableDark1 = new classmaster.ui.component.darktable.TableDark();
         panelCharts = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        tblStuPayment = new classmaster.ui.component.darktable.TableDark();
         jButton2 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -137,7 +137,7 @@ public class CoursePaymentHistory extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Class Payment History");
+        jLabel5.setText("Course Payment History");
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/classmaster/images/logo/teacher.jpg"))); // NOI18N
 
@@ -163,9 +163,7 @@ public class CoursePaymentHistory extends javax.swing.JFrame {
         jPanel6.setBackground(new java.awt.Color(241, 254, 241));
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel4.setText("Class");
-
-        cbTchCourses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jLabel4.setText("Course");
 
         btnSearch.setBackground(new java.awt.Color(0, 153, 153));
         btnSearch.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -231,14 +229,31 @@ public class CoursePaymentHistory extends javax.swing.JFrame {
 
         jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
 
+        tblStuPayment.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Student Id", "Name", "Paid", "Paid Date", "Paid Amount"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tblStuPayment);
+
+        jTabbedPane1.addTab("Payments", jScrollPane1);
+
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         tableDark1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "Summary", "Value"
@@ -264,29 +279,6 @@ public class CoursePaymentHistory extends javax.swing.JFrame {
         panelCharts.setLayout(new java.awt.BorderLayout());
         jTabbedPane1.addTab("Charts", panelCharts);
 
-        tblStuPayment.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
-            },
-            new String [] {
-                "Student Id", "Name", "Paid", "Paid Date", "Paid Amount"
-            }
-        ) {
-            boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
-            };
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane1.setViewportView(tblStuPayment);
-
-        jTabbedPane1.addTab("Payments", jScrollPane1);
-
         jButton2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButton2.setForeground(new java.awt.Color(0, 153, 153));
         jButton2.setText("Back");
@@ -301,7 +293,7 @@ public class CoursePaymentHistory extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+            .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 835, Short.MAX_VALUE)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(26, 26, 26)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

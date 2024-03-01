@@ -80,7 +80,7 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
 
         jMenu1.setText("View");
 
-        jMenuItem2.setText("View Class Individual");
+        jMenuItem2.setText("Course Students");
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -88,7 +88,7 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
         });
         jMenu1.add(jMenuItem2);
 
-        jMenuItem3.setText("Check Income");
+        jMenuItem3.setText("Course Payment History");
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
@@ -96,7 +96,7 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
         });
         jMenu1.add(jMenuItem3);
 
-        jMenuItem4.setText("View Class Charts");
+        jMenuItem4.setText("Course Attendence Analytics");
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);
@@ -104,7 +104,7 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
         });
         jMenu1.add(jMenuItem4);
 
-        jMenuItem1.setText("Monthly Payment History");
+        jMenuItem1.setText("Monthly Payment Analytics");
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);

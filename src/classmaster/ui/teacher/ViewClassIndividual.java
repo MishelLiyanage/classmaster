@@ -118,7 +118,7 @@ public class ViewClassIndividual extends javax.swing.JFrame {
 
         jLabel5.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("View Students");
+        jLabel5.setText("Course Student Details");
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/classmaster/images/logo/teacher.jpg"))); // NOI18N
 

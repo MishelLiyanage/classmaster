@@ -4,6 +4,7 @@
  */
 package classmaster.ui.teacher;
 
+import classmaster.models.DailyCourseAttendanceDto;
 import classmaster.models.TeacherClassPaymentSummaryDto;
 import classmaster.repository.AuthRepository;
 import classmaster.repository.Component;
@@ -17,8 +18,13 @@ import java.sql.SQLException;
 import java.time.Month;
 import java.time.format.TextStyle;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartPanel;
@@ -26,6 +32,11 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.data.general.Dataset;
+import org.jfree.data.time.Day;
+import org.jfree.data.time.TimeSeries;
+import org.jfree.data.time.TimeSeriesCollection;
+import org.jfree.data.xy.XYDataset;
 
 /**
  *
@@ -118,8 +129,8 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
             return;
         }
 
-        if (String.valueOf(cbChartType.getSelectedItem()).equalsIgnoreCase("salary")) {
-            CategoryDataset dataset = createSalaryDataset();
+        if (String.valueOf(cbChartType.getSelectedItem()).equalsIgnoreCase("student payment income")) {
+            CategoryDataset dataset = createStudentPaymentIncomeDataset();
 
             JFreeChart chart = ChartFactory.createBarChart(
                     "Income for Month : " + Month.of(monthChooser.getMonth() + 1).name(), //Chart Title  
@@ -130,7 +141,7 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
                     true, true, false
             );
 
-            drawChart(dataset, chart, pnlCharts);
+            drawChart(chart, pnlCharts);
         } else if (String.valueOf(cbChartType.getSelectedItem()).equalsIgnoreCase("student count")) {
             CategoryDataset dataset = createStudentCount();
 
@@ -143,7 +154,7 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
                     true, true, false
             );
 
-            drawChart(dataset, chart, pnlCharts);
+            drawChart(chart, pnlCharts);
         }
 
     }
@@ -151,51 +162,47 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
     private void loadAnnualChart() {
 
         if (annualSummary.size() == 0) {
-            System.out.println("No annual data to show");
+            JOptionPane.showMessageDialog(rootPane,
+                    "No payment has been submitted for the year "+yearChooser.getYear()+". Thus, no analytics to be displayed yet!");
             return;
         }
 
-        if (String.valueOf(cbChartAnnual.getSelectedItem()).equalsIgnoreCase("salary")) {
-            CategoryDataset dataset = createAnnualCourseIncomeDataSet();
+        if (String.valueOf(cbChartAnnual.getSelectedItem()).equalsIgnoreCase("student payment income")) {
+            XYDataset dataset = createAnnualCourseIncomeDataSet();
 
-            JFreeChart chart = ChartFactory.createLineChart(
+            JFreeChart chart = ChartFactory.createTimeSeriesChart(
                     "Income Summary for " + yearChooser.getYear(), //Chart Title  
-                    "Year", // Category axis  
-                    "Total Income", // Value axis  
-                    dataset,
-                    PlotOrientation.VERTICAL,
-                    true, true, false
+                    "Month", 
+                    "Total Income",  
+                    dataset
             );
-            drawChart(dataset, chart, pnlAnnualStats);
+            drawChart(chart, pnlAnnualStats);
         } else if (String.valueOf(cbChartAnnual.getSelectedItem()).equalsIgnoreCase("student count")) {
             CategoryDataset dataset = createAnnualCourseStudentCountDataSet();
 
             JFreeChart chart = ChartFactory.createLineChart(
-                    "Total Paid Students for Year " + yearChooser.getYear(), //Chart Title  
-                    "Year", // Category axis  
+                    "Total Paid Students Count Summary for Year " + yearChooser.getYear(), //Chart Title  
+                    "Month", // Category axis  
                     "Total Paid Students", // Value axis  
                     dataset,
                     PlotOrientation.VERTICAL,
                     true, true, false
             );
 
-            drawChart(dataset, chart, pnlAnnualStats);
+            drawChart(chart, pnlAnnualStats);
         }
     }
 
-    private void drawChart(CategoryDataset dataset, JFreeChart chart, javax.swing.JPanel displayPanel) {
+    private void drawChart( JFreeChart chart, javax.swing.JPanel displayPanel) {
         ChartPanel panel = new ChartPanel(chart);
 
         displayPanel.removeAll();
         displayPanel.add(panel, BorderLayout.CENTER);
         displayPanel.validate();
 
-//        panelCharts.removeAll();
-//        panelCharts.add(panel, BorderLayout.CENTER);
-//        panelCharts.validate();
     }
 
-    private CategoryDataset createSalaryDataset() {
+    private CategoryDataset createStudentPaymentIncomeDataset() {
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
 
         for (TeacherClassPaymentSummaryDto dto : summary) {
@@ -215,20 +222,45 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
         return dataset;
     }
 
-    private DefaultCategoryDataset createAnnualCourseIncomeDataSet() {
-
-        DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-        for (TeacherClassPaymentSummaryDto dto : annualSummary) {
-            if(dto.getMonth() > 0){
-                 dataset.addValue(dto.getTotalIncome(), dto.getCourseName(),
-                    Month.of(dto.getMonth()).getDisplayName(TextStyle.FULL, Locale.ENGLISH));
-            }
-           
+    private TimeSeriesCollection createAnnualCourseIncomeDataSet() {
+        
+        TimeSeriesCollection dataset = new TimeSeriesCollection();  
+        
+        Set<String> courses = new HashSet<>();
+        
+        for(TeacherClassPaymentSummaryDto cAtt: annualSummary){
+            courses.add(cAtt.getCourseName());
         }
+        
+        Map<String,TimeSeries> series = new HashMap<>();
+        
+        for(String course: courses){
+            series.put(course,new TimeSeries(course));
+            System.out.println(course);
+        }
+        
+        for (TeacherClassPaymentSummaryDto dto : annualSummary) {
+            
+            TimeSeries courseSeries = series.get(dto.getCourseName());
+            
+            int month = dto.getMonth();
+            int year = yearChooser.getYear();
+            courseSeries.add(new org.jfree.data.time.Month(month, year),dto.getTotalIncome());
+        }
+        
+        for(String course: courses){
+            dataset.addSeries(series.get(course));
+        }
+        
         return dataset;
+
+       
     }
 
     private DefaultCategoryDataset createAnnualCourseStudentCountDataSet() {
+        
+        
+        
 
         DefaultCategoryDataset dataset = new DefaultCategoryDataset();
         for (TeacherClassPaymentSummaryDto dto : annualSummary) {
@@ -402,7 +434,7 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
 
         pnlSelectionAnnual.setBackground(new java.awt.Color(204, 255, 204));
 
-        cbChartAnnual.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Salary", "Student Count" }));
+        cbChartAnnual.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student Payment Income", "Student Count" }));
 
         javax.swing.GroupLayout pnlSelectionAnnualLayout = new javax.swing.GroupLayout(pnlSelectionAnnual);
         pnlSelectionAnnual.setLayout(pnlSelectionAnnualLayout);
@@ -449,7 +481,7 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
 
         jPanel12.setBackground(new java.awt.Color(204, 255, 204));
 
-        cbChartType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Salary", "Student Count" }));
+        cbChartType.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Student Payment Income", "Student Count" }));
 
         javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -567,6 +599,7 @@ public class MonthlyPaymentHistory extends javax.swing.JFrame {
 
     private void btnSearchActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchActionPerformed
         try {
+            
             // TODO add your handling code here:
             loadSummary();
             loadAnnalSummary();

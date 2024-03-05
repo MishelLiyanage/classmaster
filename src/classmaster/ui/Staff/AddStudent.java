@@ -11,8 +11,10 @@ import classmaster.repository.ComponentRegistry;
 import classmaster.repository.StudentRepository;
 import classmaster.utils.Constants;
 import classmaster.utils.Page;
+import classmaster.utils.Utility;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -232,12 +234,15 @@ public class AddStudent extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnCreateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCreateActionPerformed
+        
+        int randomHash = Utility.getRandomNumber(100, 10000000);
+        
         try {
-            String firstName = txtFName.getText();
-            String lastName = txtLName.getText();
-            String email = txtEmail.getText();
+            String firstName = txtFName.getText().trim();
+            String lastName = txtLName.getText().trim();
+            String email = txtEmail.getText().trim();
             LocalDate dob = dpDob.getDate();
-            String password = Constants.DEFAULT_PASSWORD;
+            String password = Constants.DEFAULT_PASSWORD + randomHash;
             String displayName = firstName + " " + lastName;
             String role = Constants.ROLE_STUDENT;
         
@@ -256,10 +261,17 @@ public class AddStudent extends javax.swing.JFrame {
                     displayName,
                     role
             );
+            
+            boolean isEmailExists = this.authRepository.isEmailAlreadyExists(email);
+            
+            if(isEmailExists){
+                JOptionPane.showMessageDialog(rootPane, "User from this Email already exists!");
+                return;
+            }
 
             int accountId = this.authRepository.signup(new Account(
                     txtEmail.getText(),
-                    Constants.DEFAULT_PASSWORD,
+                    password,
                     txtFName.getText(),
                     txtLName.getText(),
                     txtFName.getText() + " " + txtLName.getText(),
@@ -275,7 +287,11 @@ public class AddStudent extends javax.swing.JFrame {
 
             this.studentRepository.save(s); 
            
-            JOptionPane.showMessageDialog(rootPane, "Successfully saved student.");
+           
+            JOptionPane.showMessageDialog(rootPane, 
+                    "<html><h2>Student saved successfully!</h2>Provide this information to the student to login to the system\n(Please ask them to change password to of their own once they login)\n"
+                                          + "Student ID :" + accountId
+                                          + "\nPassword :" + password+"</html>");
                
             clearAllFields();
            
@@ -284,6 +300,8 @@ public class AddStudent extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnCreateActionPerformed
 
+    
+    
     private boolean validateStudent(){
         if(txtFName.getText() == null || txtLName.getText() == null || txtEmail.getText() == null || dpDob.getDate() == null ||
            txtCity.getText() == null || txtGuardianName.getText() == null || txtGuardNum.getText() == null){
@@ -294,6 +312,11 @@ public class AddStudent extends javax.swing.JFrame {
         if(txtFName.getText().isBlank() || txtLName.getText().isBlank() || txtEmail.getText().isBlank() || txtCity.getText().isBlank() ||
           txtGuardianName.getText().isBlank() || txtGuardNum.getText().isBlank()){
             JOptionPane.showMessageDialog(rootPane, "All fields are required");
+            return false;
+        }
+        
+        if(!txtEmail.getText().contains("@gmail.com")){
+            JOptionPane.showMessageDialog(rootPane, "Invalide email address");
             return false;
         }
         

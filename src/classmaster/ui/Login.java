@@ -30,8 +30,7 @@ public class Login extends javax.swing.JFrame {
             this.authRepository = (AuthRepository) component;
         }
 
-//        this.authRepository = (AuthRepository) ComponentRegistry.getInstance()
-//                .getComponent("AuthRepository");
+
         initComponents();
     }
 
@@ -182,8 +181,8 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbtnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnLoginActionPerformed
-        String username = jtxtEmail.getText();
-        String password = jpsfPassword.getText();
+        String username = jtxtEmail.getText().trim();
+        String password = jpsfPassword.getText().trim();
 
         if(jtxtEmail.getText() == null || jpsfPassword.getText() == null){
             JOptionPane.showMessageDialog(rootPane, "All fields are required!");
@@ -197,8 +196,6 @@ public class Login extends javax.swing.JFrame {
         
         jbtnLogin.setVisible(false);
 
-//        String username = "ashanchandrasiri1@gmail.com";
-//        String password = "ashan123";
         try {
 
             System.out.println("username : " + username + " password : " + password);
@@ -206,7 +203,7 @@ public class Login extends javax.swing.JFrame {
             Account account = this.authRepository.signin(username, password);
 
             if (account == null) {
-                JOptionPane.showMessageDialog(rootPane, "User not found!");
+                JOptionPane.showMessageDialog(rootPane, "User Not Found. Invalid email or password!");
                 return;
 
             }

@@ -26,6 +26,20 @@ public class AuthRepository implements Component {
     public AuthRepository(DBConnection dbCOnnection) {
         this.dbCOnnection = dbCOnnection;
     }
+    
+    public boolean isEmailAlreadyExists(String email) throws SQLException{
+        Object[] params = {email};
+        ResultSet rs = dbCOnnection.execute("select * from Account a where a.email = ?", params);
+        
+        boolean isExist = false;
+        while (rs.next()) {
+            if(rs.getString("email")!=null){
+                isExist = true;
+            }
+           
+        }
+        return isExist;
+    }
 
     public Account signin(String email, String password) throws SQLException {
         Object[] params = {email, password};

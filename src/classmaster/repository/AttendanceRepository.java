@@ -181,7 +181,7 @@ public class AttendanceRepository implements Component {
         String query = "select c.id as course_id, c.name as course_name, a.attend_date, count(a.attend_date) as count"
                 + " from Attendance a inner join Course c on a.course_id = c.id and c.teacherId = ?"
                 + " where year(a.attend_date) = ? and month(a.attend_date) = ?"
-                + " group by c.id, c.name, a.attend_date order by  a.attend_date";
+                + " group by c.id, c.name, a.attend_date order by a.attend_date";
 
         Object[] params = {teacherId, year, month};
         ResultSet rs = dBConnection.execute(query, params);

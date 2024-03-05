@@ -5,6 +5,7 @@ import classmaster.repository.AuthRepository;
 import classmaster.repository.Component;
 import classmaster.repository.ComponentRegistry;
 import classmaster.ui.ChangePassword;
+import classmaster.ui.Login;
 import classmaster.utils.Page;
 
 public class TeacherHomePage extends javax.swing.JFrame implements Page {
@@ -47,6 +48,8 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem6 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("ClassMaster");
@@ -126,6 +129,18 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
 
         jMenuBar1.add(jMenu4);
 
+        jMenu2.setText("Exit");
+
+        jMenuItem6.setText("Log out");
+        jMenuItem6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem6ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem6);
+
+        jMenuBar1.add(jMenu2);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -170,6 +185,14 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
         setVisible(false);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
+    private void jMenuItem6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem6ActionPerformed
+        if(this.authRepository.getCurrentAccount() != null){
+            this.currentUser = null;
+            setVisible(false);
+            new Login().setVisible(true);
+        }
+    }//GEN-LAST:event_jMenuItem6ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -208,6 +231,7 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
@@ -215,6 +239,7 @@ public class TeacherHomePage extends javax.swing.JFrame implements Page {
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JMenuItem jMenuItem6;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JLabel lblGoodDay;
     // End of variables declaration//GEN-END:variables

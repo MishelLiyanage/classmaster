@@ -4,7 +4,12 @@
  */
 package classmaster.ui.Admin;
 
+import classmaster.models.Account;
+import classmaster.repository.AuthRepository;
+import classmaster.repository.Component;
+import classmaster.repository.ComponentRegistry;
 import classmaster.ui.ChangePassword;
+import classmaster.ui.Login;
 import classmaster.utils.Page;
 
 /**
@@ -12,11 +17,17 @@ import classmaster.utils.Page;
  * @author Mishel Fernando
  */
 public class HomePage extends javax.swing.JFrame implements Page {
-
-    /**
-     * Creates new form HomePage
-     */
+    private AuthRepository authRepository;
+    private Account currentUser;
+     
     public HomePage() {
+        Component Component = ComponentRegistry.getInstance()
+                .getComponent("AuthRepository");
+        if (Component instanceof AuthRepository) {
+            this.authRepository = (AuthRepository) Component;
+        }
+        
+        this.currentUser = this.authRepository.getCurrentAccount();
         initComponents();
     }
 
@@ -39,10 +50,10 @@ public class HomePage extends javax.swing.JFrame implements Page {
         jMnuItmAddTeacher = new javax.swing.JMenuItem();
         jMnuClass = new javax.swing.JMenu();
         jMnuItmCreateNewClass = new javax.swing.JMenuItem();
-        jMnuView = new javax.swing.JMenu();
-        jMnuItmClassPaymentHistory = new javax.swing.JMenuItem();
         jMenu4 = new javax.swing.JMenu();
         jMenuItem4 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
 
         jMenu1.setText("jMenu1");
 
@@ -90,18 +101,6 @@ public class HomePage extends javax.swing.JFrame implements Page {
 
         jMenuBar1.add(jMnuClass);
 
-        jMnuView.setText("Payment");
-
-        jMnuItmClassPaymentHistory.setText("Teacher Payment Summery");
-        jMnuItmClassPaymentHistory.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMnuItmClassPaymentHistoryActionPerformed(evt);
-            }
-        });
-        jMnuView.add(jMnuItmClassPaymentHistory);
-
-        jMenuBar1.add(jMnuView);
-
         jMenu4.setText("Edit");
 
         jMenuItem4.setText("Change Password");
@@ -113,6 +112,18 @@ public class HomePage extends javax.swing.JFrame implements Page {
         jMenu4.add(jMenuItem4);
 
         jMenuBar1.add(jMenu4);
+
+        jMenu3.setText("Exit");
+
+        jMenuItem1.setText("Log out");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
+        jMenu3.add(jMenuItem1);
+
+        jMenuBar1.add(jMenu3);
 
         setJMenuBar(jMenuBar1);
 
@@ -146,15 +157,18 @@ public class HomePage extends javax.swing.JFrame implements Page {
         setVisible(false);
     }//GEN-LAST:event_jMnuItmCreateNewClassActionPerformed
 
-    private void jMnuItmClassPaymentHistoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMnuItmClassPaymentHistoryActionPerformed
-        new TeacherPaymentSummery(this).setVisible(true);
-        setVisible(false);
-    }//GEN-LAST:event_jMnuItmClassPaymentHistoryActionPerformed
-
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         new ChangePassword(this).setVisible(true);
         setVisible(false);
     }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        if(this.authRepository.getCurrentAccount() != null){
+            this.currentUser = null;
+            setVisible(false);
+            new Login().setVisible(true);
+        }
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -195,17 +209,17 @@ public class HomePage extends javax.swing.JFrame implements Page {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
     private javax.swing.JMenu jMenu4;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenu jMnuClass;
     private javax.swing.JMenuItem jMnuItmAddStaff;
     private javax.swing.JMenuItem jMnuItmAddTeacher;
-    private javax.swing.JMenuItem jMnuItmClassPaymentHistory;
     private javax.swing.JMenuItem jMnuItmCreateNewClass;
     private javax.swing.JMenu jMnuStaff;
     private javax.swing.JMenu jMnuTeacher;
-    private javax.swing.JMenu jMnuView;
     // End of variables declaration//GEN-END:variables
 
     @Override

@@ -24,9 +24,9 @@ public class ComponentRegistry {
 
     public void register() throws SQLException {
         DBConnection dbConnection = new DBConnection(
-                "jdbc:mysql://192.168.1.2:3306/classdatabase",
-                "masteruser",
-                "ma5tErU5erPa55"
+                "jdbc:mysql://localhost:3306/classdatabase",
+                "root",
+                "1234"
         );
 
         dbConnection.connect();

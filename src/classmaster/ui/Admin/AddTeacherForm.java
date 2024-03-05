@@ -86,26 +86,26 @@ public class AddTeacherForm extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(750, 500));
 
-        jLabel1.setText("Register Teacher");
         jLabel1.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
+        jLabel1.setText("Register Teacher");
 
-        jLabel2.setText("First Name");
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel2.setText("First Name");
 
-        jLabel3.setText("Last Name");
         jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel3.setText("Last Name");
 
-        jLabel4.setText("Email");
         jLabel4.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel4.setText("Email");
 
-        jLabel6.setText("Degree");
         jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel6.setText("Degree");
 
-        jLabel7.setText("Description");
         jLabel7.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel7.setText("Description");
 
-        jLabel8.setText("NIC Number");
         jLabel8.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel8.setText("NIC Number");
 
         jtxtFirstName.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,27 +113,27 @@ public class AddTeacherForm extends javax.swing.JFrame {
             }
         });
 
-        jSubmit.setText("Create");
         jSubmit.setBackground(new java.awt.Color(0, 153, 153));
         jSubmit.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jSubmit.setForeground(new java.awt.Color(255, 255, 255));
+        jSubmit.setText("Create");
         jSubmit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jSubmitActionPerformed(evt);
             }
         });
 
-        jSubmit1.setText("Back");
         jSubmit1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jSubmit1.setForeground(new java.awt.Color(0, 153, 153));
+        jSubmit1.setText("Back");
         jSubmit1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jSubmit1ActionPerformed(evt);
             }
         });
 
-        jLabel9.setText("Contact Number");
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jLabel9.setText("Contact Number");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -251,10 +251,10 @@ public class AddTeacherForm extends javax.swing.JFrame {
 
     private void jSubmitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSubmitActionPerformed
         try{
-            String email = jtxtEmail.getText();
+            String email = jtxtEmail.getText().trim();
             String password = Constants.DEFAULT_PASSWORD;
-            String firstName = jtxtFirstName.getText();
-            String lastName = jtxtLastName.getText();
+            String firstName = jtxtFirstName.getText().trim();
+            String lastName = jtxtLastName.getText().trim();
             String displayName = firstName + " " + lastName;
             String role = Constants.ROLE_STAFF;
         
@@ -273,6 +273,13 @@ public class AddTeacherForm extends javax.swing.JFrame {
                     role
             );
         
+            boolean isEmailExists = this.authRepository.isEmailAlreadyExists(email);
+            
+            if(isEmailExists){
+                JOptionPane.showMessageDialog(rootPane, "User from this Email already exists!");
+                return;
+            }
+            
             int accountId = this.authRepository.signup(new Account(
                     jtxtEmail.getText(),
                     Constants.DEFAULT_PASSWORD,
@@ -291,7 +298,10 @@ public class AddTeacherForm extends javax.swing.JFrame {
 
             this.teacherRepository.save(t);
 
-            JOptionPane.showMessageDialog(rootPane, "Successfully saved teacher.");
+            JOptionPane.showMessageDialog(rootPane, 
+                    "<html><h2>Teacher saved successfully!</h2>Provide this information to the teacher to login to the system\n(Please ask them to change password to of their own once they login)\n"
+                                          + "Teacher ID :" + accountId
+                                          + "\nPassword :" + password+"</html>");
                
             clearAllFields();
 
@@ -310,6 +320,11 @@ public class AddTeacherForm extends javax.swing.JFrame {
         if(jtxtFirstName.getText().isBlank() || jtxtLastName.getText().isBlank() || jtxtEmail.getText().isBlank() || jtxtNICNo.getText().isBlank()
            || jtxtDegree.getText().isBlank() || jtxtDescription.getText().isBlank() || jtxtContactNumber.getText().isBlank()){
             JOptionPane.showMessageDialog(rootPane, "All fields are required");
+            return false;
+        }
+        
+        if(!jtxtEmail.getText().contains("@")){
+            JOptionPane.showMessageDialog(rootPane, "Invalide email address");
             return false;
         }
         

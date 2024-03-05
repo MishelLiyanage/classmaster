@@ -73,10 +73,7 @@
                       <Component id="jLabel15" min="-2" pref="260" max="-2" attributes="0"/>
                       <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <Component id="jLabel20" min="-2" pref="95" max="-2" attributes="0"/>
-                                  <EmptySpace pref="247" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="jLabel20" alignment="0" min="-2" pref="95" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <EmptySpace min="134" pref="134" max="-2" attributes="0"/>
                                   <Component id="jtxtNICNo" min="-2" pref="208" max="-2" attributes="0"/>

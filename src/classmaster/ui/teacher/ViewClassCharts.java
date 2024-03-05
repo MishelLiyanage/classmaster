@@ -182,9 +182,9 @@ public class ViewClassCharts extends javax.swing.JFrame {
         jPanel6.setBackground(new java.awt.Color(0, 0, 0));
         jPanel6.setForeground(new java.awt.Color(51, 51, 51));
 
+        jLabel5.setText("Monthly Payment History");
         jLabel5.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setText("Monthly Payment History");
 
         jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/classmaster/images/logo/teacher.jpg"))); // NOI18N
 
@@ -217,9 +217,9 @@ public class ViewClassCharts extends javax.swing.JFrame {
         jPanel7.setBackground(new java.awt.Color(0, 0, 0));
         jPanel7.setForeground(new java.awt.Color(51, 51, 51));
 
+        jLabel7.setText("Course Attendence Analytics");
         jLabel7.setFont(new java.awt.Font("Segoe UI Symbol", 0, 24)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel7.setText("Course Attendence Analytics");
 
         jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/classmaster/images/logo/teacher.jpg"))); // NOI18N
 
@@ -244,28 +244,24 @@ public class ViewClassCharts extends javax.swing.JFrame {
 
         panelAttendanceCboxPanel.setBackground(new java.awt.Color(250, 250, 250));
 
-        cbCourses.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel1.setText("<html><h4>Select Year and Month</h4></html>");
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         jLabel3.setText("<html><h4>Select Course</h4></html>");
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
+        btnSearch.setText("Search");
         btnSearch.setBackground(new java.awt.Color(0, 153, 153));
         btnSearch.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
         btnSearch.setForeground(new java.awt.Color(255, 255, 255));
-        btnSearch.setText("Search");
         btnSearch.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearchActionPerformed(evt);
             }
         });
 
-        cbClsDate.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
-        lblSelectDate.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
         lblSelectDate.setText("<html><h4>Select the Date</h4></html>");
+        lblSelectDate.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
 
         lblEmptyDataMsg.setText("<html><h4>Cannot find records</h4></html>");
 
@@ -343,7 +339,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(panelAttendanceCboxPanel, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 138, Short.MAX_VALUE))
+                .addGap(0, 203, Short.MAX_VALUE))
             .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
         );
 
@@ -351,10 +347,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
 
         tblClsStudentCount.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+
             },
             new String [] {
                 "Id", "Class Name", "Total Students"
@@ -380,7 +373,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(32, 32, 32)
                 .addComponent(panelChart, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(161, Short.MAX_VALUE))
+                .addContainerGap(226, Short.MAX_VALUE))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane3)
@@ -389,16 +382,16 @@ public class ViewClassCharts extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Student Count", jPanel1);
 
-        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel2.setText("Course Name");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
-        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel4.setText("Select Year and Month");
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
+        btnSearchAnalytics.setText("Search");
         btnSearchAnalytics.setBackground(new java.awt.Color(0, 153, 153));
         btnSearchAnalytics.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSearchAnalytics.setForeground(new java.awt.Color(255, 255, 255));
-        btnSearchAnalytics.setText("Search");
         btnSearchAnalytics.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearchAnalyticsActionPerformed(evt);
@@ -444,7 +437,7 @@ public class ViewClassCharts extends javax.swing.JFrame {
                     .addComponent(jMonthAnalytics, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnSearchAnalytics)
-                .addContainerGap(304, Short.MAX_VALUE))
+                .addContainerGap(369, Short.MAX_VALUE))
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(panelAttendanceSummaryChart, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -457,15 +450,15 @@ public class ViewClassCharts extends javax.swing.JFrame {
 
         jLabel9.setText("You can view the monthly attendance fluctuations here. Choose the Year and Month to filter");
 
-        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel10.setText("Year");
+        jLabel10.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
-        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jLabel11.setText("Month");
+        jLabel11.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
+        btnFilter.setText("Filter");
         btnFilter.setBackground(new java.awt.Color(0, 153, 153));
         btnFilter.setForeground(new java.awt.Color(255, 255, 255));
-        btnFilter.setText("Filter");
         btnFilter.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFilterActionPerformed(evt);
@@ -535,9 +528,9 @@ public class ViewClassCharts extends javax.swing.JFrame {
 
         jTabbedPane1.addTab("Overall Analytics", jPanel5);
 
+        btnSearch1.setText("Back");
         btnSearch1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         btnSearch1.setForeground(new java.awt.Color(0, 153, 153));
-        btnSearch1.setText("Back");
         btnSearch1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnSearch1ActionPerformed(evt);
@@ -561,8 +554,8 @@ public class ViewClassCharts extends javax.swing.JFrame {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTabbedPane1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 583, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(btnSearch1)
                 .addContainerGap())
         );
@@ -591,9 +584,11 @@ public class ViewClassCharts extends javax.swing.JFrame {
 
             int year = yearChooser.getYear();
             int month = monthChooser.getMonth() + 1;
-
+            
+            //get the course dates
             classDates = this.courseRepository.getCompletedCourseDates(dto.getCourseID(), year, month);
 
+            //display them in the combo box
             prepareClassDatesComboBox();
 
         } catch (SQLException ex) {

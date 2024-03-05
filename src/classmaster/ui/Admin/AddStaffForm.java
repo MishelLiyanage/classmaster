@@ -8,6 +8,7 @@ import classmaster.repository.ComponentRegistry;
 import classmaster.repository.StaffRepository;
 import classmaster.utils.Constants;
 import classmaster.utils.Page;
+import classmaster.utils.Utility;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -203,11 +204,14 @@ public class AddStaffForm extends javax.swing.JFrame {
     }//GEN-LAST:event_jtxtFirstNameActionPerformed
 
     private void jSubmit4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSubmit4ActionPerformed
+
+        int randomHash = Utility.getRandomNumber(100, 10000000);
+        
         try{
-            String firstName = jtxtFirstName.getText();
-            String lastName = jtxtLastName.getText();
-            String email = jtxtEmail.getText();
-            String password = Constants.DEFAULT_PASSWORD;
+            String firstName = jtxtFirstName.getText().trim();
+            String lastName = jtxtLastName.getText().trim();
+            String email = jtxtEmail.getText().trim();
+            String password = Constants.DEFAULT_PASSWORD + randomHash;
             String displayName = firstName + " " + lastName;
             String role = Constants.ROLE_STAFF;
         
@@ -225,10 +229,17 @@ public class AddStaffForm extends javax.swing.JFrame {
                     displayName,
                     role
             );
+            
+            boolean isEmailExists = this.authRepository.isEmailAlreadyExists(email);
+            
+            if(isEmailExists){
+                JOptionPane.showMessageDialog(rootPane, "User from this Email already exists!");
+                return;
+            }
         
             int accountId = this.authRepository.signup(new Account(
                     jtxtEmail.getText(),
-                    Constants.DEFAULT_PASSWORD,
+                    password,
                     jtxtFirstName.getText(),
                     jtxtLastName.getText(),
                     jtxtFirstName.getText() + " " + jtxtLastName.getText(),
@@ -242,7 +253,10 @@ public class AddStaffForm extends javax.swing.JFrame {
 
             this.staffRepository.save(st);
 
-            JOptionPane.showMessageDialog(rootPane, "Successfully saved staff.");
+            JOptionPane.showMessageDialog(rootPane, 
+                    "<html><h2>Staff saved successfully!</h2>Provide this information to the staff member to login to the system\n(Please ask them to change password to of their own once they login)\n"
+                                          + "Staff member ID :" + accountId
+                                          + "\nPassword :" + password+"</html>");
                
             clearAllFields();
 
@@ -265,8 +279,13 @@ public class AddStaffForm extends javax.swing.JFrame {
             return false;
         }
         
+        if(!jtxtEmail.getText().contains("@")){
+            JOptionPane.showMessageDialog(rootPane, "Invalid email address");
+            return false;
+        }
+        
         if(jtxtContactNumber.getText().length() != 10){
-            JOptionPane.showMessageDialog(rootPane, "Invalide phone number");
+            JOptionPane.showMessageDialog(rootPane, "Invalid phone number");
             return false;
         }
         return true;
